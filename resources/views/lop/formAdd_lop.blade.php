@@ -9,15 +9,16 @@
                     </div>
                 </div>
                 <div class="card-body px-5 py-2">
-                    <form method="POST" action="{{ route('permintaan.store') }}">
+                    <form method="POST" action="{{ route('lop.store') }}">
                         @csrf
+                        <input type="hidden" name="permintaan_id" value="{{ $permintaan['id'] }}">
                         <div class="form-group">
                             <label for="">Tanggal Permintaan (m-d-Y)</label>
                             @if ($errors->has('tanggal_permintaan'))
                                 <input type="date" name="tanggal_permintaan" class="form-control is-invalid"
-                                    value="{{ old('tanggal_permintaan') }}" readonly>
+                                    id="tanggalPermintaan" value="{{ old('tanggal_permintaan') }}" readonly>
                             @else
-                                <input type="date" name="tanggal_permintaan" class="form-control"
+                                <input type="date" name="tanggal_permintaan" class="form-control" id="tanggalPermintaan"
                                     value="{{ $permintaan['tanggal_permintaan'] }}" readonly>
                             @endif
                         </div>
@@ -67,7 +68,8 @@
                         </div>
                         <div class="form-group">
                             <label for="">STO</label>
-                            <select class="form-control {{ $errors->has('sto') ? 'is-invalid' : '' }}" name="sto">
+                            <select class="form-control {{ $errors->has('sto') ? 'is-invalid' : '' }}" name="sto"
+                                id="select_sto">
                                 <option>-- PILIH STO --</option>
                                 <option value="BJA" {{ old('sto') == 'BJA' ? 'selected' : '' }}>BJA</option>
                                 <option value="PNL" {{ old('sto') == 'PNL' ? 'selected' : '' }}>PNL</option>
@@ -115,32 +117,42 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="longitude"
-                                            placeholder="Longitude">
+                                        @if ($errors->has('longitude'))
+                                            <input type="text" name="longitude" id="longitude"
+                                                class="form-control is-invalid" value="{{ old('longitude') }}" placeholder="Longitude">
+                                        @else
+                                            <input type="text" class="form-control" name="longitude"
+                                                id="longitude">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" placeholder="latitude" class="form-control"
-                                            id="latitude" />
+                                        @if ($errors->has('latitude'))
+                                            <input type="text" name="latitude" id="latitude"
+                                                class="form-control is-invalid" value="{{ old('latitude') }}" placeholder="Latitude">
+                                        @else
+                                            <input type="text" class="form-control" name="latitude"
+                                                id="latitude">
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Lokasi LOP</label>
-                            @if ($errors->has('Lokasi LOP'))
-                                <textarea class="form-control is-invalid" name="lokasi_lop" rows="3">{{ old('lokasi_lop') }}</textarea>
+                            @if ($errors->has('lokasi_lop'))
+                                <textarea class="form-control is-invalid" id="lokasiLop" name="lokasi_lop" rows="3">{{ old('lokasi_lop') }}</textarea>
                             @else
-                                <textarea class="form-control" name="lokasi_lop" rows="3" placeholder="Deskripsi Lokasi LOP"></textarea>
+                                <textarea class="form-control" name="lokasi_lop" id="lokasiLop" rows="3" placeholder="Deskripsi Lokasi LOP"></textarea>
                             @endif
                         </div>
                         <div class="form-group">
                             <label for="">Keterangan</label>
                             @if ($errors->has('keterangan'))
-                                <textarea class="form-control is-invalid" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
+                                <textarea class="form-control is-invalid" id="keterangan" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
                             @else
-                                <textarea class="form-control" name="keterangan" rows="3"></textarea>
+                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
                             @endif
                         </div>
                         <div class="form-group">
@@ -193,11 +205,12 @@
                                 </tr>
                             </table>
                             <span class="mt-5">
-                                Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah Anda akan langsung Alokasi Mitra untuk LOP ini?
+                                Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah Anda akan langsung
+                                        Alokasi Mitra untuk LOP ini?
                             </span>
                         </div>
-                        <div class="modal-footer pt-0 px-lg-2 px-1">
-                            <button type="button" class="btn btn-primary btn-sm">Ya</button>
+                        <div class="card-footer pt-0 px-lg-2 px-1">
+                            <button type="button" id="toAlokasiMitra" class="btn btn-primary btn-sm">Ya</button>
                             <a href="{{ route('permintaan.list') }}">
                                 <button type="button" class="btn btn-danger btn-sm">Tidak</button>
                             </a>
@@ -331,12 +344,51 @@
                 var namaPermintaan = $("#namaPermintaan").val();
                 var namaLop = $("#namaLop").val();
 
-                if (selectedRAB === "<20") {
+                if (namaLop === ''){
+                    $('#namaLop').addClass('is-invalid');
+                    alert('Isi Nama LOP terlebih dahulu!');
+                } else if(selectedRAB === '<20' && namaLop !== '') {
                     $("#modalAlokasiMitra").modal('show');
                     $("#namaPermintaan-modalAlokasiMitra").text(namaPermintaan);
                     $("#namaLop-modalAlokasiMitra").text(namaLop);
                 }
             });
+
+            // Form Validation sebelum ke halaman Alokasi Mitra
+            $('#toAlokasiMitra').click(function() {
+                // Validate input Field
+                validate('#tanggalPermintaan', 'tanggalPermintaan');
+                validate('#namaPermintaan', 'namaPermintaan');
+                validate('#namaLop', 'namaLop');
+                validate('#select_tematik_lop', 'tematikLop');
+                validate('#select_estimasi_rab', 'estimasiRab');
+                validate('#select_sto', 'sto');
+                validate('#longitude', 'longitude');
+                validate('#latitude', 'latitude');
+                validate('#lokasiLop', 'lokasiLop');
+                validate('#keterangan', 'keterangan');
+
+                // Redirect to Alokasi Mitra Page
+                var url = '{{ route('alokasiMitra.form') }}';
+
+                window.location.href = url;
+            });
+
+            function validate(id, varName) {
+                var inputValue = $(id).val();
+
+                if (inputValue === '') {
+                    $(id).addClass('is-invalid');
+
+                    return false;
+                } else {
+                    $(id).removeClass('is-invalid');
+
+                    // If not empty Store to Session
+                    sessionStorage.setItem(varName, inputValue);
+                    console.log(id + ' is not empty val = ' + inputValue);
+                }
+            }
         });
     </script>
 @endsection

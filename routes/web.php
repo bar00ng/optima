@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LopController;
+use App\Http\Controllers\AlokasiMitraController;
+use App\Http\Controllers\SurveyRabController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +20,12 @@ use App\Http\Controllers\LopController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/lop', function () {
-    return view('lop', [ 
-        "pages" => "List of Project",
-        "category" => "List of Project",
-        "name" => "Admin"
-    ]);
-});
+Route::get('/surveyRab/{id}', [SurveyRabController::class, 'index'])->name('surveyRab.form');
+Route::post('/surveyRab/store', [SurveyRabController::class, 'store'])->name('surveyRab.store');
+
+Route::get('/alokasiMitra/{id}', [AlokasiMitraController::class, 'index'])->name('alokasiMitra.form');
+Route::post('/alokasiMitra/store', [AlokasiMitraController::class, 'store'])->name('alokasiMitra.store');
+
 Route::get('/lop', [LopController::class, 'index'])->name('lop.list');
 Route::get('/lop/add/{id}', [LopController::class, 'formAddLop'])->name('lop.formAdd');
 Route::post('/lop/add', [LopController::class, 'store'])->name('lop.store');

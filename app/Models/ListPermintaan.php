@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Lop;
 
 class ListPermintaan extends Model
 {
@@ -18,6 +19,11 @@ class ListPermintaan extends Model
         'keterangan',
         'status'
     ];
+
+    public function lop()
+    {
+        return $this->hasOne(Lop::class);
+    }
 
     use HasFactory;
 }
