@@ -196,7 +196,7 @@
                                 Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah Anda akan langsung Alokasi Mitra untuk LOP ini?
                             </span>
                         </div>
-                        <div class="card-footer pt-0 px-lg-2 px-1">
+                        <div class="modal-footer pt-0 px-lg-2 px-1">
                             <button type="button" class="btn btn-primary btn-sm">Ya</button>
                             <a href="{{ route('permintaan.list') }}">
                                 <button type="button" class="btn btn-danger btn-sm">Tidak</button>
