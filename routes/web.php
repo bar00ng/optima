@@ -20,17 +20,17 @@ use App\Http\Controllers\SurveyRabController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/surveyRab/{id}', [SurveyRabController::class, 'index'])->name('surveyRab.form');
-Route::post('/surveyRab/store', [SurveyRabController::class, 'store'])->name('surveyRab.store');
-
-Route::get('/alokasiMitra/{id}', [AlokasiMitraController::class, 'index'])->name('alokasiMitra.form');
-Route::post('/alokasiMitra/store', [AlokasiMitraController::class, 'store'])->name('alokasiMitra.store');
-
 Route::get('/lop', [LopController::class, 'index'])->name('lop.list');
-Route::get('/lop/add/{id}', [LopController::class, 'formAddLop'])->name('lop.formAdd');
-Route::post('/lop/add', [LopController::class, 'store'])->name('lop.store');
+Route::get('/lop/add/{permintaan_id}', [LopController::class, 'formAddLop'])->name('lop.formAdd');
+Route::post('/lop/add', [LopController::class, 'storeLop'])->name('lop.store');
 Route::patch('/lop/edit/{id}', [LopController::class, 'patch'])->name('lop.patch');
 Route::delete('/lop/delete/{id}', [LopController::class, 'delete'])->name('lop.delete');
+// Survey RAB Routes
+Route::get('/surveyRab/{lop_id}', [LopController::class, 'surveyRabForm'])->name('lop.formSurvey');
+Route::post('/surveyRab/store', [LopController::class, 'storeSurveyRabForm'])->name('lop.storeFormSurvey');
+// Alokasi Mitra Routes
+Route::get('/alokasiMitra/{lop_id}', [LopController::class, 'alokasiMitraForm'])->name('lop.formAlokasiMitra');
+Route::post('/alokasiMitra/store', [LopController::class, 'storeAlokasiMitraForm'])->name('lop.storeAlokasiMitra');
 
 Route::get('/permintaan', [PermintaanController::class, 'index'])->name('permintaan.list');
 Route::get('/permintaan/add', [PermintaanController::class, 'formAddPermintaan'])->name('permintaan.formAdd');
