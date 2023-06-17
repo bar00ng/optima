@@ -13,15 +13,20 @@ return new class extends Migration
     {
         Schema::create('lop', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('permintaan_id')->constrained('list_permintaan')->delete('cascade');
-            $table->string('nama_lop');
-            $table->string('tematik_lop');
-            $table->string('estimasi_rab');
-            $table->string('sto');
-            $table->string('tikor_lop');
-            $table->string('lokasi_lop');
-            $table->text('keterangan');
-            $table->string('status');
+            $table->foreignId('permintaan_id')->constrained('list_permintaan')->onDelete('cascade');
+            $table->date('tanggal_permintaan')->default(now());
+            $table->string('nama_lop')->default('');
+            $table->string('tematik_lop')->default('');
+            $table->string('estimasi_rab')->default('');
+            $table->string('sto')->default('');
+            $table->string('longitude')->default('');
+            $table->string('latitude')->default('');
+            $table->string('lokasi_lop')->default('');
+            $table->text('keterangan_lop')->default('');
+            $table->string('rab_ondesk')->default('');
+            $table->string('keterangan_rab')->default('');
+            $table->string('alokasi_mitra')->default('');
+            $table->string('status')->default('');
             $table->timestamps();
         });
     }

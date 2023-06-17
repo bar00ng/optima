@@ -36,7 +36,7 @@
                                         </td>
 
                                         <td class="align-middle text-left">
-                                            <a href="{{ route('lop.formAdd', ['id' => $item->id]) }}">
+                                            <a href="{{ route('lop.formAdd', ['permintaan_id' => $item->id]) }}">
                                                 <span
                                                     class="text-secondary text-xs font-weight-bold">{{ $item->nama_permintaan }}</span>
                                             </a>

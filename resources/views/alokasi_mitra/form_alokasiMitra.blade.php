@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <div class="card-body px-5 py-2">
-                    <form method="POST" action="{{ route('alokasiMitra.store') }}">
+                    <form method="POST" action="{{ route('lop.storeAlokasiMitra') }}">
                         @csrf
                         <input type="hidden" name="lop_id" value="{{ $lop['id'] }}">
                         <div class="form-group">
@@ -38,17 +38,17 @@
                                 value="{{ $lop['sto'] }}" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">TIKOR LOP</label>
+                            <label for="">TIKOR LOP (Longitude, Latitude)</label>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="longitude" id="longitude"
-                                            value="{{ $lop['tikor_lop'] }}" readonly>
+                                            value="{{ $lop['longitude'] }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="latitude" id="latitude" readonly>
+                                        <input type="text" class="form-control" name="latitude" id="latitude" value="{{ $lop['latitude'] }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Keterangan</label>
-                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3" readonly>{{ $lop['keterangan'] }}</textarea>
+                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3" readonly>{{ $lop['keterangan_lop'] }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="">Alokasi Mitra</label>

@@ -19,7 +19,7 @@
                                     id="tanggalPermintaan" value="{{ old('tanggal_permintaan') }}" readonly>
                             @else
                                 <input type="date" name="tanggal_permintaan" class="form-control" id="tanggalPermintaan"
-                                    value="{{ $permintaan['tanggal_permintaan'] }}" readonly>
+                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" readonly>
                             @endif
                         </div>
                         <div class="form-group">
@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Nama LOP</label>
-                            @if ($errors->has('nama_permintaan'))
+                            @if ($errors->has('nama_lop'))
                                 <input type="text" name="nama_lop" class="form-control is-invalid" id="namaLop"
                                     value="{{ old('nama_lop') }}">
                             @else
@@ -149,10 +149,10 @@
                         </div>
                         <div class="form-group">
                             <label for="">Keterangan</label>
-                            @if ($errors->has('keterangan'))
-                                <textarea class="form-control is-invalid" id="keterangan" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
+                            @if ($errors->has('keterangan_lop'))
+                                <textarea class="form-control is-invalid" id="keterangan" name="keterangan_lop" rows="3">{{ old('keterangan') }}</textarea>
                             @else
-                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                                <textarea class="form-control" id="keterangan" name="keterangan_lop" rows="3"></textarea>
                             @endif
                         </div>
                         <div class="form-group">
@@ -352,26 +352,6 @@
                     $("#namaPermintaan-modalAlokasiMitra").text(namaPermintaan);
                     $("#namaLop-modalAlokasiMitra").text(namaLop);
                 }
-            });
-
-            // Form Validation sebelum ke halaman Alokasi Mitra
-            $('#toAlokasiMitra').click(function() {
-                // Validate input Field
-                validate('#tanggalPermintaan', 'tanggalPermintaan');
-                validate('#namaPermintaan', 'namaPermintaan');
-                validate('#namaLop', 'namaLop');
-                validate('#select_tematik_lop', 'tematikLop');
-                validate('#select_estimasi_rab', 'estimasiRab');
-                validate('#select_sto', 'sto');
-                validate('#longitude', 'longitude');
-                validate('#latitude', 'latitude');
-                validate('#lokasiLop', 'lokasiLop');
-                validate('#keterangan', 'keterangan');
-
-                // Redirect to Alokasi Mitra Page
-                var url = '{{ route('alokasiMitra.form') }}';
-
-                window.location.href = url;
             });
 
             function validate(id, varName) {
