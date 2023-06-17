@@ -57,7 +57,7 @@ Route::middleware('redirectIfAuthenticated')->group(function (){
 
 
 Route::get('/golive-odp', function () {
-    return view('golive-odp', [ 
+    return view('buat-permintaan', [ 
         "pages" => "Golive Odp",
         "category" => "Golive Odp",
         "name" => "Admin"

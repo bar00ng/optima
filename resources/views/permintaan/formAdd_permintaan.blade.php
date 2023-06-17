@@ -9,36 +9,41 @@
                     </div>
                 </div>
                 <div class="card-body px-5 py-2">
-                    <form method="POST" action="{{ route('permintaan.store') }}">
+                    <form method="POST" action="{{ route('permintaan.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="">Tanggal Permintaan (m-d-Y)</label>
                             @if ($errors->has('tanggal_permintaan'))
-                                <input type="date" name="tanggal_permintaan" class="form-control is-invalid" value="{{old('tanggal_permintaan')}}">
+                                <input type="date" name="tanggal_permintaan" class="form-control is-invalid"
+                                    value="{{ old('tanggal_permintaan') }}">
                             @else
                                 <input type="date" name="tanggal_permintaan" class="form-control">
                             @endif
                         </div>
                         <div class="form-group">
                             <label for="">Tematik Permintaan</label>
-                            <select class="form-control {{$errors->has('tematik_permintaan') ? 'is-invalid' : ''}}" name="tematik_permintaan">
+                            <select class="form-control {{ $errors->has('tematik_permintaan') ? 'is-invalid' : '' }}"
+                                name="tematik_permintaan">
                                 <option>-- PILIH TEMATIK --</option>
-                                <option value="HEM" {{ old('tematik_permintaan') == "HEM" ? 'selected' : '' }}>HEM</option>
-                                <option value="PT2" {{ old('tematik_permintaan') == "PT2" ? 'selected' : '' }}>PT2</option>
+                                <option value="HEM" {{ old('tematik_permintaan') == 'HEM' ? 'selected' : '' }}>HEM
+                                </option>
+                                <option value="PT2" {{ old('tematik_permintaan') == 'PT2' ? 'selected' : '' }}>PT2
+                                </option>
                             </select>
                         </div>
                         <div class="form-check">
                             <input type="checkbox" id="toggle_reffPermintaan" class="form-check-input">
                             <label class="custom-control-label">Apakah ada nota dinas?</label>
                         </div>
-                        <div class="form-group invisible" id="reffPermintaan">
+                        <div class="form-group" id="reffPermintaan" style="display: none;">
                             <label for="">Reff Permintaan</label>
-                            <input type="text" class="form-control" name="reff_permintaan">
+                            <input type="file" class="form-control" name="reff_permintaan">
                         </div>
                         <div class="form-group">
                             <label for="">Nama Permintaan</label>
                             @if ($errors->has('nama_permintaan'))
-                                <input type="text" name="nama_permintaan" class="form-control is-invalid" value="{{old('nama_permintaan')}}">
+                                <input type="text" name="nama_permintaan" class="form-control is-invalid"
+                                    value="{{ old('nama_permintaan') }}">
                             @else
                                 <input type="text" class="form-control" name="nama_permintaan">
                             @endif
@@ -46,7 +51,8 @@
                         <div class="form-group">
                             <label for="">PIC Permintaan</label>
                             @if ($errors->has('pic_permintaan'))
-                                <input type="text" name="pic_permintaan" class="form-control is-invalid" value="{{old('pic_permintaan')}}">
+                                <input type="text" name="pic_permintaan" class="form-control is-invalid"
+                                    value="{{ old('pic_permintaan') }}">
                             @else
                                 <input type="text" class="form-control" name="pic_permintaan">
                             @endif
@@ -74,15 +80,14 @@
 
 @section('script')
     <script>
-        const toggleCheckbox = document.getElementById('toggle_reffPermintaan');
-        const hiddenDiv = document.getElementById('reffPermintaan');
-
-        toggleCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                hiddenDiv.classList.remove('invisible');
-            } else {
-                hiddenDiv.classList.add('invisible');
-            }
+        $(document).ready(function() {
+            $('#toggle_reffPermintaan').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#reffPermintaan').show();
+                } else {
+                    $('#reffPermintaan').hide();
+                }
+            });
         });
     </script>
 @endsection

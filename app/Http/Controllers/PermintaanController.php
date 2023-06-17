@@ -34,6 +34,15 @@ class PermintaanController extends Controller
             ]);
             $validated['status'] = 'Order';
 
+            if ($r->hasFile('reff_permintaan')) {
+                $file = $r->file('reff_permintaan');
+                $fileName = $file->getClientOriginalName();
+                
+                $file->store('public/uploads/refferal_permintaan');
+
+                $validated['refferal_permintaan'] = $fileName;
+            }
+
             ListPermintaan::create($validated);
     
             return redirect('/permintaan')->with('Sukses', 'Permintaan berhasil ditambahkan!');
