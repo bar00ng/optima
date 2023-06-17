@@ -15,11 +15,12 @@
                         <div class="form-group">
                             <label for="">Tanggal Permintaan (m-d-Y)</label>
                             <input type="date" name="tanggal_permintaan" class="form-control" id="tanggalPermintaan"
-                                readonly value="{{ $lop['tanggal_permintaan'] }}">
+                                readonly value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                         </div>
                         <div class="form-group">
                             <label for="">Nama Permintaan</label>
                             <input type="text" class="form-control" name="nama_permintaan" id="namaPermintaan"
+                                value="{{ '[' . $lop->listPermintaan->tematik_permintaan . '] ' . $lop->listPermintaan->nama_permintaan }}"
                                 value="{{ $lop['nama_permintaan'] }}" readonly>
                         </div>
                         <div class="form-group">
@@ -48,7 +49,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="latitude" id="latitude" value="{{ $lop['latitude'] }}" readonly>
+                                        <input type="text" class="form-control" name="latitude" id="latitude"
+                                            value="{{ $lop['latitude'] }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -61,20 +63,21 @@
                             <label for="">RAB OnDesk</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Rp</span>
-                                <input type="text" class="form-control" name="rab_ondesk" value="{{ $lop['rab_ondesk'] }}" readonly>
+                                <input type="text" class="form-control" name="rab_ondesk"
+                                    value="{{ $lop['rab_ondesk'] }}" readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Keterangan</label>
-                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3" readonly>{{ $lop['keterangan_lop'] }}</textarea>
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3" readonly>{{ $lop['keterangan_lop'] }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="">Alokasi Mitra</label>
-                                <select name="alokasi_mitra" class="form-control">
-                                    <option>--- Pilih Mitra ---</option>
-                                    <option value="tes1">Value1</option>
-                                    <option value="tes2">Value2</option>
-                                </select>
+                            <select name="alokasi_mitra" class="form-control">
+                                <option>--- Pilih Mitra ---</option>
+                                <option value="tes1">Value1</option>
+                                <option value="tes2">Value2</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-sm">Submit</button>

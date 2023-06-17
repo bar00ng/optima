@@ -87,7 +87,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('*profile*') ? 'active' : '' }}" href="/profile">
+                    <a class="nav-link {{ request()->routeIs('*profile*') ? 'active' : '' }}" href="{{ route('profile') }}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
@@ -119,7 +119,7 @@
                         <li class="nav-item d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
-                                <span class="d-sm-inline d-none">Hi, </span> $name
+                                <span class="d-sm-inline d-none">Hi, </span> {{ Auth::user()->first_name }}
                             </a>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
