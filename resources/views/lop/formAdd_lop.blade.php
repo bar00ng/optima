@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <div class="card-body px-5 py-2">
-                    <form method="POST" action="{{ route('lop.store') }}">
+                    <form method="POST" action="{{ route('lop.store') }}" id="lopForm">
                         @csrf
                         <input type="hidden" name="permintaan_id" value="{{ $permintaan['id'] }}">
                         <div class="form-group">
@@ -21,6 +21,7 @@
                                 <input type="date" name="tanggal_permintaan" class="form-control" id="tanggalPermintaan"
                                     value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" readonly>
                             @endif
+
                         </div>
                         <div class="form-group">
                             <label for="">Nama Permintaan</label>
@@ -33,31 +34,33 @@
                                     readonly>
                             @endif
                         </div>
-                        <div class="form-group">
+                        <div class="form-group has-validation">
                             <label for="">Nama LOP</label>
-                            @if ($errors->has('nama_lop'))
-                                <input type="text" name="nama_lop" class="form-control is-invalid" id="namaLop"
-                                    value="{{ old('nama_lop') }}">
-                            @else
-                                <input type="text" class="form-control" name="nama_lop" id="namaLop">
-                            @endif
+                            <input type="text" class="form-control {{ $errors->has('nama_lop') ? 'is-invalid' : '' }}"
+                                name="nama_lop" id="namaLop" value="{{ old('nama_lop') }}" placeholder="Nama LOP">
+                            <div class="invalid-feedback">
+                                {{ $errors->first('nama_lop') }}
+                            </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group has-validation">
                             <label for="">Tematik LOP</label>
                             <select class="form-control {{ $errors->has('tematik_lop') ? 'is-invalid' : '' }}"
                                 name="tematik_lop" id="select_tematik_lop">
-                                <option>-- PILIH TEMATIK --</option>
-                                <option value="HEM">
+                                <option value="">-- PILIH TEMATIK --</option>
+                                <option value="HEM" {{ old('tematik_lop') == 'HEM' ? 'selected' : '' }}>
                                     HEM</option>
-                                <option value="PT 2">
+                                <option value="PT 2" {{ old('tematik_lop') == 'PT 2' ? 'selected' : '' }}>
                                     PT 2</option>
                             </select>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('tematik_lop') }}
+                            </div>
                         </div>
-                        <div class="form-group" id="estimasi_rab" style="display: none;">
+                        <div class="form-group has-validation" id="estimasi_rab" style="display: none;">
                             <label for="">Estimasi RAB</label>
                             <select class="form-control {{ $errors->has('estimasi_rab') ? 'is-invalid' : '' }}"
                                 name="estimasi_rab" id="select_estimasi_rab">
-                                <option>-- PILIH ESTIMASI RAB --</option>
+                                <option value="">-- PILIH ESTIMASI RAB --</option>
                                 <option value="<20" {{ old('estimasi_rab') == '< 20 Jt' ? 'selected' : '' }}
                                     data-modal-target="#modalAlokasiMitra">
                                     < 20 Jt </option>
@@ -65,12 +68,70 @@
                                     Jt
                                 </option>
                             </select>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('estimasi_rab') }}
+                            </div>
+
+                            <!-- Alokasi Mitra Modal Box -->
+                            <div class="modal fade" id="modalAlokasiMitra" tabindex="-1" role="dialog"
+                                aria-labelledby="modalAlokasiMitra" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body p-0">
+                                            <div class="card card-plain">
+                                                <div class="card-header pb-0 text-left">
+                                                    <h3 class="mb-0">Konfirmasi Alokasi Mitra</h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Nama Permintaan</b>
+                                                            </td>
+                                                            <td>
+                                                                <b>:</b>
+                                                            </td>
+                                                            <td>
+                                                                <span id="namaPermintaan-modalAlokasiMitra"
+                                                                    style="padding-left: 10px;"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Nama LOP</b>
+                                                            </td>
+                                                            <td>
+                                                                <b>:</b>
+                                                            </td>
+                                                            <td>
+                                                                <span id="namaLop-modalAlokasiMitra"
+                                                                    style="padding-left: 10px;"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <span class="mt-5">
+                                                        Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah
+                                                                Anda akan langsung
+                                                                Alokasi Mitra untuk LOP ini?
+                                                    </span>
+                                                </div>
+                                                <div class="card-footer pt-0 px-lg-2 px-1">
+                                                    <button type="submit" name="submitAction"
+                                                        class="btn btn-primary btn-sm" value="toAlokasiMitra">Ya</button>
+                                                        <button type="button" id="close-modalAlokasiMitra"
+                                                            class="btn btn-danger btn-sm">Tidak</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group has-validation">
                             <label for="">STO</label>
                             <select class="form-control {{ $errors->has('sto') ? 'is-invalid' : '' }}" name="sto"
                                 id="select_sto">
-                                <option>-- PILIH STO --</option>
+                                <option value="">-- PILIH STO --</option>
                                 <option value="BJA" {{ old('sto') == 'BJA' ? 'selected' : '' }}>BJA</option>
                                 <option value="PNL" {{ old('sto') == 'PNL' ? 'selected' : '' }}>PNL</option>
                                 <option value="BTJ" {{ old('sto') == 'BTJ' ? 'selected' : '' }}>BTJ</option>
@@ -90,6 +151,9 @@
                                 <option value="CWD" {{ old('sto') == 'CWD' ? 'selected' : '' }}>CWD</option>
                                 <option value="SOR" {{ old('sto') == 'SOR' ? 'selected' : '' }}>SOR</option>
                             </select>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('sto') }}
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="">TIKOR LOP</label>
@@ -116,106 +180,51 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        @if ($errors->has('longitude'))
-                                            <input type="text" name="longitude" id="longitude"
-                                                class="form-control is-invalid" value="{{ old('longitude') }}" placeholder="Longitude">
-                                        @else
-                                            <input type="text" class="form-control" name="longitude"
-                                                id="longitude">
-                                        @endif
+                                    <div class="form-group has-validation">
+
+                                        <input type="text" placeholder="Longitude" id="longitude"
+                                            class="form-control {{ $errors->has('longitude') ? 'is-invalid' : '' }}"
+                                            name="longitude" value="{{ old('longitude') }}">
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('longitude') }}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        @if ($errors->has('latitude'))
-                                            <input type="text" name="latitude" id="latitude"
-                                                class="form-control is-invalid" value="{{ old('latitude') }}" placeholder="Latitude">
-                                        @else
-                                            <input type="text" class="form-control" name="latitude"
-                                                id="latitude">
-                                        @endif
+                                    <div class="form-group has-validation">
+                                        <input type="text" placeholder="Latitude" id="latitude"
+                                            class="form-control {{ $errors->has('latitude') ? 'is-invalid' : '' }}"
+                                            name="latitude" value="{{ old('latitude') }}">
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('latitude') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group has-validation">
                             <label for="">Lokasi LOP</label>
-                            @if ($errors->has('lokasi_lop'))
-                                <textarea class="form-control is-invalid" id="lokasiLop" name="lokasi_lop" rows="3">{{ old('lokasi_lop') }}</textarea>
-                            @else
-                                <textarea class="form-control" name="lokasi_lop" id="lokasiLop" rows="3" placeholder="Deskripsi Lokasi LOP"></textarea>
-                            @endif
+                            <textarea class="form-control {{ $errors->has('lokasi_lop') ? 'is-invalid' : '' }}" name="lokasi_lop" id="lokasiLop"
+                                rows="3" placeholder="Deskripsi Lokasi LOP">{{ old('lokasi_lop') }}</textarea>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('lokasi_lop') }}
+                            </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group has-validation">
                             <label for="">Keterangan</label>
-                            @if ($errors->has('keterangan_lop'))
-                                <textarea class="form-control is-invalid" id="keterangan" name="keterangan_lop" rows="3">{{ old('keterangan') }}</textarea>
-                            @else
-                                <textarea class="form-control" id="keterangan" name="keterangan_lop" rows="3"></textarea>
-                            @endif
+                            <textarea class="form-control {{ $errors->has('keterangan_lop') ? 'is-invalid' : '' }}" id="keterangan"
+                                name="keterangan_lop" rows="3" placeholder="Keterangan LOP">{{ old('keterangan_lop') }}</textarea>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('keterangan') }}
+                            </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                            <a href="{{ route('permintaan.list') }}">
+                            <button type="submit" name="submitAction" class="btn btn-primary btn-sm" value="toSurveyRab">Submit</button>
+                            <a href="{{ route('lop.list') }}">
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             </a>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-
-@section('modal_box')
-    <!-- Alokasi Mitra Modal Box -->
-    <div class="modal fade" id="modalAlokasiMitra" tabindex="-1" role="dialog" aria-labelledby="modalAlokasiMitra"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-body p-0">
-                    <div class="card card-plain">
-                        <div class="card-header pb-0 text-left">
-                            <h3 class="mb-0">Konfirmasi Alokasi Mitra</h3>
-                        </div>
-                        <div class="card-body">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <b>Nama Permintaan</b>
-                                    </td>
-                                    <td>
-                                        <b>:</b>
-                                    </td>
-                                    <td>
-                                        <span id="namaPermintaan-modalAlokasiMitra" style="padding-left: 10px;"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <b>Nama LOP</b>
-                                    </td>
-                                    <td>
-                                        <b>:</b>
-                                    </td>
-                                    <td>
-                                        <span id="namaLop-modalAlokasiMitra" style="padding-left: 10px;"></span>
-                                    </td>
-                                </tr>
-                            </table>
-                            <span class="mt-5">
-                                Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah Anda akan langsung
-                                        Alokasi Mitra untuk LOP ini?
-                            </span>
-                        </div>
-                        <div class="card-footer pt-0 px-lg-2 px-1">
-                            <button type="button" id="toAlokasiMitra" class="btn btn-primary btn-sm">Ya</button>
-                            <a href="{{ route('permintaan.list') }}">
-                                <button type="button" class="btn btn-danger btn-sm">Tidak</button>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -344,31 +353,35 @@
                 var namaPermintaan = $("#namaPermintaan").val();
                 var namaLop = $("#namaLop").val();
 
-                if (namaLop === ''){
+                if (namaLop === '') {
                     $('#namaLop').addClass('is-invalid');
                     alert('Isi Nama LOP terlebih dahulu!');
-                } else if(selectedRAB === '<20' && namaLop !== '') {
+                } else if (selectedRAB === '<20' && namaLop !== '') {
                     $("#modalAlokasiMitra").modal('show');
                     $("#namaPermintaan-modalAlokasiMitra").text(namaPermintaan);
                     $("#namaLop-modalAlokasiMitra").text(namaLop);
                 }
             });
 
-            function validate(id, varName) {
-                var inputValue = $(id).val();
+            $("#close-modalAlokasiMitra").on('click', function() {
+                $("#modalAlokasiMitra").modal('hide');
+            });
 
-                if (inputValue === '') {
-                    $(id).addClass('is-invalid');
+            // Add event listener to the form submit event
+            document.getElementById('lopForm').addEventListener('submit', function(event) {
+                // Get the clicked submit button
+                var clickedButton = document.activeElement;
 
-                    return false;
-                } else {
-                    $(id).removeClass('is-invalid');
+                // Check the value of the clicked button
+                if (clickedButton && clickedButton.name === 'submitAction') {
+                    var actionValue = clickedButton.value;
 
-                    // If not empty Store to Session
-                    sessionStorage.setItem(varName, inputValue);
-                    console.log(id + ' is not empty val = ' + inputValue);
+                    // Modify the form's action URL based on the clicked button value
+                    if (actionValue === 'toAlokasiMitra') {
+                        this.action = "{{ route('lop.store', ['toAlokasiMitra' => true]) }}";
+                    }
                 }
-            }
+            });
         });
     </script>
 @endsection

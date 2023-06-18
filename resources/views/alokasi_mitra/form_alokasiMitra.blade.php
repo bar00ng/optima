@@ -81,7 +81,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                            <a href="{{ route('permintaan.list') }}">
+                            <a href="{{ route('lop.list') }}">
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             </a>
                         </div>

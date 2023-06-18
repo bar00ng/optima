@@ -28,32 +28,51 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($permintaan as $item)
-                                    <tr>
-                                        <td class="align-middle text-left">
-                                            <span
-                                                class="text-secondary text-xs font-weight-bold">{{ $item->tematik_permintaan }}</span>
-                                        </td>
-
-                                        <td class="align-middle text-left">
-                                            <a href="{{ route('lop.formAdd', ['permintaan_id' => $item->id]) }}">
+                                @if (!empty($permintaan))
+                                    @foreach ($permintaan as $item)
+                                        @php
+                                            $count = isset($LOPCount[$item->id]) ? $LOPCount[$item->id] : 0;
+                                        @endphp
+                                        <tr>
+                                            <td class="align-middle text-left">
                                                 <span
-                                                    class="text-secondary text-xs font-weight-bold">{{ $item->nama_permintaan }}</span>
-                                            </a>
+                                                    class="text-secondary text-xs font-weight-bold">{{ $item->tematik_permintaan }}</span>
+                                            </td>
+
+                                            <td class="align-middle text-left">
+                                                <a href="{{ route('lop.formAdd', ['permintaan_id' => $item->id]) }}">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $item->nama_permintaan }}</span>
+                                                </a>
+                                            </td>
+                                            <td class="align-middle text-left">
+                                                <span
+                                                    class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($item->tanggal_permintaan)->format('j F Y') }}</span>
+                                            </td>
+                                            <td class="align-middle text-left flex items-center">
+                                                @if ($count > 0)
+                                                    <a href="{{ route('lop.list', ['id_permintaan' => $item->id]) }}">
+                                                        <span
+                                                            class="text-secondary text-xs font-weight-bold">{{ $count }}</span>
+                                                    </a>
+                                                @else
+                                                    <span class="text-secondary text-xs font-weight-bold">-</span>
+                                                @endif
+                                            </td>
+                                            <td class="align-middle text-left">
+                                                <span class="text-secondary text-xs font-weight-bold">-</span>
+                                            </td>
+                                            <!-- Add more table cells for other fields -->
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="align-middle text-center" colspan="4">
+                                            <span class="text-secondary text-xs font-weight-bold">List Permintaan
+                                                Kosong</span>
                                         </td>
-                                        <td class="align-middle text-left">
-                                            <span
-                                                class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($item->tanggal_permintaan)->format('j F Y') }}</span>
-                                        </td>
-                                        <td class="align-middle text-left flex items-center">
-                                            <span class="text-secondary text-xs font-weight-bold">-</span>
-                                        </td>
-                                        <td class="align-middle text-left">
-                                            <span class="text-secondary text-xs font-weight-bold">-</span>
-                                        </td>
-                                        <!-- Add more table cells for other fields -->
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

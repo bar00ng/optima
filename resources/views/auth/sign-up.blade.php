@@ -45,38 +45,35 @@
                                     <p class="mb-0">Create new account</p>
                                 </div>
                                 <div class="card-body">
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-
-                                    @if (session('error'))
-                                        <div class="alert alert-danger">
-                                            {{ session('error') }}
-                                        </div>
-                                    @endif
                                     <form role="form" method="POST" action="{{ route('signup.process') }}">
                                         @csrf
-                                        <div class="mb-3">
-                                            <input type="text" name="username" class="form-control form-control-lg"
-                                                placeholder="Username" aria-label="Username">
+                                        <div class="mb-3 has-validation">
+                                            <input type="text" name="username" class="form-control form-control-lg {{ $errors->has('username') ? 'is-invalid' : '' }}"
+                                                placeholder="Username" aria-label="Username" value="{{ old('username') }}">
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('username') }}
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <input type="email" name="email" class="form-control form-control-lg"
-                                                placeholder="Email" aria-label="Email">
+                                        <div class="mb-3 has-validation">
+                                            <input type="email" name="email" class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                                placeholder="Email" aria-label="Email" value="{{ old('email') }}">
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('email') }}
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <input type="password" name="password" class="form-control form-control-lg"
-                                                placeholder="Password" aria-label="Password">
+                                        <div class="mb-3 has-validation">
+                                            <input type="password" name="password" class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                                placeholder="Password" aria-label="Password" value="{{ old('password') }}">
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('password') }}
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <input type="text" name="first_name" class="form-control form-control-lg"
-                                                placeholder="First Name" aria-label="First Name">
+                                        <div class="mb-3  has-validation">
+                                            <input type="text" name="first_name" class="form-control form-control-lg {{ $errors->has('first_name') ? 'is-invalid' : '' }}"
+                                                placeholder="First Name" aria-label="First Name" value="{{ old('first_name') }}">
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('first_name') }}
+                                            </div>
                                         </div>
                                         <div class="text-center">
                                             <input type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0"
@@ -87,7 +84,7 @@
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Already have an account?
-                                        <a href="{{ route('signup.form') }}"
+                                        <a href="{{ route('login') }}"
                                             class="text-primary text-gradient font-weight-bold">Log in</a>
                                     </p>
                                 </div>

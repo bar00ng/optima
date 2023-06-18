@@ -45,25 +45,35 @@
                                     <p class="mb-0">Enter your email and password to log in</p>
                                 </div>
                                 <div class="card-body">
-                                    <form role="form" method="POST" action="{{ route('login.process') }}">
+                                    <form role="form" method="POST" action="{{ route('login.process') }}" class>
                                         @csrf
-                                        <div class="mb-3">
-                                            <input type="email" name="email" class="form-control form-control-lg"
+                                        <div class="mb-3 has-validation">
+                                            <input type="email" value="{{ old('email') }}" name="email"
+                                                class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}"
                                                 placeholder="Email" aria-label="Email">
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('email') }}
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <input type="password" name="password" class="form-control form-control-lg"
+                                        <div class="mb-3 has-validation">
+                                            <input type="password" name="password"
+                                                class="form-control form-control-lg {{ $errors->has('password') ? 'is-invalid' : '' }}"
                                                 placeholder="Password" aria-label="Password">
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('password') }}
+                                            </div>
                                         </div>
                                         <div class="text-center">
-                                            <input type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0" value="Sign in"/>
+                                            <input type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0"
+                                                value="Sign in" />
                                         </div>
                                     </form>
                                 </div>
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Don't have an account?
-                                        <a href="{{ route('signup.form') }}" class="text-primary text-gradient font-weight-bold">Sign
+                                        <a href="{{ route('signup.form') }}"
+                                            class="text-primary text-gradient font-weight-bold">Sign
                                             up</a>
                                     </p>
                                 </div>

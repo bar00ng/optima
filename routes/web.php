@@ -24,9 +24,9 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function (){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/lop', [LopController::class, 'index'])->name('lop.list');
+    Route::get('/lop/{id_permintaan?}', [LopController::class, 'index'])->name('lop.list');
     Route::get('/lop/add/{permintaan_id}', [LopController::class, 'formAddLop'])->name('lop.formAdd');
-    Route::post('/lop/add', [LopController::class, 'storeLop'])->name('lop.store');
+    Route::post('/lop/add/{toAlokasiMitra?}', [LopController::class, 'storeLop'])->name('lop.store');
     Route::patch('/lop/edit/{id}', [LopController::class, 'patch'])->name('lop.patch');
     Route::delete('/lop/delete/{id}', [LopController::class, 'delete'])->name('lop.delete');
     // Survey RAB Routes
