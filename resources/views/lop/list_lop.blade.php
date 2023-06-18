@@ -76,8 +76,8 @@
                                                         id="navbarDropdownMenuLink2"><i
                                                             class="fa fa-ellipsis-v text-xs"></i></a>
                                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                                                        <li> <a class="dropdown-item" href="#">Konstruksi</a></li>
-                                                        <li> <a class="dropdown-item" href="#">GoLive ODP</a></li>
+                                                        <li> <a class="dropdown-item" href="{{ route('konstruksi', ['lop_id' => $item->id]) }}">Konstruksi</a></li>
+                                                        <li> <a class="dropdown-item" href="{{ route('go-live', ['lop_id' => $item->id]) }}">GoLive ODP</a></li>
                                                     </ul>
                                                 </div>
                                             </td>

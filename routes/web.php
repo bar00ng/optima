@@ -5,6 +5,8 @@ use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LopController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KonstruksiController;
+use App\Http\Controllers\GoLiveController;
 use App\Http\Controllers\ProfileController;
 
 /*
@@ -43,6 +45,9 @@ Route::middleware(['auth'])->group(function (){
     Route::patch('/permintaan/edit/{id}', [PermintaanController::class, 'patch'])->name('permintaan.patch');
     Route::delete('/permintaan/delete{id}', [PermintaanController::class, 'delete'])->name('permintaan.delete');
 
+    Route::get('/konstruksi/{lop_id}',[KonstruksiController::class, 'index'])->name('konstruksi');
+    Route::get('/goLive/{lop_id}',[GoLiveController::class, 'index'])->name('go-live');
+
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::patch('/profile/{user_id}', [ProfileController::class, 'patch'])->name('profile.patch');
 });
@@ -57,7 +62,7 @@ Route::middleware('redirectIfAuthenticated')->group(function (){
 
 
 Route::get('/golive-odp', function () {
-    return view('buat-permintaan', [ 
+    return view('golive-odp', [ 
         "pages" => "Golive Odp",
         "category" => "Golive Odp",
         "name" => "Admin"
