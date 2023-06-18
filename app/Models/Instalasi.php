@@ -11,7 +11,8 @@ class Instalasi extends Model
     
     protected $fillable = [
         'lop_id',
-        'evidence_instalasi'
+        'evidence_instalasi',
+        'keteranga_instalasi'
     ];
 
     use HasFactory;

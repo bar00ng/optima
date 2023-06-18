@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
             $table->string('evidence_instalasi');
+            $table->text('keterangan_instalasi')->nullable();
             $table->timestamps();
         });
     }

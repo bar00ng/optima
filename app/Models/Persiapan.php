@@ -11,7 +11,8 @@ class Persiapan extends Model
 
     protected $fillable = [
         'lop_id',
-        'evidence_persiapan'
+        'evidence_persiapan',
+        'keterangan_persiapan'
     ];
 
     use HasFactory;

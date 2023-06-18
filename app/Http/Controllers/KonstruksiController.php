@@ -40,6 +40,11 @@ class KonstruksiController extends Controller
             $file->store('public/uploads/evidence_persiapan'); 
             $persiapan->lop_id = $lop_id;
             $persiapan->evidence_persiapan = $fileName;
+            
+            if ($r->keterangan_persiapan !== '') {
+                $persiapan->keterangan_persiapan = $r->keterangan_persiapan;
+            }
+
             $persiapan->save();
 
             Lop::where('id', $lop_id)
@@ -55,6 +60,11 @@ class KonstruksiController extends Controller
             $file->store('public/uploads/evidence_instalasi'); 
             $instalasi->lop_id = $lop_id;
             $instalasi->evidence_instalasi = $fileName;
+
+            if ($r->keterangan_instalasi !== '') {
+                $instalasi->keterangan_instalasi = $r->keterangan_instalasi;
+            }
+
             $instalasi->save();
             
             Lop::where('id', $lop_id)
@@ -70,6 +80,11 @@ class KonstruksiController extends Controller
             $file->store('public/uploads/evidence_selesai'); 
             $selesai->lop_id = $lop_id;
             $selesai->evidence_selesai = $fileName;
+
+            if ($r->keterangan_selesai !== '') {
+                $selesai->keterangan_selesai = $r->keterangan_selesai;
+            }
+
             $selesai->save();
         }
 

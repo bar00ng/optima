@@ -11,7 +11,8 @@ class SelesaiFisik extends Model
 
     protected $fillable = [
         'lop_id',
-        'evidence_selesai'
+        'evidence_selesai',
+        'keterangan_selesai'
     ];
 
     use HasFactory;
