@@ -13,12 +13,9 @@
                         @csrf
                         <div class="form-group has-validation">
                             <label for="">Tanggal Permintaan (m-d-Y)</label>
-                            @if ($errors->has('tanggal_permintaan'))
-                                <input type="date" name="tanggal_permintaan" class="form-control is-invalid"
-                                    value="{{ old('tanggal_permintaan') }}">
-                            @else
-                                <input type="date" name="tanggal_permintaan" class="form-control">
-                            @endif
+                            <input type="date" name="tanggal_permintaan"
+                                class="form-control {{ $errors->has('tanggal_permintaan') ? 'is-invalid' : '' }}"
+                                value="{{ old('tanggal_permintaan') }}">
                             <div class="invalid-feedback">
                                 {{ $errors->first('tanggal_permintaan') }}
                             </div>
@@ -43,39 +40,30 @@
                         </div>
                         <div class="form-group" id="reffPermintaan" style="display: none;">
                             <label for="">Reff Permintaan</label>
-                            <input type="file" class="form-control" name="reff_permintaan">
+                            <input type="file" class="form-control" name="reff_permintaan"
+                                value="{{ old('reff_permintaan') }}">
                         </div>
                         <div class="form-group has-validation">
                             <label for="">Nama Permintaan</label>
-                            @if ($errors->has('nama_permintaan'))
-                                <input type="text" name="nama_permintaan" class="form-control is-invalid"
-                                    value="{{ old('nama_permintaan') }}">
-                            @else
-                                <input type="text" class="form-control" name="nama_permintaan">
-                            @endif
+                            <input type="text"
+                                class="form-control {{ $errors->has('nama_permintaan') ? 'is-invalid' : '' }}"
+                                name="nama_permintaan" value="{{ old('nama_permintaan') }}">
                             <div class="invalid-feedback">
                                 {{ $errors->first('nama_permintaan') }}
                             </div>
                         </div>
                         <div class="form-group has-validation">
                             <label for="">PIC Permintaan</label>
-                            @if ($errors->has('pic_permintaan'))
-                                <input type="text" name="pic_permintaan" class="form-control is-invalid"
-                                    value="{{ old('pic_permintaan') }}">
-                            @else
-                                <input type="text" class="form-control" name="pic_permintaan">
-                            @endif
+                            <input type="text" name="pic_permintaan"
+                                class="form-control {{ $errors->has('pic_permintaan') ? 'is-invalid' : '' }}"
+                                value="{{ old('pic_permintaan') }}">
                             <div class="invalid-feedback">
                                 {{ $errors->first('pic_permintaan') }}
                             </div>
                         </div>
                         <div class="form-group has-validation">
                             <label for="">Keterangan</label>
-                            @if ($errors->has('keterangan'))
-                                <textarea class="form-control is-invalid" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
-                            @else
-                                <textarea class="form-control" name="keterangan" rows="3"></textarea>
-                            @endif
+                            <textarea class="form-control {{ $errors->has('keterangan') ? 'is-invalid' : ''}}" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
                             <div class="invalid-feedback">
                                 {{ $errors->first('keterangan') }}
                             </div>

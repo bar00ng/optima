@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function (){
     Route::delete('/permintaan/delete{id}', [PermintaanController::class, 'delete'])->name('permintaan.delete');
 
     Route::get('/konstruksi/{lop_id}',[KonstruksiController::class, 'index'])->name('konstruksi');
+    Route::post('/konstruksi/{lop_id}',[KonstruksiController::class, 'store'])->name('konstruksi.store');
     Route::get('/goLive/{lop_id}',[GoLiveController::class, 'index'])->name('go-live');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

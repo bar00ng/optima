@@ -36,11 +36,11 @@
 
                                                 <p class="text-sm font-weight-bold mb-0">
                                                     @if ($item->rab_ondesk !== '')
-                                                      @if(strpos($item->keterangan_rab, 'dari 20 Jt') == false)
-                                                        {{ 'Rp ' . number_format($item->rab_ondesk, 0, '.', '.') }}
-                                                      @else
-                                                        {{ $item->rab_ondesk }}
-                                                      @endif
+                                                        @if (strpos($item->keterangan_rab, 'dari 20 Jt') == false)
+                                                            {{ 'Rp ' . number_format($item->rab_ondesk, 0, '.', '.') }}
+                                                        @else
+                                                            {{ $item->rab_ondesk }}
+                                                        @endif
                                                     @else
                                                         {{ '-' }}
                                                     @endif
@@ -71,15 +71,15 @@
                                                 </div>
                                             </td>
                                             <td class="align-middle">
-                                                <div class="dropdown"> <a href="#"
-                                                        class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown"
-                                                        id="navbarDropdownMenuLink2"><i
-                                                            class="fa fa-ellipsis-v text-xs"></i></a>
-                                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                                                        <li> <a class="dropdown-item" href="{{ route('konstruksi', ['lop_id' => $item->id]) }}">Konstruksi</a></li>
-                                                        <li> <a class="dropdown-item" href="{{ route('go-live', ['lop_id' => $item->id]) }}">GoLive ODP</a></li>
-                                                    </ul>
-                                                </div>
+                                                <a href="{{ route('konstruksi', ['lop_id' => $item->id]) }}" class="text-secondary font-weight-bold text-xs"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    Konstruksi
+                                                </a>
+
+                                                <a href="{{ route('go-live', ['lop_id' => $item->id]) }}" class="text-secondary font-weight-bold text-xs ml-2"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    GoLive
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
