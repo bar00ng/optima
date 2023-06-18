@@ -31,15 +31,21 @@ class KonstruksiController extends Controller
         $persiapan = new Persiapan();
         $instalasi = new Instalasi();
         $selesai = new SelesaiFisik();
+        
 
         if ($r->hasFile('evidence_persiapan') && $r->file('evidence_persiapan')->isValid()) {
             $file = $r->file('evidence_persiapan');
             $fileName = $file->getClientOriginalName();
 
             $file->store('public/uploads/evidence_persiapan'); 
-            $persiapan->lop = $lop_id;
+            $persiapan->lop_id = $lop_id;
             $persiapan->evidence_persiapan = $fileName;
             $persiapan->save();
+
+            Lop::where('id', $lop_id)
+                ->update([
+                    'status' => 'Instalasi'
+                ]);
         }
 
         if ($r->hasFile('evidence_instalasi') && $r->file('evidence_instalasi')->isValid()) {
@@ -47,9 +53,14 @@ class KonstruksiController extends Controller
             $fileName = $file->getClientOriginalName();
 
             $file->store('public/uploads/evidence_instalasi'); 
-            $persiapan->lop = $lop_id;
+            $instalasi->lop_id = $lop_id;
             $instalasi->evidence_instalasi = $fileName;
             $instalasi->save();
+            
+            Lop::where('id', $lop_id)
+                ->update([
+                    'status' => 'Selesai Fisik'
+                ]);
         }
 
         if ($r->hasFile('evidence_selesai') && $r->file('evidence_selesai')->isValid()) {
@@ -57,9 +68,11 @@ class KonstruksiController extends Controller
             $fileName = $file->getClientOriginalName();
 
             $file->store('public/uploads/evidence_selesai'); 
-            $persiapan->lop = $lop_id;
+            $selesai->lop_id = $lop_id;
             $selesai->evidence_selesai = $fileName;
             $selesai->save();
         }
+
+        return redirect('/konstruksi/'. $lop_id)->with('Sukses', 'Proses upload evidence berhasil');
     }
 }

@@ -10,7 +10,8 @@ class Persiapan extends Model
     protected $table = 'persiapan';
 
     protected $fillable = [
-        'lop_id'
+        'lop_id',
+        'evidence_persiapan'
     ];
 
     use HasFactory;

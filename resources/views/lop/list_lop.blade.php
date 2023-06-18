@@ -54,32 +54,94 @@
                                                     <a href="{{ route('lop.formAlokasiMitra', ['lop_id' => $item->id]) }}">
                                                         <span class="text-xs font-weight-bold">Alokasi Mitra</span>
                                                     </a>
-                                                @elseif($item->status == 'Persiapan')
+                                                @else
                                                     <span class="text-xs font-weight-bold">{{ $item->status }}</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
-                                                <div class="d-flex align-items-center justify-content-center"> <span
-                                                        class="me-2 text-xs font-weight-bold">60%</span>
-                                                    <div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar bg-gradient-info" role="progressbar"
-                                                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                                                style="width: 60%;"></div>
+                                                @if ($item->status == 'Survey + RAB')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">20%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 20%;"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                @elseif($item->status == 'Alokasi Mitra')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">40%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="40" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 40%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @elseif($item->status == 'Persiapan')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">60%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 60%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @elseif($item->status == 'Instalasi')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">80%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 80%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @elseif($item->status == 'Selesai Fisik')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">100%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 100%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">0%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 0%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
                                             </td>
                                             <td class="align-middle">
-                                                <a href="{{ route('konstruksi', ['lop_id' => $item->id]) }}" class="text-secondary font-weight-bold text-xs"
-                                                    data-toggle="tooltip" data-original-title="Edit user">
-                                                    Konstruksi
-                                                </a>
+                                                <div class="d-flex flex-column">
+                                                    <a href="{{ $item->status == 'Survey + RAB' || $item->status == 'Alokasi Mitra' ? '#' : route('konstruksi', ['lop_id' => $item->id]) }}"
+                                                        class="text-secondary font-weight-bold text-sm"
+                                                        data-toggle="tooltip" data-original-title="Edit user">
+                                                        Konstruksi
+                                                    </a>
 
-                                                <a href="{{ route('go-live', ['lop_id' => $item->id]) }}" class="text-secondary font-weight-bold text-xs ml-2"
-                                                    data-toggle="tooltip" data-original-title="Edit user">
-                                                    GoLive
-                                                </a>
+                                                    <a href="{{ route('go-live', ['lop_id' => $item->id]) }}"
+                                                        class="text-secondary font-weight-bold text-sm ml-2"
+                                                        data-toggle="tooltip" data-original-title="Edit user">
+                                                        GoLive
+                                                    </a>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

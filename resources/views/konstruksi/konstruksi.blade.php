@@ -48,7 +48,8 @@
                         </div>
                     </div>
                 </div>
-                <form action="" method="post" enctype="multipart/form-data">
+                <form action="{{ route('konstruksi.store', ['lop_id' => $lop->id]) }}" method="post" enctype="multipart/form-data">
+                    @csrf
                     <div class="card-body">
                         <hr class="horizontal dark">
                         <div class="row">
@@ -84,17 +85,8 @@
                                                         </td>
                                                         <td>
                                                             <div class="d-flex flex-row align-items-center px-2">
-                                                                <div class="input-group-append">
-                                                                    <input id="evidence-persiapan-upload" type="file" style="display:none" name="evidence_persiapan"/>
-                                                                    <button class="btn btn-primary btn-sm ms-auto"
-                                                                        onclick="document.getElementById('evidence-persiapan-upload').click()"
-                                                                        {{ empty($persiapan) ? '' : 'disabled' }}>
-                                                                        Evidence Persiapan
-                                                                    </button>
-                                                                </div>
-                                                                <p class="text-success text-xs"
-                                                                    id="evidence-persiapan-notif" style="display: none;">
-                                                                    Berhasil upload </p>
+                                                                <input type="file" name="evidence_persiapan"
+                                                                    class="form-control form-control-sm" {{ empty($persiapan) ? '' : 'disabled' }}>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -124,18 +116,8 @@
                                                         </td>
                                                         <td>
                                                             <div class="d-flex flex-row align-items-center px-2">
-                                                                <div class="input-group-append">
-                                                                    <input id="evidence-instalasi-upload" type="file"
-                                                                        name="evidence_instalasi" style="display:none" />
-                                                                    <button class="btn btn-primary btn-sm ms-auto"
-                                                                        onclick="document.getElementById('evidence-instalasi-upload').click()"
-                                                                        {{ empty($persiapan) ? 'disabled' : '' }}>
-                                                                        Evidence instalasi
-                                                                    </button>
-                                                                </div>
-                                                                <p class="text-success text-xs"
-                                                                    id="evidence-instalasi-notif" style="display: none;">
-                                                                    Berhasil upload </p>
+                                                                <input type="file" name="evidence_instalasi"
+                                                                    class="form-control form-control-sm" {{ empty($persiapan) ? 'disabled' : '' }} {{ empty($instalasi) ? '' : 'disabled' }}>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -165,18 +147,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="d-flex flex-row align-items-center px-2">
-                                                                <div class="input-group-append">
-                                                                    <input id="evidence-selesai-upload" type="file"
-                                                                        name="evidence_selesai" style="display:none"/>
-                                                                    <button class="btn btn-primary btn-sm ms-auto"
-                                                                        onclick="document.getElementById('evidence-selesai-upload').click()"
-                                                                        {{ empty($instalasi) ? 'disabled' : '' }}>
-                                                                        Evidence Selesai Fisik
-                                                                    </button>
-                                                                </div>
-                                                                <p class="text-success text-xs"
-                                                                    id="evidence-selesai-notif" style="display: none;">
-                                                                    Berhasil upload </p>
+                                                                <input type="file" name="evidence_selesai" class="form-control form-control-sm" {{ empty($instalasi) ? 'disabled' : '' }} {{ empty($selesai) ? '' : 'disabled' }}>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -187,10 +158,15 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <hr class="horizontal dark">
+
                         <div class="row">
                             <div class="col-md-12">
                                 <button class="btn btn-success btn-sm ms-auto" type="submit">Update Status</button>
-                                <button class="btn btn-danger btn-sm ms-auto">Cancel</button>
+                                <a href="{{ route('lop.list') }}">
+                                    <button class="btn btn-danger btn-sm ms-auto" type="button">Cancel</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -198,41 +174,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-
-@section('script')
-    <script>
-        $(document).ready(function() {
-            $('#evidence-persiapan-upload').on('change', function() {
-                if ($(this).val()) {
-                    // A file has been selected
-                    $('#evidence-persiapan-notif').show();
-                } else {
-                    // No file selected
-                    $('#evidence-persiapan-notif').hide();
-                }
-            });
-
-            $('#evidence-instalasi-upload').on('change', function() {
-                if ($(this).val()) {
-                    // A file has been selected
-                    $('#evidence-instalasi-notif').show();
-                } else {
-                    // No file selected
-                    $('#evidence-instalasi-notif').hide();
-                }
-            });
-
-            $('#evidence-selesai-upload').on('change', function() {
-                if ($(this).val()) {
-                    // A file has been selected
-                    $('#evidence-selesai-notif').show();
-                } else {
-                    // No file selected
-                    $('#evidence-selesai-notif').hide();
-                }
-            });
-        });
-    </script>
 @endsection
