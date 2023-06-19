@@ -45,9 +45,9 @@ Route::middleware(['auth'])->group(function (){
     Route::patch('/permintaan/edit/{id}', [PermintaanController::class, 'patch'])->name('permintaan.patch');
     Route::delete('/permintaan/delete{id}', [PermintaanController::class, 'delete'])->name('permintaan.delete');
 
-    Route::get('/konstruksi/{lop_id}',[KonstruksiController::class, 'index'])->name('konstruksi');
-    Route::post('/konstruksi/{lop_id}',[KonstruksiController::class, 'store'])->name('konstruksi.store');
-    Route::get('/goLive/{lop_id}',[GoLiveController::class, 'index'])->name('go-live');
+    Route::get('/konstruksi/{lop_id}',[KonstruksiController::class, 'index'])->name('lop.konstruksi');
+    Route::post('/konstruksi/{lop_id}',[KonstruksiController::class, 'store'])->name('lop.konstruksi.store');
+    Route::get('/goLive/{lop_id}',[GoLiveController::class, 'index'])->name('lop.go-live');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::patch('/profile/{user_id}', [ProfileController::class, 'patch'])->name('profile.patch');
@@ -66,6 +66,14 @@ Route::get('/golive-odp', function () {
     return view('golive-odp', [ 
         "pages" => "Golive Odp",
         "category" => "Golive Odp",
+        "name" => "Admin"
+    ]);
+});
+
+Route::get('/home', function () {
+    return view('home', [ 
+        "pageName" => "Golive Odp",
+        "pageCategory" => "Golive Odp",
         "name" => "Admin"
     ]);
 });

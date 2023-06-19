@@ -129,19 +129,17 @@
 
                                             </td>
                                             <td class="align-middle">
-                                                <div class="d-flex flex-column">
-                                                    <a href="{{ $item->status == 'Survey + RAB' || $item->status == 'Alokasi Mitra' ? '#' : route('konstruksi', ['lop_id' => $item->id]) }}"
-                                                        class="text-secondary font-weight-bold text-sm"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
-                                                        Konstruksi
-                                                    </a>
+                                                <a href="{{ $item->status == 'Survey + RAB' || $item->status == 'Alokasi Mitra' ? '#' : route('lop.konstruksi', ['lop_id' => $item->id]) }}"
+                                                    class="text-secondary font-weight-bold text-sm" data-toggle="tooltip"
+                                                    data-original-title="Konstruksi" style="margin-right: 5px;">
+                                                    Konstruksi
+                                                </a>
 
-                                                    <a href="{{ route('go-live', ['lop_id' => $item->id]) }}"
-                                                        class="text-secondary font-weight-bold text-sm ml-2"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
-                                                        GoLive
-                                                    </a>
-                                                </div>
+                                                <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}"
+                                                    class="text-secondary font-weight-bold text-sm" data-toggle="tooltip"
+                                                    data-original-title="GoLive">
+                                                    GoLive
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

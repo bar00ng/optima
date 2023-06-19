@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <form action="{{ route('konstruksi.store', ['lop_id' => $lop->id]) }}" method="post"
+                <form action="{{ route('lop.konstruksi.store', ['lop_id' => $lop->id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">

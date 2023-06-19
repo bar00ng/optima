@@ -12,7 +12,7 @@ use App\Models\SelesaiFisik;
 class KonstruksiController extends Controller
 {
     public function index($lop_id) {
-        $pageName = 'List of Project';
+        $pageName = 'Konstruksi';
         $pageCategory = 'Project';
 
         $lop = Lop::where('id', $lop_id)
