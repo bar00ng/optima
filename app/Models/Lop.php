@@ -8,6 +8,10 @@ use App\Models\ListPermintaan;
 use App\Models\Persiapan;
 use App\Models\Instalasi;
 use App\Models\SelesaiFisik;
+use App\Models\Validasi;
+use App\Models\KonfirmasiMitra;
+use App\Models\Connectivity;
+use App\Models\GoLive;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -47,6 +51,22 @@ class Lop extends Model
     }
 
     public function selesaiFisik(): HasOne {
-        return $this->hasOne(selesaiFisik::class, 'lop_id', 'id');
+        return $this->hasOne(SelesaiFisik::class, 'lop_id', 'id');
+    }
+
+    public function validasi(): HasOne {
+        return $this->hasOne(Validasi::class, 'lop_id', 'id');
+    }
+
+    public function konfirmasiMira(): HasOne {
+        return $this->hasOne(KonfirmasiMitra::class, 'lop_id', 'id');
+    }
+
+    public function connectivity(): HasOne {
+        return $this->hasOne(Connectivity::class, 'lop_id', 'id');
+    }
+
+    public function goLive(): HasOne {
+        return $this->hasOne(GoLive::class, 'lop_id', 'id');
     }
 }

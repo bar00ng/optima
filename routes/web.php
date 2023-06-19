@@ -48,6 +48,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/konstruksi/{lop_id}',[KonstruksiController::class, 'index'])->name('lop.konstruksi');
     Route::post('/konstruksi/{lop_id}',[KonstruksiController::class, 'store'])->name('lop.konstruksi.store');
     Route::get('/goLive/{lop_id}',[GoLiveController::class, 'index'])->name('lop.go-live');
+    Route::post('/goLive/{lop_id}',[GoLiveController::class, 'store'])->name('lop.go-live.store');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::patch('/profile/{user_id}', [ProfileController::class, 'patch'])->name('profile.patch');
