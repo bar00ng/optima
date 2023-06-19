@@ -198,13 +198,13 @@
                                                             <td class="align-middle text-center">
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
-                                                                    <span class="me-2 text-xs font-weight-bold">{{ ($goLive->is_withGolive ?? '') == 0 ? '50%' : '0%' }}</span>
+                                                                    <span class="me-2 text-xs font-weight-bold">{{ empty($goLive) ? '0%' : '100%' }}</span>
                                                                     <div>
                                                                         <div class="progress">
                                                                             <div class="progress-bar bg-gradient-info"
                                                                                 role="progressbar" aria-valuenow="60"
                                                                                 aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: {{ ($goLive->is_withGolive ?? '') == 0 ? '50%' : '0%' }};">
+                                                                                style="width: {{ empty($goLive) ? '0%' : '100%' }};">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -236,7 +236,9 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button class="btn btn-success btn-sm ms-auto" type="submit">Update Status</button>
-                                    <button class="btn btn-danger btn-sm ms-auto">Cancel</button>
+                                    <a href="{{ route('lop.list') }}">
+                                        <button class="btn btn-danger btn-sm ms-auto" type="button">Cancel</button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
