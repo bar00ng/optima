@@ -52,6 +52,10 @@ class PermintaanController extends Controller
             $validated['refferal_permintaan'] = $fileName;
         }
 
+        if($r->filled('no_nota_dinas')) {
+            $validated['no_nota_dinas'] = $r->no_nota_dinas;
+        }
+
         ListPermintaan::create($validated);
 
         return redirect('/permintaan')->with('Sukses', 'Permintaan berhasil ditambahkan!');

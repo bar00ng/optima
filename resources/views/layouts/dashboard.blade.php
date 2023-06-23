@@ -37,7 +37,10 @@
     <link id="pagestyle" href="/asset/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
 
     <style>
-        #map { width: 100%; height: 500px;}
+        #map {
+            width: 100%;
+            height: 500px;
+        }
     </style>
 </head>
 
@@ -58,7 +61,8 @@
         <div class="collapse navbar-collapse  w-auto h-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('*dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                    <a class="nav-link {{ request()->routeIs('*dashboard*') ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
@@ -67,7 +71,8 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('*lop*') ? 'active' : '' }}" href="{{ route('lop.list') }}">
+                    <a class="nav-link {{ request()->routeIs('*lop*') ? 'active' : '' }}"
+                        href="{{ route('lop.list') }}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
@@ -75,25 +80,35 @@
                         <span class="nav-link-text ms-1">List of Projects</span>
                     </a>
                 </li>
+                @if (Auth::user()->hasRole(['admin', 'optima']))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('*permintaan*') ? 'active' : '' }}"
+                            href="{{ route('permintaan.list') }}">
+                            <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-circle-08 text-success text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">List Permintaan</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('*permintaan*') ? 'active' : '' }}"
-                        href="{{ route('permintaan.list') }}">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-circle-08 text-success text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">List Permintaan</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('*profile*') ? 'active' : '' }}" href="{{ route('profile') }}">
+                    <a class="nav-link {{ request()->routeIs('*profile*') ? 'active' : '' }}"
+                        href="{{ route('profile') }}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Profile</span>
                     </a>
+                </li>
+                <li class="nav-item">
+                    <div class="d-grid gap-2 col-6 mx-auto nav-link">
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Logout</button>
+                        </form>
+                    </div>
                 </li>
             </ul>
         </div>

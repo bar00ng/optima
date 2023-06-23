@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('keterangan_lop')->default('');
             $table->string('rab_ondesk')->default('');
             $table->string('keterangan_rab')->default('');
-            $table->string('alokasi_mitra')->default('');
+            $table->foreignId('mitra_id')->constrained('mitra')->onDelete('cascade');
             $table->string('status')->default('');
             $table->timestamps();
         });

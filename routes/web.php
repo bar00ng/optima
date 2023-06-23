@@ -52,6 +52,8 @@ Route::middleware(['auth'])->group(function (){
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::patch('/profile/{user_id}', [ProfileController::class, 'patch'])->name('profile.patch');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::middleware('redirectIfAuthenticated')->group(function (){

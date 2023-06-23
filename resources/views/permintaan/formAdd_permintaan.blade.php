@@ -40,8 +40,19 @@
                         </div>
                         <div class="form-group" id="reffPermintaan" style="display: none;">
                             <label for="">Reff Permintaan</label>
-                            <input type="file" class="form-control" name="reff_permintaan"
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                    <input type="text" name="no_nota_dinas" class="form-control" placeholder="No. Nota Dinas">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                    <input type="file" class="form-control" name="reff_permintaan"
                                 value="{{ old('reff_permintaan') }}">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group has-validation">
                             <label for="">Nama Permintaan</label>

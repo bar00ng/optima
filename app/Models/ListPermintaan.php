@@ -13,6 +13,7 @@ class ListPermintaan extends Model
     protected $fillable = [
         'tanggal_permintaan',
         'tematik_permintaan',
+        'no_nota_dinas',
         'refferal_permintaan',
         'nama_permintaan',
         'pic_permintaan',
