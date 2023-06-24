@@ -78,16 +78,6 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="">RAB OnDesk</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control" name="rab_ondesk"
-                                                value="{{ $lop['rab_ondesk'] }}" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                         <label for="">Keterangan</label>
                                         <textarea class="form-control" id="keterangan" name="keterangan" rows="3" readonly>{{ $lop['keterangan_lop'] }}</textarea>
                                     </div>
@@ -95,11 +85,11 @@
                                 <div class="col-md-12">
                                     <div class="form-group has-validation">
                                         <label for="">Alokasi Mitra</label>
-                                        <select name="alokasi_mitra" class="form-control {{ $errors->has('alokasi_mitra') ? 'is-invalid' : '' }}">
+                                        <select name="mitra_id" class="form-control {{ $errors->has('alokasi_mitra') ? 'is-invalid' : '' }}">
                                             <option value="">--- Pilih Mitra ---</option>
-                                            <option value="PT. TA">PT. TA</option>
-                                            <option value="KOPEG">KOPEG</option>
-                                            <option value="WMT">WMT</option>
+                                            @foreach($mitra as $m)
+                                            <option value="{{ $m->id }}">{{$m->username}}</option>
+                                            @endforeach
                                         </select>
                                         <div class="invalid-feedback">
                                             {{ $errors->first('alokasi_mitra') }}

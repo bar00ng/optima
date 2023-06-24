@@ -33,7 +33,7 @@ class Lop extends Model
         'keterangan_lop',
         'rab_ondesk',
         'keterangan_rab',
-        'alokasi_mitra',
+        'mitra_id',
         'status'
     ];
 
@@ -73,5 +73,9 @@ class Lop extends Model
 
     public function mitra(): HasOne {
         return $this->hasOne(Mitra::class, 'lop_id', 'id');
+    }
+
+    public function rabApproval(): HasOne {
+        return $this->hasOne(RabApproval::class, 'lop_id', 'id');
     }
 }

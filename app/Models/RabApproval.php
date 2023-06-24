@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mitra extends Model
+class RabApproval extends Model
 {
-    protected $table = "mitra";
+    protected $table = 'rab_approval';
 
     protected $fillable = [
-        "nama_mitra"
+        'lop_id',
+        'isApproved'
     ];
 
     use HasFactory;

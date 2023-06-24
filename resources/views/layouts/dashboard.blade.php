@@ -70,6 +70,7 @@
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
+                @if (Auth::user()->hasRole(['admin', 'optima']))
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->routeIs('*lop*') ? 'active' : '' }}"
                         href="{{ route('lop.list') }}">
@@ -80,7 +81,8 @@
                         <span class="nav-link-text ms-1">List of Projects</span>
                     </a>
                 </li>
-                @if (Auth::user()->hasRole(['admin', 'optima']))
+                @endif
+                @if (Auth::user()->hasRole('admin'))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('*permintaan*') ? 'active' : '' }}"
                             href="{{ route('permintaan.list') }}">

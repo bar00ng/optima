@@ -46,16 +46,18 @@
                                                     @endif
                                             </td>
                                             <td>
-                                                @if ($item->status == 'Survey + RAB')
-                                                    <a href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
-                                                        <span class="text-xs font-weight-bold">Survey + RAB</span>
-                                                    </a>
-                                                @elseif($item->status == 'Alokasi Mitra')
-                                                    <a href="{{ route('lop.formAlokasiMitra', ['lop_id' => $item->id]) }}">
-                                                        <span class="text-xs font-weight-bold">Alokasi Mitra</span>
-                                                    </a>
-                                                @else
-                                                    <span class="text-xs font-weight-bold">{{ $item->status }}</span>
+                                                @if ($item->status == 'Alokasi Mitra')
+                                                    @if(empty($item->mitra_id))
+                                                        <span class="badge badge-danger">Belum Pilih Mitra</span>
+                                                    @else
+                                                        <span class="badge badge-success">Sudah Pilih Mitra</span>
+                                                    @endif
+                                                @elseif ($item->status == 'Survey + RAB')
+                                                    @if(empty($item->rabApproval))
+                                                        <span class="badge badge-secondary">Belum Survey</span>
+                                                    @else
+                                                        <span class="badge badge-warning">Menunggu </span>
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
@@ -128,19 +130,11 @@
                                                 @endif
 
                                             </td>
-                                            <td class="align-middle">
-                                                <a href="{{ $item->status == 'Survey + RAB' || $item->status == 'Alokasi Mitra' ? '#' : route('lop.konstruksi', ['lop_id' => $item->id]) }}"
-                                                    class="text-secondary font-weight-bold text-sm" data-toggle="tooltip"
-                                                    data-original-title="Konstruksi" style="margin-right: 5px;">
-                                                    Konstruksi
-                                                </a>
-
-                                                <a href="{{ $item->status == 'Survey + RAB' || $item->status == 'Alokasi Mitra' ? '#' : route('lop.go-live', ['lop_id' => $item->id]) }}"
-                                                    class="text-secondary font-weight-bold text-sm" data-toggle="tooltip"
-                                                    data-original-title="GoLive">
-                                                    GoLive
-                                                </a>
-                                            </td>
+                                            <!-- <td>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                
+                                                </div>
+                                            </td> -->
                                         </tr>
                                     @endforeach
                                 @else

@@ -59,33 +59,5 @@ Route::middleware(['auth'])->group(function (){
 Route::middleware('redirectIfAuthenticated')->group(function (){
     Route::get('/login', [AuthController::class, 'formLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-
-    Route::get('/sign-up', [AuthController::class, 'formSignUp'])->name('signup.form');
-    Route::post('/sign-up', [AuthController::class, 'register'])->name('signup.process');
-});
-
-
-Route::get('/golive-odp', function () {
-    return view('golive-odp', [ 
-        "pages" => "Golive Odp",
-        "category" => "Golive Odp",
-        "name" => "Admin"
-    ]);
-});
-
-Route::get('/home', function () {
-    return view('home', [ 
-        "pageName" => "Golive Odp",
-        "pageCategory" => "Golive Odp",
-        "name" => "Admin"
-    ]);
-});
-
-Route::get('/konstruksi', function () {
-    return view('konstruksi', [ 
-        "pages" => "Konstruksi",
-        "category" => "Konstruksi",
-        "name" => "Admin"
-    ]);
 });
 

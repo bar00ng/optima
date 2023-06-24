@@ -27,10 +27,22 @@ class DatabaseSeeder extends Seeder
 
         // Mitra Account
         User::create([
-            'username' => 'Mitra',
-            'email' => 'mitra@example.com',
-            'password' => Hash::make('mitra'),
-            'first_name' => 'mitra'
+            'username' => 'PT. TA',
+            'email' => 'pt.ta@example.com',
+            'password' => Hash::make('ptta'),
+            'first_name' => 'PT. TA'
+        ])->addRole('mitra');
+        User::create([
+            'username' => 'KOPEG',
+            'email' => 'kopeg@example.com',
+            'password' => Hash::make('kopeg'),
+            'first_name' => 'KOPEG'
+        ])->addRole('mitra');
+        User::create([
+            'username' => 'WMT',
+            'email' => 'wmt@example.com',
+            'password' => Hash::make('wmt'),
+            'first_name' => 'WMT'
         ])->addRole('mitra');
 
         // Optima Account
@@ -40,20 +52,5 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('optima'),
             'first_name' => 'optima'
         ])->addRole('optima');
-
-        // Create Mitra TA
-        Mitra::create([
-            'nama_mitra' => 'PT. TA',
-        ]);
-
-        // Create Mitra KOPEG
-        Mitra::create([
-            'nama_mitra' => 'KOPEG',
-        ]);
-
-        // WMT
-        Mitra::create([
-            'nama_mitra' => 'WMT',
-        ]);
     }
 }

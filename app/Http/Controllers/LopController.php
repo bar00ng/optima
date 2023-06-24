@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ListPermintaan;
 use App\Models\Lop;
+use App\Models\User;
+use App\Models\RabApproval;
 use Carbon\Carbon;
 
 class LopController extends Controller
@@ -59,28 +61,19 @@ class LopController extends Controller
         $lop->lokasi_lop = $validated['lokasi_lop'];
         $lop->keterangan_lop = $validated['keterangan_lop'];
 
-        if ($r->tematik_lop == 'PT 2') {
+        if($r->filled('estimasi_rab')){
             $lop->estimasi_rab = $r->estimasi_rab;
-            if ($toAlokasiMitra == true) {
-                $lop->rab_ondesk = "< 20 Jt";
-                $lop->keterangan_rab = "Kurang dari 20 Jt";
-                $lop->status = 'Alokasi Mitra';
-            } else {
-                $lop->status = 'Survey + RAB';
-            }
-        } elseif ($r->tematik_lop == 'HEM') {
-            $lop->estimasi_rab = '';
-            $lop->status = 'Survey + RAB';
         }
+        $lop->status = 'Alokasi Mitra';
 
         $lop->save();
 
         $lop_id = $lop->id;
 
         if ($toAlokasiMitra == false) {
-            return redirect('/surveyRab/' . $lop_id)->with('Sukses', 'LOP berhasil ditambahkan!');
+            return redirect('/lop')->with('Sukses', 'Berhasil menambahkan LOP!');
         } else {
-            return redirect('/alokasiMitra/' . $lop_id)->with('Sukses', 'Survey + Rab berhasil dibuat!');
+            return redirect('/alokasiMitra/' . $lop_id)->with('Sukses', 'Berhasil menabahkan LOP!');
         }
     }
 
@@ -100,11 +93,15 @@ class LopController extends Controller
             'rab_ondesk' => 'required',
             'keterangan_rab' => 'required',
         ]);
-        $validated['status'] = 'Alokasi Mitra';
+        $validated['status'] = 'Menunggu Approval RAB';
 
         Lop::where('id', $r->lop_id)->update($validated);
+        RabApproval::create([
+            'lop_id' => $r->lop_id,
+            'isApproved' => false
+        ]);
 
-        return redirect('/alokasiMitra/' . $r->lop_id)->with('Sukses', 'Survey + Rab berhasil dibuat!');
+        return redirect('/lop')->with('Sukses', 'Berhasil mengisi Survey! tunggu Approval dari OPTIMA!');
     }
 
     public function alokasiMitraForm($lop_id)
@@ -113,20 +110,22 @@ class LopController extends Controller
         $pageName = 'Alokasi Mitra';
 
         $lop = Lop::where('id', $lop_id)->first();
+        $mitra = User::whereHasRole('mitra')->get();
+        
 
-        return view('alokasi_mitra.form_alokasiMitra', compact('pageCategory', 'pageName', 'lop'));
+        return view('alokasi_mitra.form_alokasiMitra', compact('pageCategory', 'pageName', 'lop', 'mitra'));
     }
 
     public function storeAlokasiMitraForm(Request $r)
     {
         $validated = $r->validate([
-            'alokasi_mitra' => 'required',
+            'mitra_id' => 'required',
         ]);
-        $validated['status'] = 'Persiapan';
+        $validated['status'] = 'Survey + RAB';
 
         Lop::where('id', $r->lop_id)->update($validated);
 
-        return redirect('/lop')->with('Sukses', 'Berhasil menambahkan LOP baru!');
+        return redirect('/lop')->with('Sukses', 'Berhasil Mengalokasi Mitra!');
     }
 
     public function edit($id, Request $r)

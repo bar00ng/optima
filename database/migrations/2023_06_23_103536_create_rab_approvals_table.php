@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mitra', function (Blueprint $table) {
+        Schema::create('rab_approval', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_mitra');
+            $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
+            $table->boolean('isApproved')->default(false);
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mitra');
+        Schema::dropIfExists('rab_approval');
     }
 };
