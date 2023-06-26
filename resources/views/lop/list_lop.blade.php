@@ -47,10 +47,21 @@
                                             </td>
                                             <td>
                                                 @if ($item->status == 'Alokasi Mitra')
-                                                    @if(empty($item->mitra_id))
-                                                        <span class="badge badge-pill bg-gradient-danger">Belum Pilih Mitra</span>
+                                                    @if (empty($item->mitra_id))
+                                                        @if (Auth::user()->hasRole(['admin', 'optima']))
+                                                            <a
+                                                                href="{{ route('lop.formAlokasiMitra', ['lop_id' => $item->id]) }}">
+                                                                <span class="badge badge-pill bg-gradient-danger">Belum
+                                                                    Pilih
+                                                                    Mitra</span>
+                                                            </a>
+                                                        @else
+                                                            <span class="badge badge-pill bg-gradient-danger">Belum Pilih
+                                                                Mitra</span>
+                                                        @endif
                                                     @else
-                                                        <span class="badge badge-pill bg-gradient-success">Sudah Pilih Mitra</span>
+                                                        <span class="badge badge-pill bg-gradient-success">Sudah Pilih
+                                                            Mitra</span>
                                                     @endif
                                                 @elseif ($item->status == 'Survey + RAB')
                                                     @if (empty($item->rabApproval))
@@ -68,8 +79,6 @@
                                                         <span class="badge badge-pill bg-gradient-success">RAB
                                                             Approved</span>
                                                     @endif
-                                                @else
-                                                    <span class="badge badge-pill bg-gradient-primary">Persiapan</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
@@ -142,11 +151,124 @@
                                                 @endif
 
                                             </td>
-                                            <!-- <td>
-                                                <div class="d-flex justify-content-center align-items-center">
-                                                
+                                            <td>
+                                                <div class="d-flex justify-content-evenly align-items-center">
+                                                    @if ($item->status == 'Survey + RAB' && Auth::user()->hasRole(['admin', 'optima']) && !empty($item->rabApproval))
+                                                        @if ($item->rabApproval->isApproved == 0)
+                                                            <form
+                                                                action="{{ route('lop.approveRab', ['approved' => 'true', 'lop_id' => $item->id]) }}"
+                                                                method="post">
+                                                                @method('PATCH')
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-outline-success btn-sm btn-icon-only">&#10003;</button>
+                                                            </form>
+
+                                                            <form
+                                                                action="{{ route('lop.approveRab', ['approved' => 'false', 'lop_id' => $item->id]) }}"
+                                                                method="post">
+                                                                @method('PATCH')
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-outline-danger btn-sm btn-icon-only">&#10007;</button>
+                                                            </form>
+                                                        @endif
+                                                    @endif
+
+                                                    <!-- view info LOP -->
+                                                    <!-- Toggle Modal -->
+                                                    <button type="button" class="btn btn-outline-info btn-sm btn-icon-only"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal-{{ $item->id }}">&#128065;</button>
+                                                    <!-- Modal box -->
+                                                    <div class="modal fade" id="exampleModal-{{ $item->id }}"
+                                                        tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                                        {{ $item->nama_lop }}</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body container">
+                                                                    <dl class="row">
+                                                                        <dt class="col-sm-4">Tgl. Permintaan</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ \Carbon\Carbon::parse($item->tanggal_permintaan)->format('j F Y') }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4">Tematik LOP</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->tematik_lop) ? $item->tematik_lop : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4">Estimasi RAB</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->estimasi_rab) ? $item->estimasi_rab : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">STO</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->sto) ? $item->sto : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">TiKor. LOP</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->longitude) ? $item->longitude : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">&nbsp;</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->latitude) ? $item->latitude : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">Lokasi LOP</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->lokasi_lop) ? $item->lokasi_lop : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">Keterangan LOP
+                                                                        </dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->keterangan_lop) ? $item->keterangan_lop : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">Mitra</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->mitra_id) ? $item->user->first_name : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">RAB OnDesk</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->rab_ondesk) ? $item->rab_ondesk : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">Keterangan RAB
+                                                                        </dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->keterangan_rab) ? $item->keterangan_rab : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4 text-truncate">Status</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->status) ? $item->status : '-' }}
+                                                                        </dd>
+                                                                    </dl>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button"
+                                                                        class="btn bg-gradient-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </td> -->
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else

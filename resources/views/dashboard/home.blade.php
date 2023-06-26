@@ -110,8 +110,17 @@
                                             <td>
                                                 @if ($item->status == 'Alokasi Mitra')
                                                     @if (empty($item->mitra_id))
-                                                        <span class="badge badge-pill bg-gradient-danger">Belum Pilih
-                                                            Mitra</span>
+                                                        @if (Auth::user()->hasRole(['admin', 'optima']))
+                                                            <a
+                                                                href="{{ route('lop.formAlokasiMitra', ['lop_id' => $item->id]) }}">
+                                                                <span class="badge badge-pill bg-gradient-danger">Belum
+                                                                    Pilih
+                                                                    Mitra</span>
+                                                            </a>
+                                                        @else
+                                                            <span class="badge badge-pill bg-gradient-danger">Belum Pilih
+                                                                Mitra</span>
+                                                        @endif
                                                     @else
                                                         <span class="badge badge-pill bg-gradient-success">Sudah Pilih
                                                             Mitra</span>
@@ -208,10 +217,10 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-evenly align-items-center">
-                                                    @if ($item->status == 'Survey + RAB')
+                                                    @if ($item->status == 'Survey + RAB' && Auth::user()->hasRole(['admin', 'optima']) && !empty($item->rabApproval))
                                                         @if ($item->rabApproval->isApproved == 0)
                                                             <form
-                                                                action="{{ route('lop.approveRab', ['lop_id' => $item->id, 'approved' => 'true']) }}"
+                                                                action="{{ route('lop.approveRab', ['approved' => 'true', 'lop_id' => $item->id]) }}"
                                                                 method="post">
                                                                 @method('PATCH')
                                                                 @csrf
@@ -220,7 +229,7 @@
                                                             </form>
 
                                                             <form
-                                                                action="{{ route('lop.approveRab', ['lop_id' => $item->id, 'approved' => 'false']) }}"
+                                                                action="{{ route('lop.approveRab', ['approved' => 'false', 'lop_id' => $item->id]) }}"
                                                                 mesthod="post">
                                                                 @method('PATCH')
                                                                 @csrf
@@ -230,7 +239,7 @@
                                                         @endif
                                                     @endif
 
-                                                    <!-- view info LOP -->
+                                                    <!-- View info LOP -->
                                                     <!-- Toggle Modal -->
                                                     <button type="button"
                                                         class="btn btn-outline-info btn-sm btn-icon-only"

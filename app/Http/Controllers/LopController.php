@@ -127,19 +127,23 @@ class LopController extends Controller
         return redirect('/lop')->with('Sukses', 'Berhasil Mengalokasi Mitra!');
     }
 
-    public function aprroveRab($approved = true, $lop_id) {
-        RabApproval::where('lop_id', $lop_id)->update([
-            'isApproved' => $approved 
-        ]);
+    public function aprroveRab($approved, $lop_id) {
+        if ($approved == false) {
+            RabApproval::where('lop_id', $lop_id)->update([
+                'isApproved' => false
+            ]);
 
-        if ($approved) {
+            return redirect('/lop')->with('Sukses', 'Survey RAB ditolak!');
+        } elseif ($approved == true) {
+            RabApproval::where('lop_id', $lop_id)->update([
+                'isApproved' => true
+            ]);
+
             Lop::where('id', $lop_id)->update([
                 'status' => 'Persiapan'
             ]);
 
-            return redirect('/lop')->with('Sukses', 'Survey RAB berhasil di setujui!');
-        } else {
-            return redirect('/lop')->with('Sukses', 'Survey RAB berhasil di tolak!');
+            return redirect('/lop')->with('Sukses', 'Survey RAB disetujui!');
         }
     }
 
