@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function (){
     // Survey RAB Routes
     Route::get('/surveyRab/{lop_id}', [LopController::class, 'surveyRabForm'])->name('lop.formSurvey');
     Route::post('/surveyRab/store', [LopController::class, 'storeSurveyRabForm'])->name('lop.storeFormSurvey');
+    Route::patch('/surveyRab/{approved?}/{lop_id}', [LopController::class, 'aprroveRab'])->name('lop.approveRab');
     // Alokasi Mitra Routes
     Route::get('/alokasiMitra/{lop_id}', [LopController::class, 'alokasiMitraForm'])->name('lop.formAlokasiMitra');
     Route::post('/alokasiMitra/store', [LopController::class, 'storeAlokasiMitraForm'])->name('lop.storeAlokasiMitra');

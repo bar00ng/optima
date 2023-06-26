@@ -48,16 +48,28 @@
                                             <td>
                                                 @if ($item->status == 'Alokasi Mitra')
                                                     @if(empty($item->mitra_id))
-                                                        <span class="badge badge-danger">Belum Pilih Mitra</span>
+                                                        <span class="badge badge-pill bg-gradient-danger">Belum Pilih Mitra</span>
                                                     @else
-                                                        <span class="badge badge-success">Sudah Pilih Mitra</span>
+                                                        <span class="badge badge-pill bg-gradient-success">Sudah Pilih Mitra</span>
                                                     @endif
                                                 @elseif ($item->status == 'Survey + RAB')
-                                                    @if(empty($item->rabApproval))
-                                                        <span class="badge badge-secondary">Belum Survey</span>
-                                                    @else
-                                                        <span class="badge badge-warning">Menunggu </span>
+                                                    @if (empty($item->rabApproval))
+                                                        <a href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
+                                                            <span class="badge badge-pill bg-gradient-danger">Belum
+                                                                Survey</span>
+                                                        </a>
+                                                    @elseif($item->rabApproval->isApproved == 0 && $item->rabApproval->created_at == $item->rabApproval->updated_at)
+                                                        <span class="badge badge-pill bg-gradient-warning">Menunggu
+                                                            Approval</span>
+                                                    @elseif($item->rabApproval->isApproved == 0 && $item->rabApproval->created_at != $item->rabApproval->updated_at)
+                                                        <span class="badge badge-pill bg-gradient-warning">RAB not
+                                                            Approved</span>
+                                                    @elseif($item->rabApproval->isApproved == 1)
+                                                        <span class="badge badge-pill bg-gradient-success">RAB
+                                                            Approved</span>
                                                     @endif
+                                                @else
+                                                    <span class="badge badge-pill bg-gradient-primary">Persiapan</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">

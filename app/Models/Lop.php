@@ -12,7 +12,7 @@ use App\Models\Validasi;
 use App\Models\KonfirmasiMitra;
 use App\Models\Connectivity;
 use App\Models\GoLive;
-use App\Models\Mitra;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -43,6 +43,10 @@ class Lop extends Model
         return $this->belongsTo(ListPermintaan::class, 'permintaan_id', 'id');
     }
 
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class, 'mitra_id', 'id');
+    }
+
     public function persiapan(): HasOne {
         return $this->hasOne(Persiapan::class, 'lop_id', 'id');
     }
@@ -69,10 +73,6 @@ class Lop extends Model
 
     public function goLive(): HasOne {
         return $this->hasOne(GoLive::class, 'lop_id', 'id');
-    }
-
-    public function mitra(): HasOne {
-        return $this->hasOne(Mitra::class, 'lop_id', 'id');
     }
 
     public function rabApproval(): HasOne {

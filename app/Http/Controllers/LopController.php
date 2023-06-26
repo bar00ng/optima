@@ -93,7 +93,6 @@ class LopController extends Controller
             'rab_ondesk' => 'required',
             'keterangan_rab' => 'required',
         ]);
-        $validated['status'] = 'Menunggu Approval RAB';
 
         Lop::where('id', $r->lop_id)->update($validated);
         RabApproval::create([
@@ -126,6 +125,22 @@ class LopController extends Controller
         Lop::where('id', $r->lop_id)->update($validated);
 
         return redirect('/lop')->with('Sukses', 'Berhasil Mengalokasi Mitra!');
+    }
+
+    public function aprroveRab($approved = true, $lop_id) {
+        RabApproval::where('lop_id', $lop_id)->update([
+            'isApproved' => $approved 
+        ]);
+
+        if ($approved) {
+            Lop::where('id', $lop_id)->update([
+                'status' => 'Persiapan'
+            ]);
+
+            return redirect('/lop')->with('Sukses', 'Survey RAB berhasil di setujui!');
+        } else {
+            return redirect('/lop')->with('Sukses', 'Survey RAB berhasil di tolak!');
+        }
     }
 
     public function edit($id, Request $r)
