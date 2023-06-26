@@ -15,7 +15,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="mitra3" class="form-control-label">Nama Mitra</label>
-                                <input class="form-control" type="text" value="{{ $lop->alokasi_mitra }}" disabled>
+                                <input class="form-control" type="text" value="{{ $lop->user->first_name }}" disabled>
                             </div>
                         </div>
                         <div class="col-md-6">

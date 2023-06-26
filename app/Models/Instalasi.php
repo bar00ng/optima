@@ -12,7 +12,8 @@ class Instalasi extends Model
     protected $fillable = [
         'lop_id',
         'evidence_instalasi',
-        'keteranga_instalasi'
+        'keteranga_instalasi',
+        'isApproved'
     ];
 
     use HasFactory;

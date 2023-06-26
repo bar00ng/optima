@@ -94,6 +94,18 @@
                         </a>
                     </li>
                 @endif
+                @if (Auth::user()->hasRole('optima'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('*permintaan*') ? 'active' : '' }}"
+                            href="{{ route('permintaan.list') }}">
+                            <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-circle-08 text-success text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">List Mitra</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('*profile*') ? 'active' : '' }}"
                         href="{{ route('profile') }}">

@@ -86,16 +86,40 @@
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
-                                                <div class="d-flex align-items-center justify-content-center"> <span
-                                                        class="me-2 text-xs font-weight-bold">100%</span>
-                                                    <div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar bg-gradient-info" role="progressbar"
-                                                                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
-                                                                style="width: 100%;"></div>
+                                                @if ($item->status == 'Persiapan')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">20%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 20%;"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                @elseif ($item->status == 'Selesai')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">100%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 100%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">0%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 0%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
@@ -103,8 +127,7 @@
                                                         @if ($item->rabApproval->isApproved == 0)
                                                             <form
                                                                 action="{{ route('lop.approveRab', ['approved' => 'true', 'lop_id' => $item->id]) }}"
-                                                                method="post"
-                                                                class="mx-2">
+                                                                method="post" class="mx-2">
                                                                 @method('PATCH')
                                                                 @csrf
                                                                 <button type="submit"
@@ -123,17 +146,15 @@
                                                     @endif
 
                                                     @if ($item->status == 'Persiapan')
-                                                        <button type="button"
-                                                            class="btn btn-outline-primary btn-sm"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal-{{ $item->id }}"
-                                                            style="margin-right: 5px">Konstruksi</button>
+                                                        <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
+                                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                style="margin-right: 5px">Konstruksi</button>
+                                                        </a>
 
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary btn-sm"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal-{{ $item->id }}"
-                                                            style="margin-right: 5px">GoLive</button>
+                                                        <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
+                                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                                style="margin-right: 5px">GoLive</button>
+                                                        </a>
                                                     @endif
 
                                                     <!-- view info LOP -->
