@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $listOfProject = Lop::count();
         $listPermintaan = ListPermintaan::count();
 
-        $lop = Lop::take(5)->get();
+        $lop = Lop::where('status', '<>', 'Selesai')->take(10)->get();
 
         return view('dashboard.home', compact('pageCategory', 'pageName', 'anggaranTerpakai', 'listOfProject', 'listPermintaan', 'lop'));
     }

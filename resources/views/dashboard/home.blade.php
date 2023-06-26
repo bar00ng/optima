@@ -141,87 +141,31 @@
                                                         <span class="badge badge-pill bg-gradient-success">RAB
                                                             Approved</span>
                                                     @endif
+                                                @elseif ($item->status == 'Selesai')
+                                                    <span class="badge badge-pill bg-gradient-success">Selesai</span>
+                                                @elseif ($item->status == 'Persiapan')
+                                                    <span class="badge badge-pill bg-gradient-primary">Persiapan</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
-                                                @if ($item->status == 'Survey + RAB')
-                                                    <div class="d-flex align-items-center justify-content-center"> <span
-                                                            class="me-2 text-xs font-weight-bold">20%</span>
-                                                        <div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-gradient-info"
-                                                                    role="progressbar" aria-valuenow="20" aria-valuemin="0"
-                                                                    aria-valuemax="100" style="width: 20%;"></div>
-                                                            </div>
+                                                <div class="d-flex align-items-center justify-content-center"> <span
+                                                        class="me-2 text-xs font-weight-bold">100%</span>
+                                                    <div>
+                                                        <div class="progress">
+                                                            <div class="progress-bar bg-gradient-info" role="progressbar"
+                                                                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                                                style="width: 100%;"></div>
                                                         </div>
                                                     </div>
-                                                @elseif($item->status == 'Alokasi Mitra')
-                                                    <div class="d-flex align-items-center justify-content-center"> <span
-                                                            class="me-2 text-xs font-weight-bold">40%</span>
-                                                        <div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-gradient-info"
-                                                                    role="progressbar" aria-valuenow="40" aria-valuemin="0"
-                                                                    aria-valuemax="100" style="width: 40%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @elseif($item->status == 'Persiapan')
-                                                    <div class="d-flex align-items-center justify-content-center"> <span
-                                                            class="me-2 text-xs font-weight-bold">60%</span>
-                                                        <div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-gradient-info"
-                                                                    role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                                                                    aria-valuemax="100" style="width: 60%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @elseif($item->status == 'Instalasi')
-                                                    <div class="d-flex align-items-center justify-content-center"> <span
-                                                            class="me-2 text-xs font-weight-bold">80%</span>
-                                                        <div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-gradient-info"
-                                                                    role="progressbar" aria-valuenow="80" aria-valuemin="0"
-                                                                    aria-valuemax="100" style="width: 80%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @elseif($item->status == 'Selesai Fisik')
-                                                    <div class="d-flex align-items-center justify-content-center"> <span
-                                                            class="me-2 text-xs font-weight-bold">100%</span>
-                                                        <div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-gradient-info"
-                                                                    role="progressbar" aria-valuenow="100"
-                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                    style="width: 100%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <div class="d-flex align-items-center justify-content-center"> <span
-                                                            class="me-2 text-xs font-weight-bold">0%</span>
-                                                        <div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-gradient-info"
-                                                                    role="progressbar" aria-valuenow="0"
-                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                    style="width: 0%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endif
-
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex justify-content-evenly align-items-center">
+                                                <div class="d-flex align-items-center">
                                                     @if ($item->status == 'Survey + RAB' && Auth::user()->hasRole(['admin', 'optima']) && !empty($item->rabApproval))
                                                         @if ($item->rabApproval->isApproved == 0)
                                                             <form
                                                                 action="{{ route('lop.approveRab', ['approved' => 'true', 'lop_id' => $item->id]) }}"
-                                                                method="post">
+                                                                method="post" class="mx-2">
                                                                 @method('PATCH')
                                                                 @csrf
                                                                 <button type="submit"
@@ -230,7 +174,7 @@
 
                                                             <form
                                                                 action="{{ route('lop.approveRab', ['approved' => 'false', 'lop_id' => $item->id]) }}"
-                                                                mesthod="post">
+                                                                method="post">
                                                                 @method('PATCH')
                                                                 @csrf
                                                                 <button type="submit"
@@ -239,10 +183,21 @@
                                                         @endif
                                                     @endif
 
-                                                    <!-- View info LOP -->
+                                                    @if ($item->status == 'Persiapan')
+                                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal-{{ $item->id }}"
+                                                            style="margin-right: 5px">Konstruksi</button>
+
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal-{{ $item->id }}"
+                                                            style="margin-right: 5px">GoLive</button>
+                                                    @endif
+
+                                                    <!-- view info LOP -->
                                                     <!-- Toggle Modal -->
-                                                    <button type="button"
-                                                        class="btn btn-outline-info btn-sm btn-icon-only"
+                                                    <button type="button" class="btn btn-outline-info btn-sm btn-icon-only"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#exampleModal-{{ $item->id }}">&#128065;</button>
                                                     <!-- Modal box -->
@@ -346,53 +301,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="card card-carousel overflow-hidden h-100 p-0">
-                <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
-                    <div class="carousel-inner border-radius-lg h-100">
-                        <div class="carousel-item h-100 active"
-                            style="background-image: url('/asset/img/carousel-1.jpg');
-      background-size: cover;">
-                            <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
-                                <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"> <i
-                                        class="ni ni-camera-compact text-dark opacity-10"></i> </div>
-                                <h5 class="text-white mb-1">Get started with Argon</h5>
-                                <p>There’s nothing I really wanted to do in life that I wasn’t able to get good at.</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item h-100"
-                            style="background-image: url('/asset/img/carousel-2.jpg');
-      background-size: cover;">
-                            <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
-                                <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"> <i
-                                        class="ni ni-bulb-61 text-dark opacity-10"></i> </div>
-                                <h5 class="text-white mb-1">Faster way to create web pages</h5>
-                                <p>That’s my skill. I’m not really specifically talented at anything except for the ability
-                                    to learn.</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item h-100"
-                            style="background-image: url('/asset/img/carousel-3.jpg');
-      background-size: cover;">
-                            <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
-                                <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"> <i
-                                        class="ni ni-trophy text-dark opacity-10"></i> </div>
-                                <h5 class="text-white mb-1">Share with us your design tips!</h5>
-                                <p>Don’t be afraid to be wrong because you can’t learn anything from a compliment.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev w-5 me-3" type="button"
-                        data-bs-target="#carouselExampleCaptions" data-bs-slide="prev"> <span
-                            class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-                            class="visually-hidden">Previous</span> </button>
-                    <button class="carousel-control-next w-5 me-3" type="button"
-                        data-bs-target="#carouselExampleCaptions" data-bs-slide="next"> <span
-                            class="carousel-control-next-icon" aria-hidden="true"></span> <span
-                            class="visually-hidden">Next</span> </button>
                 </div>
             </div>
         </div>
