@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MitraController;
 use App\Http\Controllers\LopController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KonstruksiController;
@@ -20,7 +21,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/lop/add/{permintaan_id}', [LopController::class, 'formAddLop'])->name('lop.formAdd');
     Route::post('/lop/add/{toAlokasiMitra?}', [LopController::class, 'storeLop'])->name('lop.store');
     Route::patch('/lop/edit/{id}', [LopController::class, 'patch'])->name('lop.patch');
-    Route::delete('/lop/delete/{id}', [LopController::class, 'delete'])->name('lop.delete');
+    
     // Survey RAB Routes
     Route::get('/surveyRab/{lop_id}', [LopController::class, 'surveyRabForm'])->name('lop.formSurvey');
     Route::post('/surveyRab/store', [LopController::class, 'storeSurveyRabForm'])->name('lop.storeFormSurvey');
@@ -43,6 +44,13 @@ Route::middleware(['auth'])->group(function (){
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::patch('/profile/{user_id}', [ProfileController::class, 'patch'])->name('profile.patch');
+
+    Route::get('/mitra', [MitraController::class, 'index'])->name('mitra.list');
+    Route::get('/mitra/add', [MitraController::class, 'formAddMitra'])->name('mitra.formAdd');
+    Route::post('/mitra/add', [MitraController::class, 'storeMitra'])->name('mitra.store');
+    Route::get('/mitra/edit/{id}', [MitraController::class, 'formEditMitra'])->name('mitra.edit');
+    Route::patch('/mitra/edit/{id}', [MitraController::class, 'patchMitra'])->name('mitra.patch');
+    Route::delete('/mitra/delete/{id}', [MitraController::class, 'delete'])->name('mitra.delete');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

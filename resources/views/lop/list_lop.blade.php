@@ -127,20 +127,26 @@
                                                         @if ($item->rabApproval->isApproved == 0)
                                                             <form
                                                                 action="{{ route('lop.approveRab', ['approved' => 'true', 'lop_id' => $item->id]) }}"
-                                                                method="post" class="mx-2">
+                                                                method="post" style="margin-right: 5px">
                                                                 @method('PATCH')
                                                                 @csrf
                                                                 <button type="submit"
-                                                                    class="btn btn-outline-success btn-sm btn-icon-only">&#10003;</button>
+                                                                    class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                    title="Approve RAB" data-container="body"
+                                                                    data-animation="true">&#10003;</button>
                                                             </form>
 
                                                             <form
                                                                 action="{{ route('lop.approveRab', ['approved' => 'false', 'lop_id' => $item->id]) }}"
-                                                                method="post">
+                                                                method="post" style="margin-right: 5px">
                                                                 @method('PATCH')
                                                                 @csrf
                                                                 <button type="submit"
-                                                                    class="btn btn-outline-danger btn-sm btn-icon-only">&#10007;</button>
+                                                                    class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                    title="Reject RAB" data-container="body"
+                                                                    data-animation="true">&#10007;</button>
                                                             </form>
                                                         @endif
                                                     @endif
