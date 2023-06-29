@@ -39,6 +39,11 @@ Route::middleware(['auth'])->group(function (){
 
     Route::get('/konstruksi/{lop_id}',[KonstruksiController::class, 'index'])->name('lop.konstruksi');
     Route::post('/konstruksi/{lop_id}',[KonstruksiController::class, 'store'])->name('lop.konstruksi.store');
+    Route::patch('/konstruksi/persiapan/{approved}/{persiapan_id}', [KonstruksiController::class, 'approvePersiapan'])->name('lop.konstruksi.approve.persiapan');
+    Route::patch('/konstruksi/instalasi/{approved}/{instalasi_id}', [KonstruksiController::class, 'approveInstalasi'])->name('lop.konstruksi.approve.instalasi');
+    Route::patch('/konstruksi/selesaiFisik/{approved}/{selesai_fisik_id}', [KonstruksiController::class, 'approveSelesaiFisik'])->name('lop.konstruksi.approve.selesaiFisik');
+
+
     Route::get('/goLive/{lop_id}',[GoLiveController::class, 'index'])->name('lop.go-live');
     Route::post('/goLive/{lop_id}',[GoLiveController::class, 'store'])->name('lop.go-live.store');
 

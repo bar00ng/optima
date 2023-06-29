@@ -37,7 +37,7 @@ class KonstruksiController extends Controller
             $file = $r->file('evidence_persiapan');
             $fileName = $file->getClientOriginalName();
 
-            $file->store('public/uploads/evidence_persiapan'); 
+            $file->storeAs('public/uploads/evidence_persiapan', $fileName); 
             $persiapan->lop_id = $lop_id;
             $persiapan->evidence_persiapan = $fileName;
             
@@ -89,5 +89,53 @@ class KonstruksiController extends Controller
         }
 
         return redirect('/konstruksi/'. $lop_id)->with('Sukses', 'Proses upload evidence berhasil');
+    }
+
+    public function approvePersiapan($approved, $persiapan_id) {
+        if ($approved == "false") {
+            Persiapan::where('id', $persiapan_id)->update([
+                'isApproved' => false
+            ]);
+
+            return back()->with('Sukses', 'Evidence persiapan ditolak');
+        } elseif ($approved == "true") {
+            Persiapan::where('id', $persiapan_id)->update([
+                'isApproved' => true
+            ]);
+
+            return back()->with('Sukses', 'Evidence persiapan disetujui');
+        }
+    }
+
+    public function approveInstalasi($approved, $instalasi_id) {
+        if ($approved == "false") {
+            Instalasi::where('id', $instalasi_id)->update([
+                'isApproved' => false
+            ]);
+
+            return back()->with('Sukses', 'Evidence instalasi ditolak');
+        } elseif ($approved == "true") {
+            Instalasi::where('id', $instalasi_id)->update([
+                'isApproved' => true
+            ]);
+
+            return back()->with('Sukses', 'Evidence instalasi disetujui');
+        }
+    }
+
+    public function approveSelesaiFisik($approved, $selesai_fisik_id) {
+        if ($approved == "false") {
+            SelesaiFisik::where('id', $selesai_fisik_id)->update([
+                'isApproved' => false
+            ]);
+
+            return back()->with('Sukses', 'Evidence selesai fisik ditolak');
+        } elseif ($approved == "true") {
+            SelesaiFisik::where('id', $selesai_fisik_id)->update([
+                'isApproved' => true
+            ]);
+
+            return back()->with('Sukses', 'Evidence selesai fisik disetujui');
+        }
     }
 }

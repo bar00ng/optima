@@ -88,15 +88,75 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div class="d-flex flex-row align-items-center px-2">
-                                                                <input type="file" name="evidence_persiapan"
-                                                                    class="form-control form-control-sm"
-                                                                    {{ empty($persiapan) ? '' : 'disabled' }}>
-                                                            </div>
+                                                            @if (!empty($persiapan))
+                                                                <div class="d-flex flex-row align-items-center">
+                                                                    <a href="{{ asset('storage/uploads/evidence_persiapan/' . $persiapan->evidence_persiapan) }}"
+                                                                        target="_blank">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">{{ $persiapan->evidence_persiapan }}</span>
+                                                                    </a>
+                                                                </div>
+                                                            @else
+                                                                <div class="d-flex flex-row align-items-center px-2">
+                                                                    <input type="file" name="evidence_persiapan"
+                                                                        class="form-control form-control-sm"
+                                                                        {{ empty($persiapan) ? '' : 'disabled' }}>
+                                                                </div>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <textarea name="keterangan_persiapan" class="form-control" cols="30" rows="2"
                                                                 placeholder="Keterangan Persiapan (Opsional)" {{ empty($persiapan) ? '' : 'disabled' }}>{{ empty($persiapan) ? '' : $lop->persiapan->keterangan_persiapan }}</textarea>
+                                                        </td>
+                                                        <td>
+                                                            @if (!empty($persiapan))
+                                                                @if ($persiapan->isApproved === null)
+                                                                    <div class="d-flex align-items-center">
+                                                                        <form
+                                                                            action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'true', 'persiapan_id' => $persiapan->id]) }}"
+                                                                            method="post" style="margin-right: 5px"
+                                                                            id="form-approve-persiapan">
+                                                                            @method('PATCH')
+                                                                            @csrf
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="bottom"
+                                                                                title="Approve Persiapan"
+                                                                                data-container="body" data-animation="true"
+                                                                                id="submit-approve-persiapan">&#10003;</button>
+                                                                        </form>
+
+                                                                        <form
+                                                                            action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'false', 'persiapan_id' => $persiapan->id]) }}"
+                                                                            method="post" style="margin-right: 5px"
+                                                                            id="form-reject-persiapan">
+                                                                            @method('PATCH')
+                                                                            @csrf
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="bottom"
+                                                                                title="Reject Persiapan"
+                                                                                data-container="body"
+                                                                                data-animation="true"
+                                                                                id="submit-reject-persiapan">&#10007;</button>
+                                                                        </form>
+                                                                    </div>
+                                                                @elseif($persiapan->isApproved !== null)
+                                                                    @if ($persiapan->isApproved == false)
+                                                                        <span
+                                                                            class="me-2 text-sm text-danger font-weight-bold">Ditolak</span>
+                                                                    @elseif($persiapan->isApproved == true)
+                                                                        <span
+                                                                            class="me-2 text-sm text-success font-weight-bold">Disetujui</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="me-2 text-sm text-secondary font-weight-bold">Menunggu
+                                                                            Approval</span>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -124,17 +184,79 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div class="d-flex flex-row align-items-center px-2">
-                                                                <input type="file" name="evidence_instalasi"
-                                                                    class="form-control form-control-sm"
-                                                                    {{ empty($persiapan) ? 'disabled' : '' }}
-                                                                    {{ empty($instalasi) ? '' : 'disabled' }}>
-                                                            </div>
+                                                            @if (!empty($instalasi))
+                                                                <div class="d-flex flex-row align-items-center">
+                                                                    <a href="{{ asset('storage/uploads/evidence_persiapan/' . $persiapan->evidence_persiapan) }}"
+                                                                        target="_blank">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">{{ $instalasi->evidence_instalasi }}</span>
+                                                                    </a>
+                                                                </div>
+                                                            @else
+                                                                <div class="d-flex flex-row align-items-center px-2">
+                                                                    <input type="file" name="evidence_instalasi"
+                                                                        class="form-control form-control-sm"
+                                                                        {{ empty($persiapan) || $persiapan->isApproved == false ? 'disabled' : '' }}
+                                                                        {{ empty($instalasi) ? '' : 'disabled' }}>
+                                                                </div>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <textarea name="keterangan_instalasi" class="form-control" cols="30" rows="2"
-                                                                placeholder="Keterangan Instalasi (Opsional)" {{ empty($persiapan) ? 'disabled' : '' }}
+                                                                placeholder="Keterangan Instalasi (Opsional)"
+                                                                {{ empty($persiapan) || $persiapan->isApproved == false ? 'disabled' : '' }}
                                                                 {{ empty($instalasi) ? '' : 'disabled' }}>{{ empty($instalasi) ? '' : $lop->instalasi->keterangan_instalasi }}</textarea>
+                                                        </td>
+                                                        <td>
+                                                            @if (!empty($instalasi))
+                                                                @if ($instalasi->isApproved === null)
+                                                                    <div class="d-flex align-items-center">
+                                                                        <form
+                                                                            action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'true', 'instalasi_id' => $instalasi->id]) }}"
+                                                                            method="post" style="margin-right: 5px"
+                                                                            id="form-approve-instalasi">
+                                                                            @method('PATCH')
+                                                                            @csrf
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="bottom"
+                                                                                title="Approve Instalasi"
+                                                                                data-container="body"
+                                                                                data-animation="true"
+                                                                                id="submit-approve-instalasi">&#10003;</button>
+                                                                        </form>
+
+                                                                        <form
+                                                                            action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'false', 'instalasi_id' => $instalasi->id]) }}"
+                                                                            method="post" style="margin-right: 5px"
+                                                                            id="form-reject-instalasi">
+                                                                            @method('PATCH')
+                                                                            @csrf
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="bottom"
+                                                                                title="Reject Instalasi"
+                                                                                data-container="body"
+                                                                                data-animation="true"
+                                                                                id="submit-reject-instalasi">&#10007;</button>
+                                                                        </form>
+                                                                    </div>
+                                                                @elseif($instalasi->isApproved !== null)
+                                                                    @if ($instalasi->isApproved == false)
+                                                                        <span
+                                                                            class="me-2 text-sm text-danger font-weight-bold">Ditolak</span>
+                                                                    @elseif($instalasi->isApproved == true)
+                                                                        <span
+                                                                            class="me-2 text-sm text-success font-weight-bold">Disetujui</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="me-2 text-sm text-secondary font-weight-bold">Menunggu
+                                                                            Approval</span>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -162,17 +284,81 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div class="d-flex flex-row align-items-center px-2">
-                                                                <input type="file" name="evidence_selesai"
-                                                                    class="form-control form-control-sm"
-                                                                    {{ empty($instalasi) ? 'disabled' : '' }}
-                                                                    {{ empty($selesaiFisik) ? '' : 'disabled' }}>
-                                                            </div>
+                                                            @if (!empty($selesaiFisik))
+                                                                <div class="d-flex flex-row align-items-center">
+                                                                    <a href="{{ asset('storage/uploads/evidence_persiapan/' . $persiapan->evidence_persiapan) }}"
+                                                                        target="_blank">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">{{ $selesaiFisik->evidence_selesai }}</span>
+                                                                    </a>
+                                                                </div>
+                                                            @else
+                                                                <div class="d-flex flex-row align-items-center px-2">
+                                                                    <input type="file" name="evidence_selesai"
+                                                                        class="form-control form-control-sm"
+                                                                        {{ empty($instalasi) || $instalasi->isApproved == false ? 'disabled' : '' }}
+                                                                        {{ empty($selesaiFisik) ? '' : 'disabled' }}>
+                                                                </div>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <textarea name="keterangan_selesai" class="form-control" cols="30" rows="2"
-                                                                placeholder="Keterangan Selesai Fisik (Opsional)" {{ empty($instalasi) ? 'disabled' : '' }}
+                                                                placeholder="Keterangan Selesai Fisik (Opsional)"
+                                                                {{ empty($instalasi) || $instalasi->isApproved == false ? 'disabled' : '' }}
                                                                 {{ empty($selesaiFisik) ? '' : 'disabled' }}>{{ empty($selesaiFisik) ? '' : $lop->selesaiFisik->keterangan_selesai }}</textarea>
+                                                        </td>
+                                                        <td>
+                                                            @if (!empty($selesaiFisik))
+                                                                @if ($selesaiFisik->isApproved === null)
+                                                                    @if (Auth::user()->hasRole('mitra'))
+                                                                        <span
+                                                                            class="me-2 text-sm text-secondary font-weight-bold">Menunggu
+                                                                            Approval</span>
+                                                                    @elseif (Auth::user()->hasRole('optima'))
+                                                                        <div class="d-flex align-items-center">
+                                                                            <form
+                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'true', 'selesai_fisik_id' => $selesaiFisik->id]) }}"
+                                                                                method="post" style="margin-right: 5px"
+                                                                                id="form-approve-selesaiFisik">
+                                                                                @method('PATCH')
+                                                                                @csrf
+                                                                                <button type="button"
+                                                                                    class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-placement="bottom"
+                                                                                    title="Approve Selesai Fisik"
+                                                                                    data-container="body"
+                                                                                    data-animation="true"
+                                                                                    id="submit-approve-selesaiFisik">&#10003;</button>
+                                                                            </form>
+
+                                                                            <form
+                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'false', 'selesai_fisik_id' => $selesaiFisik->id]) }}"
+                                                                                method="post" style="margin-right: 5px"
+                                                                                id="form-reject-selesaiFisik">
+                                                                                @method('PATCH')
+                                                                                @csrf
+                                                                                <button type="button"
+                                                                                    class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-placement="bottom"
+                                                                                    title="Reject Selesai Fisik"
+                                                                                    data-container="body"
+                                                                                    data-animation="true"
+                                                                                    id="submit-reject-selesaiFisik">&#10007;</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    @endif
+                                                                @elseif($selesaiFisik->isApproved !== null)
+                                                                    @if ($selesaiFisik->isApproved == false)
+                                                                        <span
+                                                                            class="me-2 text-sm text-danger font-weight-bold">Ditolak</span>
+                                                                    @elseif($selesaiFisik->isApproved == true)
+                                                                        <span
+                                                                            class="me-2 text-sm text-success font-weight-bold">Disetujui</span>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -198,4 +384,35 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('jquery_script')
+    <script>
+        $(document).ready(function() {
+            // Handle inner form submission
+            $('#submit-approve-persiapan').click(function() {
+                $('#form-approve-persiapan').submit(); // Submit the inner form
+            });
+
+            $('#submit-reject-persiapan').click(function() {
+                $('#form-reject-persiapan').submit(); // Submit the inner form
+            });
+
+            $('#submit-approve-instalasi').click(function() {
+                $('#form-approve-instalasi').submit(); // Submit the inner form
+            });
+
+            $('#submit-reject-instalasi').click(function() {
+                $('#form-reject-instalasi').submit(); // Submit the inner form
+            });
+
+            $('#submit-approve-selesaiFisik').click(function() {
+                $('#form-approve-selesaiFisik').submit(); // Submit the inner form
+            });
+
+            $('#submit-reject-selesaiFisik').click(function() {
+                $('#form-reject-selesaiFisik').submit(); // Submit the inner form
+            });
+        });
+    </script>
 @endsection
