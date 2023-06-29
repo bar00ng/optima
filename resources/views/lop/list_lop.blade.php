@@ -151,7 +151,7 @@
                                                         @endif
                                                     @endif
 
-                                                    @if ($item->status == 'Persiapan')
+                                                    @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik')
                                                         <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
                                                             <button type="button" class="btn btn-outline-primary btn-sm"
                                                                 style="margin-right: 5px">Konstruksi</button>
