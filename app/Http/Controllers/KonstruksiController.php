@@ -57,7 +57,7 @@ class KonstruksiController extends Controller
             $file = $r->file('evidence_instalasi');
             $fileName = $file->getClientOriginalName();
 
-            $file->store('public/uploads/evidence_instalasi'); 
+            $file->storeAs('public/uploads/evidence_instalasi', $fileName); 
             $instalasi->lop_id = $lop_id;
             $instalasi->evidence_instalasi = $fileName;
 
@@ -77,7 +77,7 @@ class KonstruksiController extends Controller
             $file = $r->file('evidence_selesai');
             $fileName = $file->getClientOriginalName();
 
-            $file->store('public/uploads/evidence_selesai'); 
+            $file->storeAs('public/uploads/evidence_selesai', $fileName); 
             $selesai->lop_id = $lop_id;
             $selesai->evidence_selesai = $fileName;
 
