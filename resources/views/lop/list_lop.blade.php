@@ -83,6 +83,8 @@
                                                     <span class="badge badge-pill bg-gradient-success">Selesai</span>
                                                 @elseif ($item->status == 'Persiapan')
                                                     <span class="badge badge-pill bg-gradient-primary">Persiapan</span>
+                                                @else
+                                                    <span class="badge badge-pill bg-gradient-secondary">{{$item->status}}</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
@@ -97,7 +99,29 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @elseif ($item->status == 'Selesai')
+                                                @elseif ($item->status == 'Instalasi')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">50%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="50" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 50%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @elseif ($item->status == 'Selesai Fisik')
+                                                    <div class="d-flex align-items-center justify-content-center"> <span
+                                                            class="me-2 text-xs font-weight-bold">90%</span>
+                                                        <div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                    role="progressbar" aria-valuenow="90" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 90%;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @elseif ($item->status == 'GoLive' || $item->status == 'Selesai')
                                                     <div class="d-flex align-items-center justify-content-center"> <span
                                                             class="me-2 text-xs font-weight-bold">100%</span>
                                                         <div>
@@ -151,7 +175,7 @@
                                                         @endif
                                                     @endif
 
-                                                    @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik')
+                                                    @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
                                                         <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
                                                             <button type="button" class="btn btn-outline-primary btn-sm"
                                                                 style="margin-right: 5px">Konstruksi</button>

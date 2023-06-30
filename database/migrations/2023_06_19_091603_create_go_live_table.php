@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('go_live', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
-            $table->boolean('is_withGolive');
-            $table->string('evidence_golive')->nullable();
-            $table->text('keterangan_withGolive')->nullable();
-            $table->text('keterangan_withoutGolive')->nullable();
+            $table->boolean('isNeed')->nullable()->default(null);
+            $table->string('evidence_golive')->nullable()->default(null);
+            $table->text('keterangan_withGolive')->nullable()->default(null);
+            $table->text('keterangan_withoutGolive')->nullable()->default(null);
             $table->timestamps();
         });
     }

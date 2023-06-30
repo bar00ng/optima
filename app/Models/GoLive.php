@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Lop;
 
 class GoLive extends Model
 {
@@ -11,11 +13,15 @@ class GoLive extends Model
 
     protected $fillable = [
         'lop_id',
-        'is_withGolive',
+        'isNeed',
         'evidence_golive',
         'keterangan_withGoLive',
         'keterangan_withoutGoLive'
     ];
 
     use HasFactory;
+
+    public function lop(): BelongsTo {
+        return $this->belongsTo(Lop::class, 'lop_id', 'id');
+    }
 }
