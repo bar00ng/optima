@@ -71,64 +71,66 @@
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex flex-column">
                                                                 @if (empty($persiapan))
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">0%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="0"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 0%;">
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">0%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="0"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 0%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @elseif ($persiapan->isApproved === null)
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">50%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="50"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 50%;">
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">50%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="50"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 50%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @elseif ($persiapan->isApproved === 1 || $persiapan->isApproved === 0)
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">100%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 100%;">
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">100%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="100"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 100%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @endif
                                                             </div>
                                                         </td>
                                                         <td>
                                                             @if (!empty($persiapan))
                                                                 <div class="d-flex flex-row align-items-center">
-                                                                    <a href="{{ asset('storage/uploads/evidence_persiapan/' . $persiapan->evidence_persiapan) }}"
-                                                                        target="_blank">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">{{ $persiapan->evidence_persiapan }}</span>
-                                                                    </a>
+                                                                @if ($persiapan->isApproved == false)
+                                                                        <input type="file" name="evidence_persiapan"
+                                                                            class="form-control form-control-sm">
+                                                                    @else
+                                                                        <a href="{{ asset('storage/uploads/evidence_persiapan/' . $persiapan->evidence_persiapan) }}"
+                                                                            target="_blank">
+                                                                            <span
+                                                                                class="me-2 text-xs font-weight-bold">{{ $persiapan->evidence_persiapan }}</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </div>
                                                             @else
                                                                 <div class="d-flex flex-row align-items-center px-2">
@@ -151,12 +153,13 @@
                                                                             Approval</span>
                                                                     @elseif (Auth::user()->hasRole('optima'))
                                                                         <div class="d-flex align-items-center">
-                                                                            <form action="#"
-                                                                                method="post" style="margin-right: 5px; display:hidden;"
+                                                                            <form action="#" method="post"
+                                                                                style="margin-right: 5px; display:hidden;"
                                                                                 id="form-approve-persiapan">
                                                                             </form>
 
-                                                                            <form action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'true', 'persiapan_id' => $persiapan->id]) }}"
+                                                                            <form
+                                                                                action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'true', 'persiapan_id' => $persiapan->id]) }}"
                                                                                 method="post" style="margin-right: 5px"
                                                                                 id="form-approve-persiapan">
                                                                                 @method('PATCH')
@@ -214,65 +217,67 @@
                                                         </td>
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex align-items-center justify-content-center">
-                                                            @if (empty($instalasi))
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">0%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="0"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 0%;">
+                                                                @if (empty($instalasi))
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">0%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="0"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 0%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @elseif ($instalasi->isApproved === null)
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">50%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="50"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 50%;">
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">50%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="50"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 50%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @elseif ($instalasi->isApproved === 1 || $instalasi->isApproved === 0)
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">100%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 100%;">
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">100%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="100"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 100%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @endif
                                                             </div>
                                                         </td>
                                                         <td>
                                                             @if (!empty($instalasi))
                                                                 <div class="d-flex flex-row align-items-center">
-                                                                    <a href="{{ asset('storage/uploads/evidence_instalasi/' . $instalasi->evidence_instalasi) }}"
-                                                                        target="_blank">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">{{ $instalasi->evidence_instalasi }}</span>
-                                                                    </a>
+                                                                    @if ($instalasi->isApproved == false)
+                                                                        <input type="file" name="evidence_instalasi"
+                                                                            class="form-control form-control-sm">
+                                                                    @else
+                                                                        <a href="{{ asset('storage/uploads/evidence_instalasi/' . $instalasi->evidence_instalasi) }}"
+                                                                            target="_blank">
+                                                                            <span
+                                                                                class="me-2 text-xs font-weight-bold">{{ $instalasi->evidence_instalasi }}</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </div>
                                                             @else
                                                                 <div class="d-flex flex-row align-items-center px-2">
@@ -298,8 +303,8 @@
                                                                             Approval</span>
                                                                     @elseif (Auth::user()->hasRole('optima'))
                                                                         <div class="d-flex align-items-center">
-                                                                            <form action="#"
-                                                                                method="post" style="margin-right: 5px; display:hidden;">
+                                                                            <form action="#" method="post"
+                                                                                style="margin-right: 5px; display:hidden;">
                                                                             </form>
 
                                                                             <form
@@ -361,65 +366,67 @@
                                                         </td>
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex align-items-center justify-content-center">
-                                                            @if (empty($selesaiFisik))
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">0%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="0"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 0%;">
+                                                                @if (empty($selesaiFisik))
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">0%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="0"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 0%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @elseif ($selesaiFisik->isApproved === null)
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">50%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="50"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 50%;">
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">50%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="50"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 50%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @elseif ($selesaiFisik->isApproved === 1 || $selesaiFisik->isApproved === 0)
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">100%</span>
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar"
-                                                                                aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: 100%;">
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-center">
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">100%</span>
+                                                                        <div>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar bg-gradient-info"
+                                                                                    role="progressbar" aria-valuenow="100"
+                                                                                    aria-valuemin="0" aria-valuemax="100"
+                                                                                    style="width: 100%;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @endif
                                                             </div>
                                                         </td>
                                                         <td>
                                                             @if (!empty($selesaiFisik))
                                                                 <div class="d-flex flex-row align-items-center">
-                                                                    <a href="{{ asset('storage/uploads/evidence_selesai/' . $selesaiFisik->evidence_selesai) }}"
-                                                                        target="_blank">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">{{ $selesaiFisik->evidence_selesai }}</span>
-                                                                    </a>
+                                                                    @if ($selesaiFisik->isApproved == false)
+                                                                        <input type="file" name="evidence_selesai"
+                                                                            class="form-control form-control-sm">
+                                                                    @else
+                                                                        <a href="{{ asset('storage/uploads/evidence_selesai/' . $selesaiFisik->evidence_selesai) }}"
+                                                                            target="_blank">
+                                                                            <span
+                                                                                class="me-2 text-xs font-weight-bold">{{ $selesaiFisik->evidence_selesai }}</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </div>
                                                             @else
                                                                 <div class="d-flex flex-row align-items-center px-2">
@@ -445,11 +452,11 @@
                                                                             Approval</span>
                                                                     @elseif (Auth::user()->hasRole('optima'))
                                                                         <div class="d-flex align-items-center">
-                                                                            <form action="#"
-                                                                                method="post" style="margin-right: 5px; display:hidden;"
+                                                                            <form action="#" method="post"
+                                                                                style="margin-right: 5px; display:hidden;"
                                                                                 id="form-approve-persiapan">
                                                                             </form>
-                                                                            
+
                                                                             <form
                                                                                 action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'true', 'selesai_fisik_id' => $selesaiFisik->id]) }}"
                                                                                 method="post" style="margin-right: 5px"
@@ -524,27 +531,27 @@
     <script>
         $(document).ready(function() {
             $('#submit-approve-persiapan').click(function(e) {
-                $('#form-approve-persiapan').submit(); 
+                $('#form-approve-persiapan').submit();
             });
 
             $('#submit-reject-persiapan').click(function() {
-                $('#form-reject-persiapan').submit(); 
+                $('#form-reject-persiapan').submit();
             });
 
             $('#submit-approve-instalasi').click(function() {
-                $('#form-approve-instalasi').submit(); 
+                $('#form-approve-instalasi').submit();
             });
 
             $('#submit-reject-instalasi').click(function() {
-                $('#form-reject-instalasi').submit(); 
+                $('#form-reject-instalasi').submit();
             });
 
             $('#submit-approve-selesaiFisik').click(function() {
-                $('#form-approve-selesaiFisik').submit(); 
+                $('#form-approve-selesaiFisik').submit();
             });
 
             $('#submit-reject-selesaiFisik').click(function() {
-                $('#form-reject-selesaiFisik').submit(); 
+                $('#form-reject-selesaiFisik').submit();
             });
         });
     </script>

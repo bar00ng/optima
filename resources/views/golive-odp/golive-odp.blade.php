@@ -195,7 +195,7 @@
                                                         </tr>
 
                                                         <!-- Go Live ODP -->
-                                                        @if (($goLive->exists && $goLive->isNeed == true) ? 'checked' : '')
+                                                        @if ($goLive && $goLive->exists && $goLive->isNeed == true)
                                                             <tr>
                                                                 <td>
                                                                     <div class="d-flex px-2">
