@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('longitude')->default('');
             $table->string('latitude')->default('');
             $table->string('lokasi_lop')->default('');
-            $table->text('keterangan_lop')->default('');
+            $table->text('keterangan_lop');
             $table->string('rab_ondesk')->default('');
             $table->string('keterangan_rab')->default('');
             $table->foreignId('mitra_id')->nullable()->constrained('user')->onDelete('cascade');

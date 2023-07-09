@@ -119,20 +119,47 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            @if (!empty($persiapan))
-                                                                <div class="d-flex flex-row align-items-center">
-                                                                @if ($persiapan->isApproved == false)
-                                                                        <input type="file" name="evidence_persiapan"
-                                                                            class="form-control form-control-sm">
-                                                                    @else
+                                                            <!-- Check apakah ada evidence persiapan -->
+                                                            @if ($persiapan !== null)
+                                                                <!-- Jika ada, check apakah ada evidence_persiapan -->
+                                                                @if (!empty($persiapan->evidence_persiapan))
+                                                                    <!-- Jika ada, check apakah approve/reject/belum ada action -->
+                                                                    <!-- Jika sudah di approve -->        
+                                                                    @if ($persiapan->isApproved === 1)
                                                                         <a href="{{ asset('storage/uploads/evidence_persiapan/' . $persiapan->evidence_persiapan) }}"
                                                                             target="_blank">
                                                                             <span
                                                                                 class="me-2 text-xs font-weight-bold">{{ $persiapan->evidence_persiapan }}</span>
+                                                                            <span class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
+                                                                        </a>
+                                                                    <!-- Jika Direject -->
+                                                                    @elseif ($persiapan->isApproved === 0)
+                                                                        <div class="d-flex flex-column align-items-center px-2 has-validation">
+                                                                            <input type="file" name="evidence_persiapan"
+                                                                                class="form-control form-control-sm is-invalid">
+                                                                            <div class="invalid-feedback text-xs fst-italic">
+                                                                                Evidence ditolak. Silahkan upload ulang!
+                                                                            </div>
+                                                                        </div> 
+                                                                    <!-- Jika belum di approve/reject -->
+                                                                    @elseif ($persiapan->isApproved === null)
+                                                                        <a href="{{ asset('storage/uploads/evidence_persiapan/' . $persiapan->evidence_persiapan) }}"
+                                                                            target="_blank">
+                                                                            <span
+                                                                                class="me-2 text-xs font-weight-bold">{{ $persiapan->evidence_persiapan }}</span>
+                                                                            <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
                                                                         </a>
                                                                     @endif
-                                                                </div>
+                                                                @else
+                                                                    <!-- Jika tidak ada, upload file -->
+                                                                    <div class="d-flex flex-row align-items-center px-2">
+                                                                        <input type="file" name="evidence_persiapan"
+                                                                            class="form-control form-control-sm"
+                                                                            {{ empty($persiapan) ? '' : 'disabled' }}>
+                                                                    </div>    
+                                                                @endif
                                                             @else
+                                                                <!-- Jika tidak, input upload file muncul -->
                                                                 <div class="d-flex flex-row align-items-center px-2">
                                                                     <input type="file" name="evidence_persiapan"
                                                                         class="form-control form-control-sm"
@@ -266,24 +293,51 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            @if (!empty($instalasi))
-                                                                <div class="d-flex flex-row align-items-center">
-                                                                    @if ($instalasi->isApproved == false)
-                                                                        <input type="file" name="evidence_instalasi"
-                                                                            class="form-control form-control-sm">
-                                                                    @else
+                                                            <!-- Check apakah ada evidence -->
+                                                            @if ($instalasi !== null)
+                                                                <!-- Jika ada, check apakah ada evidence_instalasi -->
+                                                                @if (!empty($instalasi->evidence_instalasi))
+                                                                    <!-- Jika ada, check apakah approve/reject/belum ada action -->
+                                                                    <!-- Jika sudah di approve -->        
+                                                                    @if ($instalasi->isApproved === 1)
                                                                         <a href="{{ asset('storage/uploads/evidence_instalasi/' . $instalasi->evidence_instalasi) }}"
                                                                             target="_blank">
                                                                             <span
                                                                                 class="me-2 text-xs font-weight-bold">{{ $instalasi->evidence_instalasi }}</span>
+                                                                            <span class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
+                                                                        </a>
+                                                                    <!-- Jika Direject -->
+                                                                    @elseif ($instalasi->isApproved === 0)
+                                                                        <div class="d-flex flex-column align-items-center px-2 has-validation">
+                                                                            <input type="file" name="evidence_instalasi"
+                                                                                class="form-control form-control-sm is-invalid">
+                                                                            <div class="invalid-feedback text-xs fst-italic">
+                                                                                Evidence ditolak. Silahkan upload ulang!
+                                                                            </div>
+                                                                        </div> 
+                                                                    <!-- Jika belum di approve/reject -->
+                                                                    @elseif ($instalasi->isApproved === null)
+                                                                        <a href="{{ asset('storage/uploads/evidence_instalasi/' . $instalasi->evidence_instalasi) }}"
+                                                                            target="_blank">
+                                                                            <span
+                                                                                class="me-2 text-xs font-weight-bold">{{ $instalasi->evidence_instalasi }}</span>
+                                                                            <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
                                                                         </a>
                                                                     @endif
-                                                                </div>
+                                                                @else
+                                                                    <!-- Jika tidak ada, upload file -->
+                                                                    <div class="d-flex flex-row align-items-center px-2">
+                                                                        <input type="file" name="evidence_persiapan"
+                                                                            class="form-control form-control-sm"
+                                                                            {{ empty($persiapan) ? '' : 'disabled' }}>
+                                                                    </div>    
+                                                                @endif
                                                             @else
+                                                                <!-- Jika tidak, input upload file muncul -->
                                                                 <div class="d-flex flex-row align-items-center px-2">
                                                                     <input type="file" name="evidence_instalasi"
                                                                         class="form-control form-control-sm"
-                                                                        {{ empty($persiapan) || $persiapan->isApproved == false ? 'disabled' : '' }}
+                                                                        {{ empty($persiapan) || $persiapan->isApproved === 0 ? 'disabled' : '' }}
                                                                         {{ empty($instalasi) ? '' : 'disabled' }}>
                                                                 </div>
                                                             @endif
@@ -415,25 +469,52 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            @if (!empty($selesaiFisik))
-                                                                <div class="d-flex flex-row align-items-center">
-                                                                    @if ($selesaiFisik->isApproved == false)
-                                                                        <input type="file" name="evidence_selesai"
-                                                                            class="form-control form-control-sm">
-                                                                    @else
+                                                            <!-- Check apakah ada evidence -->
+                                                            @if ($selesaiFisik !== null)
+                                                                <!-- Jika ada, check apakah ada evidence_selesai -->
+                                                                @if (!empty($selesaiFisik->evidence_selesai))
+                                                                    <!-- Jika ada, check apakah approve/reject/belum ada action -->
+                                                                    <!-- Jika sudah di approve -->        
+                                                                    @if ($selesaiFisik->isApproved === 1)
                                                                         <a href="{{ asset('storage/uploads/evidence_selesai/' . $selesaiFisik->evidence_selesai) }}"
                                                                             target="_blank">
                                                                             <span
                                                                                 class="me-2 text-xs font-weight-bold">{{ $selesaiFisik->evidence_selesai }}</span>
+                                                                            <span class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
+                                                                        </a>
+                                                                    <!-- Jika Direject -->
+                                                                    @elseif ($selesaiFisik->isApproved === 0)
+                                                                        <div class="d-flex flex-column align-items-center px-2 has-validation">
+                                                                            <input type="file" name="evidence_selesai"
+                                                                                class="form-control form-control-sm is-invalid">
+                                                                            <div class="invalid-feedback text-xs fst-italic">
+                                                                                Evidence ditolak. Silahkan upload ulang!
+                                                                            </div>
+                                                                        </div> 
+                                                                    <!-- Jika belum di approve/reject -->
+                                                                    @elseif ($selesaiFisik->isApproved === null)
+                                                                        <a href="{{ asset('storage/uploads/evidence_selesai/' . $selesaiFisik->evidence_selesai) }}"
+                                                                            target="_blank">
+                                                                            <span
+                                                                                class="me-2 text-xs font-weight-bold">{{ $selesaiFisik->evidence_selesai }}</span>
+                                                                            <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
                                                                         </a>
                                                                     @endif
-                                                                </div>
+                                                                @else
+                                                                    <!-- Jika tidak ada, upload file -->
+                                                                    <div class="d-flex flex-row align-items-center px-2">
+                                                                        <input type="file" name="evidence_selesai"
+                                                                            class="form-control form-control-sm"
+                                                                            {{ empty($instalasi) ? '' : 'disabled' }}>
+                                                                    </div>    
+                                                                @endif
                                                             @else
+                                                                <!-- Jika tidak, input upload file muncul -->
                                                                 <div class="d-flex flex-row align-items-center px-2">
-                                                                    <input type="file" name="evidence_selesai"
+                                                                    <input type="file" name="evidence_instalasi"
                                                                         class="form-control form-control-sm"
-                                                                        {{ empty($instalasi) || $instalasi->isApproved == false ? 'disabled' : '' }}
-                                                                        {{ empty($selesaiFisik) ? '' : 'disabled' }}>
+                                                                        {{ empty($instalasi) || $instalasi->isApproved === 0 ? 'disabled' : '' }}
+                                                                        {{ empty($instalasi) ? '' : 'disabled' }}>
                                                                 </div>
                                                             @endif
                                                         </td>
