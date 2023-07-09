@@ -15,6 +15,7 @@ class Persiapan extends Model
         'lop_id',
         'evidence_persiapan',
         'keterangan_persiapan',
+        'persiapan_progress',
         'isApproved'
     ];
 

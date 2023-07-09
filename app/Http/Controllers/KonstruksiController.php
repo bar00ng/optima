@@ -51,6 +51,9 @@ class KonstruksiController extends Controller
                 $persiapan->save();
             }
         }
+        Persiapan::where('lop_id', $lop_id)->update([
+            'persiapan_progress' => (int)$r->persiapan_progress
+        ]);
 
         if ($r->hasFile('evidence_instalasi') && $r->file('evidence_instalasi')->isValid()) {
             $file = $r->file('evidence_instalasi');
@@ -75,6 +78,9 @@ class KonstruksiController extends Controller
                 $instalasi->save();
             }
         }
+        Instalasi::where('lop_id', $lop_id)->update([
+            'instalasi_progress' => (int)$r->instalasi_progress
+        ]);
 
         if ($r->hasFile('evidence_selesai') && $r->file('evidence_selesai')->isValid()) {
             $file = $r->file('evidence_selesai');
@@ -99,6 +105,9 @@ class KonstruksiController extends Controller
                 $selesai->save();
             }
         }
+        SelesaiFisik::where('lop_id', $lop_id)->update([
+            'selesai_fisik_progress' => (int)$r->selesai_fisik_progress
+        ]);
 
         return redirect('/konstruksi/' . $lop_id)->with('Sukses', 'Proses upload evidence berhasil');
     }

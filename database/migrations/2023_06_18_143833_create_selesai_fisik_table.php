@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
             $table->string('evidence_selesai');
             $table->text('keterangan_selesai')->nullable();
+            $table->integer('selesai_fisik_progress')->default(0);
             $table->boolean('isApproved')->nullable()->default(null);
             $table->timestamps();
         });

@@ -15,6 +15,7 @@ class SelesaiFisik extends Model
         'lop_id',
         'evidence_selesai',
         'keterangan_selesai',
+        'selesai_fisik_progress',
         'isApproved'
     ];
 

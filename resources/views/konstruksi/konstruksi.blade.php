@@ -70,52 +70,24 @@
                                                         </td>
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex flex-column">
-                                                                @if (empty($persiapan))
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-center">
+                                                                    @if(Auth::user()->hasRole('optima'))
+                                                                        <input type="number" name="persiapan_progress" value="{{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                    @else
                                                                         <span
-                                                                            class="me-2 text-xs font-weight-bold">0%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="0"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 0%;">
-                                                                                </div>
+                                                                            class="me-2 text-xs font-weight-bold">{{ !empty($persiapan) ? $persiapan->persiapan_progress.'%' : '0%' }}</span>
+                                                                    @endif
+                                                                    <div>
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar bg-gradient-info"
+                                                                                role="progressbar" aria-valuenow="{{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}"
+                                                                                aria-valuemin="0" aria-valuemax="100"
+                                                                                style="width: {{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}%;">
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                @elseif ($persiapan->isApproved === null)
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">50%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="50"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 50%;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @elseif ($persiapan->isApproved === 1 || $persiapan->isApproved === 0)
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">100%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="100"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 100%;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
+                                                                </div>
                                                             </div>
                                                         </td>
                                                         <td>
@@ -244,52 +216,24 @@
                                                         </td>
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex align-items-center justify-content-center">
-                                                                @if (empty($instalasi))
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-center">
+                                                                    @if(Auth::user()->hasRole('optima'))
+                                                                        <input type="number" name="instalasi_progress" value="{{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                    @else
                                                                         <span
-                                                                            class="me-2 text-xs font-weight-bold">0%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="0"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 0%;">
-                                                                                </div>
+                                                                            class="me-2 text-xs font-weight-bold">{{ !empty($instalasi) ? $instalasi->instalasi_progress.'%' : '0%' }}</span>
+                                                                    @endif
+                                                                    <div>
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar bg-gradient-info"
+                                                                                role="progressbar" aria-valuenow="{{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}"
+                                                                                aria-valuemin="0" aria-valuemax="100"
+                                                                                style="width: {{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}%;">
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                @elseif ($instalasi->isApproved === null)
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">50%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="50"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 50%;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @elseif ($instalasi->isApproved === 1 || $instalasi->isApproved === 0)
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">100%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="100"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 100%;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
+                                                                </div>
                                                             </div>
                                                         </td>
                                                         <td>
@@ -337,7 +281,7 @@
                                                                 <div class="d-flex flex-row align-items-center px-2">
                                                                     <input type="file" name="evidence_instalasi"
                                                                         class="form-control form-control-sm"
-                                                                        {{ empty($persiapan) || $persiapan->isApproved === 0 ? 'disabled' : '' }}
+                                                                        {{ empty($persiapan) || $persiapan->isApproved == false ? 'disabled' : '' }}
                                                                         {{ empty($instalasi) ? '' : 'disabled' }}>
                                                                 </div>
                                                             @endif
@@ -420,52 +364,24 @@
                                                         </td>
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex align-items-center justify-content-center">
-                                                                @if (empty($selesaiFisik))
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-center">
+                                                                    @if (Auth::user()->hasRole('optima'))
+                                                                        <input type="number" name="selesai_fisik_progress" value="{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                    @else
                                                                         <span
-                                                                            class="me-2 text-xs font-weight-bold">0%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="0"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 0%;">
-                                                                                </div>
+                                                                            class="me-2 text-xs font-weight-bold">{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress.'%' : '0%' }}</span>
+                                                                    @endif
+                                                                    <div>
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar bg-gradient-info"
+                                                                                role="progressbar" aria-valuenow="{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}"
+                                                                                aria-valuemin="0" aria-valuemax="100"
+                                                                                style="width: {{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}%;">
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                @elseif ($selesaiFisik->isApproved === null)
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">50%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="50"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 50%;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @elseif ($selesaiFisik->isApproved === 1 || $selesaiFisik->isApproved === 0)
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">100%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="100"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 100%;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
+                                                                </div>
                                                             </div>
                                                         </td>
                                                         <td>
