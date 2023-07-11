@@ -10,14 +10,13 @@ use App\Models\Lop;
 class Instalasi extends Model
 {
     protected $table = 'instalasi';
-    
+
     protected $fillable = [
         'lop_id',
-        'evidence_instalasi',
         'keterangan_instalasi',
         'instalasi_progress',
-        'isApproved'
-    ];
+        'data',
+s    ];
 
     use HasFactory;
 
