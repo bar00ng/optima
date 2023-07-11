@@ -108,15 +108,19 @@
                                                             <td class="align-middle">
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
+                                                                    @if (Auth::user()->hasRole('optima'))
+                                                                        <input type="number" name="validasi_progress" value="{{ !empty($validasi) ? $validasi->validasi_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                    @else
                                                                     <span
-                                                                        class="me-2 text-xs font-weight-bold">{{ empty($validasi) ? '0%' : '100%' }}</span>
+                                                                        class="me-2 text-xs font-weight-bold">{{ !empty($validasi) ? $validasi->validasi_progress.'%' : '0%' }}</span>
+                                                                    @endif
                                                                     <div>
                                                                         <div class="progress">
                                                                             <div class="progress-bar bg-gradient-info"
                                                                                 role="progressbar"
-                                                                                aria-valuenow="{{ empty($validasi) ? '0' : '100' }}"
+                                                                                aria-valuenow="{{ !empty($validasi) ? $validasi->validasi_progress : 0 }}"
                                                                                 aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: {{ empty($validasi) ? '0%' : '100%' }};">
+                                                                                style="width: {{ !empty($validasi) ? $validasi->validasi_progress . '%' : 0 }};">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -140,15 +144,19 @@
                                                             <td class="align-middle text-center">
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
+                                                                    @if (Auth::user()->hasRole('optima'))
+                                                                        <input type="number" name="konfirmasi_mitra_progress" value="{{ !empty($konfirmasiMitra) ? $konfirmasiMitra->konfirmasi_mitra_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                    @else
                                                                     <span
-                                                                        class="me-2 text-xs font-weight-bold">{{ empty($konfirmasiMitra) ? '0%' : '100%' }}</span>
+                                                                        class="me-2 text-xs font-weight-bold">{{ !empty($konfirmasiMitra) ? $konfirmasiMitra->konfirmasi_mitra_progress.'%' : '0%' }}</span>
+                                                                    @endif
                                                                     <div>
                                                                         <div class="progress">
                                                                             <div class="progress-bar bg-gradient-info"
                                                                                 role="progressbar"
-                                                                                aria-valuenow="{{ empty($konfirmasiMitra) ? '0' : '100' }}"
+                                                                                aria-valuenow="{{ !empty($konfirmasiMitra) ? $konfirmasiMitra->konfirmasi_mitra_progress : 0 }}"
                                                                                 aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: {{ empty($konfirmasiMitra) ? '0%' : '100%' }};">
+                                                                                style="width: {{ !empty($konfirmasiMitra) ? $konfirmasiMitra->konfirmasi_mitra_progress . '%' : 0 }};">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -173,15 +181,19 @@
                                                             <td class="align-middle text-center">
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
-                                                                    <span
-                                                                        class="me-2 text-xs font-weight-bold">{{ empty($connectivity) ? '0%' : '100%' }}</span>
+                                                                    @if (Auth::user()->hasRole('optima'))
+                                                                        <input type="number" name="connectivity_progress" value="{{ !empty($connectivity) ? $connectivity->connectivity_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                    @else
+                                                                        <span
+                                                                            class="me-2 text-xs font-weight-bold">{{ !empty($connectivity) ? $connectivity->connectivity_progress.'%' : '0%' }}</span>
+                                                                    @endif
                                                                     <div>
                                                                         <div class="progress">
                                                                             <div class="progress-bar bg-gradient-info"
                                                                                 role="progressbar"
-                                                                                aria-valuenow="{{ empty($connectivity) ? '0' : '100' }}"
+                                                                                aria-valuenow="{{ !empty($connectivity) ? $connectivity->connectivity_progress : 0 }}"
                                                                                 aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: {{ empty($connectivity) ? '0%' : '100%' }};">
+                                                                                style="width: {{ !empty($connectivity) ? $connectivity->connectivity_progress . '%' : 0 }};">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -206,38 +218,25 @@
                                                                 </td>
                                                                 <td class="align-middle text-center">
                                                                     <!-- 0% -->
-                                                                    @if ($goLive->exists && $goLive->isNeed == true && $goLive->evidence_golive == null) 
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">0%</span>
+                                                                        @if (Auth::user()->hasRole('optima'))
+                                                                            <input type="number" name="golive_controller" value="{{ !empty($goLive) ? $goLive->golive_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                        @else
+                                                                            <span
+                                                                                class="me-2 text-xs font-weight-bold">{{ !empty($goLive) ? $goLive->golive_progress.'%' : '0%' }}</span>
+                                                                        @endif
                                                                         <div>
                                                                             <div class="progress">
                                                                                 <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="0"
+                                                                                    role="progressbar"
+                                                                                    aria-valuenow="{{ !empty($goLive) ? $goLive->golive_progress : 0 }}"
                                                                                     aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 0%;">
+                                                                                    style="width: {{ !empty($goLive) ? $goLive->golive_progress . '%' : 0 }};">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <!-- 100% -->
-                                                                    @elseif ($goLive->exists && $goLive->isNeed == true && $goLive->evidence_golive !== null)
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-center">
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">100%</span>
-                                                                        <div>
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar bg-gradient-info"
-                                                                                    role="progressbar" aria-valuenow="100"
-                                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                                    style="width: 100%;">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    @endif
                                                                 </td>
                                                                 <td>
                                                                     @if ($goLive->exists && $goLive->evidence_golive !== null)

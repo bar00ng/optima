@@ -95,6 +95,26 @@ class GoLiveController extends Controller
                     'status' => 'GoLive'
                 ]);
         }
+        
+        // Get all progress
+        Validasi::where('lop_id', $lop_id)->update([
+            'validasi_progress' => $r->validasi_progress
+        ]);
+
+        KonfirmasiMitra::where('lop_id', $lop_id)->update([
+            'konfirmasi_mitra_progress' => $r->konfirmasi_mitra_progress
+        ]);
+
+        Connectivity::where('lop_id', $lop_id)->update([
+            'connectivity_progress' => $r->connectivity_progress
+        ]);
+
+        $check_golive = GoLive::where('lop_id', $lop_id)->first();
+        if ($check_golive->isNeed === 1) {
+            GoLive::where('lop_id', $lop_id)->update([
+                'golive_progress' => $r->golive_progress
+            ]);
+        }
 
         return redirect('/goLive/'. $lop_id)->with('Sukses', 'Berhasil diproses!');
     }

@@ -11,7 +11,8 @@ class KonfirmasiMitra extends Model
 
     protected $fillable = [
         'lop_id',
-        'keterangan_konfirmasi_mitra'
+        'keterangan_konfirmasi_mitra',
+        'konfirmasi_mitra_progress'
     ];
 
     use HasFactory;

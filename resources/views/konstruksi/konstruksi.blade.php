@@ -73,7 +73,7 @@
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
                                                                     @if(Auth::user()->hasRole('optima'))
-                                                                        <input type="number" name="persiapan_progress" value="{{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                        <input type="number" name="persiapan_progress" value="{{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;" {{ empty($persiapan) ? 'disabled' : '' }}>
                                                                     @else
                                                                         <span
                                                                             class="me-2 text-xs font-weight-bold">{{ !empty($persiapan) ? $persiapan->persiapan_progress.'%' : '0%' }}</span>
@@ -109,44 +109,46 @@
                                                                                     <span class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
                                                                                 @elseif ($dps['isApproved'] === null)
                                                                                     @if(Auth::user()->hasRole('optima'))
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <form action="#" method="post"
-                                                                                            style="margin-right: 5px; display:hidden;"
-                                                                                            id="form-approve-persiapan">
-                                                                                        </form>
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <form action="#" method="post"
+                                                                                                style="margin-right: 5px; display:hidden;"
+                                                                                                id="form-approve-persiapan">
+                                                                                            </form>
 
-                                                                                        <form
-                                                                                            action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'true', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id'] ]) }}"
-                                                                                            method="post" style="margin-right: 5px"
-                                                                                            id="form-approve-persiapan">
-                                                                                            @method('PATCH')
-                                                                                            @csrf
-                                                                                            <button type="button"
-                                                                                                class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-placement="bottom"
-                                                                                                title="Approve Evidence Persiapan"
-                                                                                                data-container="body"
-                                                                                                data-animation="true"
-                                                                                                id="submit-approve-persiapan">&#10003;</button>
-                                                                                        </form>
+                                                                                            <form
+                                                                                                action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'true', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id'] ]) }}"
+                                                                                                method="post" style="margin-right: 5px"
+                                                                                                id="form-approve-persiapan">
+                                                                                                @method('PATCH')
+                                                                                                @csrf
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-placement="bottom"
+                                                                                                    title="Approve Evidence Persiapan"
+                                                                                                    data-container="body"
+                                                                                                    data-animation="true"
+                                                                                                    id="submit-approve-persiapan">&#10003;</button>
+                                                                                            </form>
 
-                                                                                        <form
-                                                                                            action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'false', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id'] ]) }}"
-                                                                                            method="post" style="margin-right: 5px"
-                                                                                            id="form-reject-persiapan">
-                                                                                            @method('PATCH')
-                                                                                            @csrf
-                                                                                            <button type="button"
-                                                                                                class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-placement="bottom"
-                                                                                                title="Reject Evidence Persiapan"
-                                                                                                data-container="body"
-                                                                                                data-animation="true"
-                                                                                                id="submit-reject-persiapan">&#10007;</button>
-                                                                                        </form>
-                                                                                    </div>
+                                                                                            <form
+                                                                                                action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'false', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id'] ]) }}"
+                                                                                                method="post" style="margin-right: 5px"
+                                                                                                id="form-reject-persiapan">
+                                                                                                @method('PATCH')
+                                                                                                @csrf
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-placement="bottom"
+                                                                                                    title="Reject Evidence Persiapan"
+                                                                                                    data-container="body"
+                                                                                                    data-animation="true"
+                                                                                                    id="submit-reject-persiapan">&#10007;</button>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
                                                                                     @endif
                                                                                 @endif
                                                                             </li>
@@ -162,32 +164,7 @@
                                                         </td>
                                                         <td>
                                                             <textarea name="keterangan_persiapan" class="form-control" cols="30" rows="2"
-                                                                placeholder="Keterangan Persiapan (Opsional)" {{ empty($persiapan ? '' : 'disabled') }}>{{ empty($persiapan) ? '' : $lop->keterangan_persiapan }}</textarea>
-                                                        </td>
-                                                        <td>
-                                                            @if (!empty($persiapan))
-                                                                @if ($persiapan->isApproved === null)
-                                                                    @if (Auth::user()->hasRole('mitra'))
-                                                                        <span
-                                                                            class="me-2 text-sm text-secondary font-weight-bold">Menunggu
-                                                                            Approval</span>
-                                                                    @elseif (Auth::user()->hasRole('optima'))
-
-                                                                    @endif
-                                                                @elseif($persiapan->isApproved !== null)
-                                                                    @if ($persiapan->isApproved == false)
-                                                                        <span
-                                                                            class="me-2 text-sm text-danger font-weight-bold">Ditolak</span>
-                                                                    @elseif($persiapan->isApproved == true)
-                                                                        <span
-                                                                            class="me-2 text-sm text-success font-weight-bold">Disetujui</span>
-                                                                    @else
-                                                                        <span
-                                                                            class="me-2 text-sm text-secondary font-weight-bold">Menunggu
-                                                                            Approval</span>
-                                                                    @endif
-                                                                @endif
-                                                            @endif
+                                                                placeholder="Keterangan Persiapan (Opsional)">{{ empty($persiapan) ? '' : $persiapan->keterangan_persiapan }}</textarea>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -203,7 +180,7 @@
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
                                                                     @if(Auth::user()->hasRole('optima'))
-                                                                        <input type="number" name="instalasi_progress" value="{{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                        <input type="number" name="instalasi_progress" value="{{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;" {{ empty($instalasi) ? 'disabled' : '' }}>
                                                                     @else
                                                                         <span
                                                                             class="me-2 text-xs font-weight-bold">{{ !empty($instalasi) ? $instalasi->instalasi_progress.'%' : '0%' }}</span>
@@ -239,44 +216,46 @@
                                                                                     <span class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
                                                                                 @elseif ($dis['isApproved'] === null)
                                                                                     @if(Auth::user()->hasRole('optima'))
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <form action="#" method="post"
-                                                                                            style="margin-right: 5px; display:hidden;"
-                                                                                            id="form-approve-persiapan">
-                                                                                        </form>
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <form action="#" method="post"
+                                                                                                style="margin-right: 5px; display:hidden;"
+                                                                                                id="form-approve-persiapan">
+                                                                                            </form>
 
-                                                                                        <form
-                                                                                            action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'true', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                            method="post" style="margin-right: 5px"
-                                                                                            id="form-approve-persiapan">
-                                                                                            @method('PATCH')
-                                                                                            @csrf
-                                                                                            <button type="button"
-                                                                                                class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-placement="bottom"
-                                                                                                title="Approve Evidence Persiapan"
-                                                                                                data-container="body"
-                                                                                                data-animation="true"
-                                                                                                id="submit-approve-persiapan">&#10003;</button>
-                                                                                        </form>
+                                                                                            <form
+                                                                                                action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'true', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id'] ]) }}"
+                                                                                                method="post" style="margin-right: 5px"
+                                                                                                id="form-approve-persiapan">
+                                                                                                @method('PATCH')
+                                                                                                @csrf
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-placement="bottom"
+                                                                                                    title="Approve Evidence Instalasi"
+                                                                                                    data-container="body"
+                                                                                                    data-animation="true"
+                                                                                                    id="submit-approve-persiapan">&#10003;</button>
+                                                                                            </form>
 
-                                                                                        <form
-                                                                                            action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'false', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                            method="post" style="margin-right: 5px"
-                                                                                            id="form-reject-persiapan">
-                                                                                            @method('PATCH')
-                                                                                            @csrf
-                                                                                            <button type="button"
-                                                                                                class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-placement="bottom"
-                                                                                                title="Reject Evidence Persiapan"
-                                                                                                data-container="body"
-                                                                                                data-animation="true"
-                                                                                                id="submit-reject-persiapan">&#10007;</button>
-                                                                                        </form>
-                                                                                    </div>
+                                                                                            <form
+                                                                                                action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'false', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id'] ]) }}"
+                                                                                                method="post" style="margin-right: 5px"
+                                                                                                id="form-reject-persiapan">
+                                                                                                @method('PATCH')
+                                                                                                @csrf
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-placement="bottom"
+                                                                                                    title="Reject Evidence Instalasi"
+                                                                                                    data-container="body"
+                                                                                                    data-animation="true"
+                                                                                                    id="submit-reject-persiapan">&#10007;</button>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
                                                                                     @endif
                                                                                 @endif
                                                                             </li>
@@ -292,7 +271,7 @@
                                                         </td>
                                                         <td>
                                                             <textarea name="keterangan_instalasi" class="form-control" cols="30" rows="2"
-                                                                placeholder="Keterangan Instalasi (Opsional)" {{ empty($instalasi) ? '' : 'disabled' }} {{ empty($persiapan) ? 'disabled' : '' }}>{{ empty($instalasi) ? '' : $lop->instalasi->keterangan_instalasi }}</textarea>
+                                                                placeholder="Keterangan Instalasi (Opsional)">{{ empty($instalasi) ? '' : $instalasi->keterangan_instalasi }}</textarea>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -308,7 +287,7 @@
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
                                                                     @if (Auth::user()->hasRole('optima'))
-                                                                        <input type="number" name="selesai_fisik_progress" value="{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                        <input type="number" name="selesai_fisik_progress" value="{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;" {{ empty($selesaiFisik) ? 'disabled' : '' }}>
                                                                     @else
                                                                         <span
                                                                             class="me-2 text-xs font-weight-bold">{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress.'%' : '0%' }}</span>
@@ -344,44 +323,46 @@
                                                                                     <span class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
                                                                                 @elseif ($dis['isApproved'] === null)
                                                                                     @if(Auth::user()->hasRole('optima'))
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <form action="#" method="post"
-                                                                                            style="margin-right: 5px; display:hidden;"
-                                                                                            id="form-approve-persiapan">
-                                                                                        </form>
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <form action="#" method="post"
+                                                                                                style="margin-right: 5px; display:hidden;"
+                                                                                                id="form-approve-persiapan">
+                                                                                            </form>
 
-                                                                                        <form
-                                                                                            action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'true', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                            method="post" style="margin-right: 5px"
-                                                                                            id="form-approve-persiapan">
-                                                                                            @method('PATCH')
-                                                                                            @csrf
-                                                                                            <button type="button"
-                                                                                                class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-placement="bottom"
-                                                                                                title="Approve Evidence Persiapan"
-                                                                                                data-container="body"
-                                                                                                data-animation="true"
-                                                                                                id="submit-approve-persiapan">&#10003;</button>
-                                                                                        </form>
+                                                                                            <form
+                                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'true', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id'] ]) }}"
+                                                                                                method="post" style="margin-right: 5px"
+                                                                                                id="form-approve-persiapan">
+                                                                                                @method('PATCH')
+                                                                                                @csrf
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-placement="bottom"
+                                                                                                    title="Approve Evidence Selesai Fisik"
+                                                                                                    data-container="body"
+                                                                                                    data-animation="true"
+                                                                                                    id="submit-approve-persiapan">&#10003;</button>
+                                                                                            </form>
 
-                                                                                        <form
-                                                                                            action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'false', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                            method="post" style="margin-right: 5px"
-                                                                                            id="form-reject-persiapan">
-                                                                                            @method('PATCH')
-                                                                                            @csrf
-                                                                                            <button type="button"
-                                                                                                class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-placement="bottom"
-                                                                                                title="Reject Evidence Persiapan"
-                                                                                                data-container="body"
-                                                                                                data-animation="true"
-                                                                                                id="submit-reject-persiapan">&#10007;</button>
-                                                                                        </form>
-                                                                                    </div>
+                                                                                            <form
+                                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'false', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id'] ]) }}"
+                                                                                                method="post" style="margin-right: 5px"
+                                                                                                id="form-reject-persiapan">
+                                                                                                @method('PATCH')
+                                                                                                @csrf
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-placement="bottom"
+                                                                                                    title="Reject Evidence Selesai Fisik"
+                                                                                                    data-container="body"
+                                                                                                    data-animation="true"
+                                                                                                    id="submit-reject-persiapan">&#10007;</button>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
                                                                                     @endif
                                                                                 @endif
                                                                             </li>
@@ -397,7 +378,7 @@
                                                         </td>
                                                         <td>
                                                             <textarea name="keterangan_selesai" class="form-control" cols="30" rows="2"
-                                                                placeholder="Keterangan Selesai Fisik (Opsional)" {{ empty($selesaiFisik) ? '' : 'disabled' }} {{ empty($instalasi) ? 'disabled' : '' }}>{{ empty($selesaiFisik) ? '' : $lop->selesaiFisik->keterangan_selesai }}</textarea>
+                                                                placeholder="Keterangan Selesai Fisik (Opsional)">{{ empty($selesaiFisik) ? '' : $selesaiFisik->keterangan_selesai }}</textarea>
                                                         </td>
                                                     </tr>
                                                 </tbody>
