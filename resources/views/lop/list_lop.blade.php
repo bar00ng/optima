@@ -175,16 +175,19 @@
                                                         @endif
                                                     @endif
 
-                                                    @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
-                                                        <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
-                                                            <button type="button" class="btn btn-outline-primary btn-sm"
-                                                                style="margin-right: 5px">Konstruksi</button>
-                                                        </a>
+                                                    @if (Auth::user()->hasRole(['optima', 'mitra']))
+                                                        @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
+                                                            <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
+                                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                    style="margin-right: 5px">Konstruksi</button>
+                                                            </a>
 
-                                                        <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
-                                                            <button type="button" class="btn btn-outline-secondary btn-sm"
-                                                                style="margin-right: 5px">GoLive</button>
-                                                        </a>
+                                                            <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
+                                                                <button type="button"
+                                                                    class="btn btn-outline-secondary btn-sm"
+                                                                    style="margin-right: 5px">GoLive</button>
+                                                            </a>
+                                                        @endif
                                                     @endif
 
                                                     <!-- view info LOP -->

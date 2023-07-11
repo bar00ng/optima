@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('persiapan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
-            $table->string('evidence_persiapan');
             $table->text('keterangan_persiapan')->nullable();
             $table->integer('persiapan_progress')->default(0);
-            $table->boolean('isApproved')->nullable()->default(null);
+            $table->json('data');
             $table->timestamps();
         });
     }
