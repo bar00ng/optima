@@ -40,9 +40,8 @@
                                             </td>
 
                                             <td class="align-middle text-left">
-                                                <a href="{{ route('lop.formAdd', ['permintaan_id' => $item->id]) }}">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $item->nama_permintaan }}</span>
+                                                <a href="{{ route('lop.formAdd', ['permintaan_id' => $item->id]) }}" class="icon-link icon-link-hover text-xs font-weight-bold">
+                                                    {{ $item->nama_permintaan }}
                                                 </a>
                                             </td>
                                             <td class="align-middle text-left">
@@ -60,7 +59,13 @@
                                                 @endif
                                             </td>
                                             <td class="align-middle text-left">
-                                                <span class="text-secondary text-xs font-weight-bold">-</span>
+                                                @if (!empty($item->no_nota_dinas) || !empty($item->refferal_permintaan))
+                                                    <a href="{{ asset('storage/uploads/refferal_permintaan/' . $item->refferal_permintaan) }}" class="icon-link icon-link-hover text-xs font-weight-bold">
+                                                        {{$item->no_nota_dinas}}
+                                                    </a>
+                                                @else
+                                                    <span class="text-secondary text-xs font-weight-bold">-</span>
+                                                @endif
                                             </td>
                                             <!-- Add more table cells for other fields -->
                                         </tr>

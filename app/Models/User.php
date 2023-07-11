@@ -5,6 +5,7 @@ namespace App\Models;
 use Laratrust\Contracts\LaratrustUser;
 use Laratrust\Traits\HasRolesAndPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -37,4 +38,8 @@ class User extends Authenticatable implements LaratrustUser
         'password',
         'remember_token',
     ];
+
+    public function lop(): HasMany {
+        return $this->hasMany(Lop::class, 'mitra_id', 'id');
+    }
 }

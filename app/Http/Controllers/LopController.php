@@ -109,7 +109,14 @@ class LopController extends Controller
         $pageName = 'Alokasi Mitra';
 
         $lop = Lop::where('id', $lop_id)->first();
-        $mitra = User::whereHasRole('mitra')->get();
+        $mitra = User::whereHasRole('mitra')->withCount([
+            'lop as lop_done_count' => function ($query) {
+                $query->where('status', 'Selesai');
+            },
+            'lop as lop_not_done_count' => function ($query) {
+                $query->where('status', '<>', 'Selesai');
+            }
+        ])->get();
         
 
         return view('alokasi_mitra.form_alokasiMitra', compact('pageCategory', 'pageName', 'lop', 'mitra'));
