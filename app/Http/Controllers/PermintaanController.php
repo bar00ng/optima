@@ -47,7 +47,7 @@ class PermintaanController extends Controller
             $file = $r->file('reff_permintaan');
             $fileName = $file->getClientOriginalName();
 
-            $file->store('public/uploads/refferal_permintaan');
+            $file->storeAs('public/uploads/refferal_permintaan', $fileName);
 
             $validated['refferal_permintaan'] = $fileName;
         }

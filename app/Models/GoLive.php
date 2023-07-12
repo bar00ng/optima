@@ -16,7 +16,8 @@ class GoLive extends Model
         'isNeed',
         'evidence_golive',
         'keterangan_withGoLive',
-        'keterangan_withoutGoLive'
+        'keterangan_withoutGoLive',
+        'golive_progress'
     ];
 
     use HasFactory;

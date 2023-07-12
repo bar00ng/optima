@@ -11,7 +11,8 @@ class Validasi extends Model
 
     protected $fillable = [
         'lop_id',
-        'keterangan_validasi'
+        'keterangan_validasi',
+        'validasi_progress'
     ];
 
     use HasFactory;

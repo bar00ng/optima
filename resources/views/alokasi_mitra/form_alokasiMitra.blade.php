@@ -125,39 +125,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($mitra as $m)
+                                    @php
+                                        $lop_done = $m->lop
+                                    @endphp
                                     <tr>
                                         <td class="align-middle text-left">
                                             <div class="d-flex px-2"> <span
-                                                    class="text-secondary text-xs font-weight-bold">PT. TA</span>
+                                                    class="text-secondary text-xs font-weight-bold">{{ $m->username }}</span>
                                             </div>
                                         </td>
                                         <td class="align-middle text-left"><span
-                                                class="text-secondary text-xs font-weight-bold">12</span></td>
+                                                class="text-secondary text-xs font-weight-bold">{{ $m->lop_done_count }}</span></td>
                                         <td class="align-middle text-left"><span
-                                                class="text-secondary text-xs font-weight-bold">3</span></td>
+                                                class="text-secondary text-xs font-weight-bold">{{ $m->lop_not_done_count }}</span></td>
                                     </tr>
-                                    <tr>
-                                        <td class="align-middle text-left">
-                                            <div class="d-flex px-2"> <span
-                                                    class="text-secondary text-xs font-weight-bold">KOPEG</span>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-left"><span
-                                                class="text-secondary text-xs font-weight-bold">3</span></td>
-                                        <td class="align-middle text-left"><span
-                                                class="text-secondary text-xs font-weight-bold">4</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle text-left">
-                                            <div class="d-flex px-2"> <span
-                                                    class="text-secondary text-xs font-weight-bold">WMT</span>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-left"><span
-                                                class="text-secondary text-xs font-weight-bold">2</span></td>
-                                        <td class="align-middle text-left"><span
-                                                class="text-secondary text-xs font-weight-bold">1</span></td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

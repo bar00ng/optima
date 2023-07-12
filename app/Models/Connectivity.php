@@ -11,7 +11,8 @@ class Connectivity extends Model
 
     protected $fillable = [
         'lop_id',
-        'keterangan_connectivity'
+        'keterangan_connectivity',
+        'connectivity_progress'
     ];
 
     use HasFactory;
