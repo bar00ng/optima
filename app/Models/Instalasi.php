@@ -16,7 +16,7 @@ class Instalasi extends Model
         'keterangan_instalasi',
         'instalasi_progress',
         'data',
-s    ];
+    ];
 
     use HasFactory;
 
