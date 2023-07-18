@@ -110,18 +110,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @elseif ($item->status == 'Selesai Fisik')
-                                                    <div class="d-flex align-items-center justify-content-center"> <span
-                                                            class="me-2 text-xs font-weight-bold">90%</span>
-                                                        <div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-gradient-info"
-                                                                    role="progressbar" aria-valuenow="90" aria-valuemin="0"
-                                                                    aria-valuemax="100" style="width: 90%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @elseif ($item->status == 'GoLive' || $item->status == 'Selesai')
+                                                @elseif ($item->status == 'GoLive' || $item->status == 'Selesai' || $item->status == 'Selesai Fisik')
                                                     <div class="d-flex align-items-center justify-content-center"> <span
                                                             class="me-2 text-xs font-weight-bold">100%</span>
                                                         <div>

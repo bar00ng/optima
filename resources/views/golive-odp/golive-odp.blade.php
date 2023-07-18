@@ -68,8 +68,7 @@
                                                                     <div class="form-check mb-3">
                                                                         <input class="form-check-input" type="radio"
                                                                             name="isNeed" value="true"
-                                                                            {{ ($goLive && $goLive->exists && $goLive->isNeed == true) ? 'checked' : '' }}
-                                                                            {{ empty($goLive) ? '' : 'disabled' }}>
+                                                                            {{ ($goLive && $goLive->exists && $goLive->isNeed == true) ? 'checked' : '' }}>
                                                                         <label class="custom-control-label"
                                                                             for="customRadio1">GoLive ODP</label>
                                                                     </div>
@@ -78,8 +77,7 @@
                                                                     <div class="form-check mb-3">
                                                                         <input class="form-check-input" type="radio"
                                                                             name="isNeed" value="false"
-                                                                            {{ ($goLive && $goLive->exists && $goLive->isNeed == false) ? 'checked' : '' }}
-                                                                            {{ empty($goLive) ? '' : 'disabled' }}>
+                                                                            {{ ($goLive && $goLive->exists && $goLive->isNeed == false) ? 'checked' : '' }}>
                                                                         <label class="custom-control-label"
                                                                             for="customRadio1">Tanpa GoLive ODP</label>
                                                                     </div>
@@ -87,7 +85,7 @@
                                                                 <td colspan="2">
                                                                     <div class="form-group has-validation">
                                                                         <textarea name="keterangan_withoutGoLive" class="form-control {{ $errors->has('keterangan_withoutGoLive') ? 'is-invalid' : '' }}" cols="30" rows="2"
-                                                                            placeholder="Keterangan Tanpa GoLive" {{ empty($goLive) ? '' : 'disabled' }}>{{ empty($goLive) ? '' : $goLive->keterangan_withoutGolive }}</textarea>
+                                                                            placeholder="Keterangan Tanpa GoLive">{{ empty($goLive) ? '' : $goLive->keterangan_withoutGolive }}</textarea>
                                                                         <div class="invalid-feedback">
                                                                             {{ $errors->first('keterangan_withoutGoLive') }}
                                                                         </div>
@@ -207,8 +205,7 @@
                                                         </tr>
 
                                                         <!-- Go Live ODP -->
-                                                        @if ($goLive && $goLive->exists && $goLive->isNeed == true)
-                                                            <tr>
+                                                            <tr style="display: {{ ($goLive && $goLive->exists && $goLive->isNeed == true) ? '' : 'none' }};">
                                                                 <td>
                                                                     <div class="d-flex px-2">
                                                                         <div class="my-auto">
@@ -261,7 +258,6 @@
                                                                         placeholder="Keterangan GoLive" {{ $goLive->exists && $goLive->isNeed == false ? 'disabled' : '' }} {{ empty($connectivity) ? 'disabled' : '' }} {{ $goLive->exists && $goLive->evidence_golive !== null ? 'disabled' : ''}}></textarea>
                                                                 </td>
                                                             </tr>
-                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>

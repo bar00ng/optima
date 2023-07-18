@@ -39,7 +39,6 @@ class GoLiveController extends Controller
             // Kalau radio Dengan Go Live di checklist
             if($r->isNeed == "true") {
                 $goLive->isNeed = true;
-
             }
             // Kalau radio Tanpa Go Live di checklist
             elseif ($r->isNeed == "false") {
@@ -51,7 +50,16 @@ class GoLiveController extends Controller
             }
             $goLive->lop_id = $lop_id;
 
-            $goLive->save();
+            $lop = Lop::where('id', $lop_id)->first();
+            if (!empty($lop->goLive)) {
+                $goLive->evidence_golive = null;
+                $goLive->keterangan_withGolive = null;
+
+                GoLive::where('lop_id', $lop_id)
+                ->update($goLive->toArray());
+            } else {
+                $goLive->save;
+            }
         }
 
         if ($r->filled('keterangan_validasi')) {
@@ -107,12 +115,11 @@ class GoLiveController extends Controller
             'connectivity_progress' => $r->connectivity_progress
         ]);
 
-        $check_golive = GoLive::where('lop_id', $lop_id)->first();
-        if ($check_golive->isNeed === 1) {
-            GoLive::where('lop_id', $lop_id)->update([
-                'golive_progress' => $r->golive_progress
-            ]);
-        }
+        GoLive::where('lop_id', $lop_id)->update([
+            'golive_progress' => $r->golive_progress
+        ]);
+
+
 
         return redirect('/goLive/'. $lop_id)->with('Sukses', 'Berhasil diproses!');
     }
