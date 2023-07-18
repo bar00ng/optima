@@ -39,11 +39,9 @@ class GoLiveController extends Controller
             // Kalau radio Dengan Go Live di checklist
             if($r->isNeed == "true") {
                 $goLive->isNeed = true;
-                Lop::where('id', $lop_id)->update([
-                    'status' => 'Selesai'
-                ]);
+
             }
-            // Kalau radio Tanpa Go Live di checklist 
+            // Kalau radio Tanpa Go Live di checklist
             elseif ($r->isNeed == "false") {
                 $validated = $r->validate([
                     'keterangan_withoutGoLive' => 'required'
@@ -81,7 +79,7 @@ class GoLiveController extends Controller
             $file = $r->file('evidence_golive');
             $fileName = $file->getClientOriginalName();
 
-            $file->storeAs('public/uploads/evidence_golive', $fileName); 
+            $file->storeAs('public/uploads/evidence_golive', $fileName);
             $goLive->evidence_golive = $fileName;
 
             if ($r->filled('keterangan_withGolive')) {
@@ -95,7 +93,7 @@ class GoLiveController extends Controller
                     'status' => 'GoLive'
                 ]);
         }
-        
+
         // Get all progress
         Validasi::where('lop_id', $lop_id)->update([
             'validasi_progress' => $r->validasi_progress

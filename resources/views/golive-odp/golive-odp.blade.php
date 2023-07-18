@@ -221,7 +221,7 @@
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-center">
                                                                         @if (Auth::user()->hasRole('optima'))
-                                                                            <input type="number" name="golive_controller" value="{{ !empty($goLive) ? $goLive->golive_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
+                                                                            <input type="number" name="golive_progress" value="{{ !empty($goLive) ? $goLive->golive_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;">
                                                                         @else
                                                                             <span
                                                                                 class="me-2 text-xs font-weight-bold">{{ !empty($goLive) ? $goLive->golive_progress.'%' : '0%' }}</span>
