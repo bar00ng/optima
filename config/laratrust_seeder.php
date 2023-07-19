@@ -12,21 +12,10 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'admin' => [
-            'list_permintaan' => 'c,r,u,d',
-            'lop' => 'c,r,u,d',
-            'mitra' => 'c,r,u,d'
-        ],
-        'mitra' => [
-            'lop' => 'r,u,d',
-            'persiapan' => 'c,r,u,d',
-            'instalasi' => 'c,r,u,d',
-            'selesai_fisik' => 'c,r,u,d'
-        ],
-        'optima' => [
-            'lop' => 'r,u,d',
-            'mitra' => 'r,u,d',
-        ],
+        'admin' => [],
+        'mitra' => [],
+        'optima' => [],
+        'sdi' => []
     ],
 
     'permissions_map' => [

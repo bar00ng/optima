@@ -65,10 +65,15 @@
                                                     @endif
                                                 @elseif ($item->status == 'Survey + RAB')
                                                     @if (empty($item->rabApproval))
-                                                        <a href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
+                                                        @if (Auth::user()->hasRole(['optima', 'mitra', 'sdi']))
+                                                            <a href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
+                                                                <span class="badge badge-pill bg-gradient-danger">Belum
+                                                                    Survey</span>
+                                                            </a>
+                                                        @else
                                                             <span class="badge badge-pill bg-gradient-danger">Belum
                                                                 Survey</span>
-                                                        </a>
+                                                        @endif
                                                     @elseif($item->rabApproval->isApproved == 0 && $item->rabApproval->created_at == $item->rabApproval->updated_at)
                                                         <span class="badge badge-pill bg-gradient-warning">Menunggu
                                                             Approval</span>
@@ -170,7 +175,11 @@
                                                                 <button type="button" class="btn btn-outline-primary btn-sm"
                                                                     style="margin-right: 5px">Konstruksi</button>
                                                             </a>
+                                                        @endif
+                                                    @endif
 
+                                                    @if (Auth::user()->hasRole(['optima', 'sdi']))
+                                                        @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
                                                             <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
                                                                 <button type="button"
                                                                     class="btn btn-outline-secondary btn-sm"
@@ -178,6 +187,7 @@
                                                             </a>
                                                         @endif
                                                     @endif
+
 
                                                     <!-- view info LOP -->
                                                     <!-- Toggle Modal -->

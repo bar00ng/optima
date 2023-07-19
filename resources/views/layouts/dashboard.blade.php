@@ -70,7 +70,7 @@
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
-                @if (Auth::user()->hasRole(['admin', 'optima']))
+                @if (Auth::user()->hasRole(['optima', 'mitra', 'sdi']))
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->routeIs('*lop*') ? 'active' : '' }}"
                         href="{{ route('lop.list') }}">
@@ -103,6 +103,16 @@
                                 <i class="fa fa-users text-primary text-sm opacity-10"></i>
                             </div>
                             <span class="nav-link-text ms-1">List Mitra</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('*mitra*') ? 'active' : '' }}"
+                            href="#">
+                            <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-users text-primary text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">List SDI</span>
                         </a>
                     </li>
                 @endif

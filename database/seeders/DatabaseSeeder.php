@@ -52,5 +52,13 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('optima'),
             'first_name' => 'optima'
         ])->addRole('optima');
+
+        // SDI Account
+        User::create([
+            'username' => 'sdi',
+            'email' => 'sdi@example.com',
+            'password' => Hash::make('sdi'),
+            'first_name' => 'sdi'
+        ])->addRole('sdi');
     }
 }
