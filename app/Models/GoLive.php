@@ -15,7 +15,7 @@ class GoLive extends Model
         'lop_id',
         'isNeed',
         'evidence_golive',
-        'keterangan_withGoLive',
+        'keterangan_withGolive',
         'keterangan_withoutGoLive',
         'golive_progress'
     ];

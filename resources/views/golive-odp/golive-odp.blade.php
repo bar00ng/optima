@@ -85,7 +85,7 @@
                                                                 <td colspan="2">
                                                                     <div class="form-group has-validation">
                                                                         <textarea name="keterangan_withoutGoLive" class="form-control {{ $errors->has('keterangan_withoutGoLive') ? 'is-invalid' : '' }}" cols="30" rows="2"
-                                                                            placeholder="Keterangan Tanpa GoLive">{{ empty($goLive) ? '' : $goLive->keterangan_withoutGolive }}</textarea>
+                                                                            placeholder="Keterangan Tanpa GoLive">{{ !empty($goLive) ? $goLive->keterangan_withoutGolive : '' }}</textarea>
                                                                         <div class="invalid-feedback">
                                                                             {{ $errors->first('keterangan_withoutGoLive') }}
                                                                         </div>
@@ -99,7 +99,7 @@
                                                             <td>
                                                                 <div class="d-flex px-2">
                                                                     <div class="my-auto">
-                                                                        <h6 class="mb-0 text-sm">Validasi</h6>
+                                                                        <h6 class="mb-0 text-sm">Validasi DOC</h6>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -126,7 +126,7 @@
                                                             </td>
                                                             <td colspan="2">
                                                                 <textarea name="keterangan_validasi" class="form-control" cols="30" rows="2"
-                                                                    placeholder="Keterangan Validasi" {{ empty($validasi) ? '' : 'disabled' }}>{{ empty($validasi) ? '' : $validasi->keterangan_validasi }}</textarea>
+                                                                    placeholder="Keterangan Validasi" >{{ empty($validasi) ? '' : $validasi->keterangan_validasi }}</textarea>
                                                             </td>
                                                         </tr>
 
@@ -162,8 +162,7 @@
                                                             </td>
                                                             <td colspan="2">
                                                                 <textarea name="keterangan_konfirmasi_mitra" class="form-control" cols="30" rows="2"
-                                                                    placeholder="Keterangan Konfirmasi Mitra" {{ empty($validasi) ? 'disabled' : '' }}
-                                                                    {{ empty($konfirmasiMitra) ? '' : 'disabled' }}>{{ empty($konfirmasiMitra) ? '' : $konfirmasiMitra->keterangan_konfirmasi_mitra }}</textarea>
+                                                                    placeholder="Keterangan Konfirmasi Mitra">{{ empty($konfirmasiMitra) ? '' : $konfirmasiMitra->keterangan_konfirmasi_mitra }}</textarea>
                                                             </td>
                                                         </tr>
 
@@ -172,7 +171,7 @@
                                                             <td>
                                                                 <div class="d-flex px-2">
                                                                     <div class="my-auto">
-                                                                        <h6 class="mb-0 text-sm">Connectivity</h6>
+                                                                        <h6 class="mb-0 text-sm">OGP Connectivity</h6>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -199,8 +198,7 @@
                                                             </td>
                                                             <td colspan="2">
                                                                 <textarea name="keterangan_connectivity" class="form-control" cols="30" rows="2"
-                                                                    placeholder="Keterangan Connectivity" {{ empty($konfirmasiMitra) ? 'disabled' : '' }}
-                                                                    {{ empty($connectivity) ? '' : 'disabled' }}>{{ empty($connectivity) ? '' : $connectivity->keterangan_connectivity }}</textarea>
+                                                                    placeholder="Keterangan Connectivity">{{ empty($connectivity) ? '' : $connectivity->keterangan_connectivity }}</textarea>
                                                             </td>
                                                         </tr>
 
@@ -209,7 +207,7 @@
                                                                 <td>
                                                                     <div class="d-flex px-2">
                                                                         <div class="my-auto">
-                                                                            <h6 class="mb-0 text-sm">GoLive ODP</h6>
+                                                                            <h6 class="mb-0 text-sm">GoLive</h6>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -245,19 +243,24 @@
                                                                                         class="me-2 text-xs font-weight-bold">{{ $goLive->evidence_golive }}</span>
                                                                                 </a>
                                                                             </div>
+                                                                        @else
+                                                                            <div
+                                                                                class="d-flex flex-row align-items-center px-2">
+                                                                                <input type="file" name="evidence_golive"
+                                                                                    class="form-control form-control-sm">
+                                                                            </div>
                                                                         @endif
                                                                     @else
                                                                         <div
                                                                             class="d-flex flex-row align-items-center px-2">
                                                                             <input type="file" name="evidence_golive"
-                                                                                class="form-control form-control-sm"
-                                                                                {{ empty($connectivity) ? 'disabled' : '' }}>
+                                                                                class="form-control form-control-sm">
                                                                         </div>
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    <textarea name="keterangan_withGolive" class="form-control" cols="30" rows="2"
-                                                                        placeholder="Keterangan GoLive" {{ isset($goLive) && $goLive->exists && $goLive->isNeed == false ? 'disabled' : '' }} {{ empty($connectivity) ? 'disabled' : '' }} {{ isset($goLive) && isset($goLive->evidence_golive) ? 'disabled' : '' }}></textarea>
+                                                                    <textarea name="keterangan_withGoLive" class="form-control" cols="30" rows="2"
+                                                                        placeholder="Keterangan GoLive" {{ isset($goLive) && $goLive->exists && $goLive->isNeed == false ? 'disabled' : '' }}>{{ isset($goLive) && $goLive->exists && isset($goLive->keterangan_withGolive) ? $goLive->keterangan_withGolive : '' }}</textarea>
                                                                 </td>
                                                             </tr>
                                                     </tbody>
