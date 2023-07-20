@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KonstruksiController;
 use App\Http\Controllers\GoLiveController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SdiController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -55,6 +56,14 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/mitra/edit/{id}', [MitraController::class, 'formEditMitra'])->name('mitra.edit');
     Route::patch('/mitra/edit/{id}', [MitraController::class, 'patchMitra'])->name('mitra.patch');
     Route::delete('/mitra/delete/{id}', [MitraController::class, 'delete'])->name('mitra.delete');
+
+    Route::get('/sdi', [SdiController::class, 'index'])->name('sdi.list');
+    Route::get('/sdi/add', [SdiController::class, 'formAddSdi'])->name('sdi.formAdd');
+    Route::post('/sdi/add', [SdiController::class, 'storeSdi'])->name('sdi.store');
+    Route::get('/sdi/edit/{id}', [SdiController::class, 'formEditSdi'])->name('sdi.edit');
+    Route::patch('/sdi/edit/{id}', [SdiController::class, 'patchSdi'])->name('sdi.patch');
+    Route::delete('/sdi/delete/{id}', [SdiController::class, 'delete'])->name('sdi.delete');
+
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -236,14 +236,16 @@
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    @if ($goLive->exists && $goLive->evidence_golive !== null)
-                                                                        <div class="d-flex flex-row align-items-center">
-                                                                            <a href="{{ asset('storage/uploads/evidence_golive/' . $goLive->evidence_golive) }}"
-                                                                                target="_blank">
-                                                                                <span
-                                                                                    class="me-2 text-xs font-weight-bold">{{ $goLive->evidence_golive }}</span>
-                                                                            </a>
-                                                                        </div>
+                                                                    @if (!empty($goLive))
+                                                                        @if ($goLive->exists && $goLive->evidence_golive !== null)
+                                                                            <div class="d-flex flex-row align-items-center">
+                                                                                <a href="{{ asset('storage/uploads/evidence_golive/' . $goLive->evidence_golive) }}"
+                                                                                    target="_blank">
+                                                                                    <span
+                                                                                        class="me-2 text-xs font-weight-bold">{{ $goLive->evidence_golive }}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                        @endif
                                                                     @else
                                                                         <div
                                                                             class="d-flex flex-row align-items-center px-2">
@@ -255,7 +257,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <textarea name="keterangan_withGolive" class="form-control" cols="30" rows="2"
-                                                                        placeholder="Keterangan GoLive" {{ $goLive->exists && $goLive->isNeed == false ? 'disabled' : '' }} {{ empty($connectivity) ? 'disabled' : '' }} {{ $goLive->exists && $goLive->evidence_golive !== null ? 'disabled' : ''}}></textarea>
+                                                                        placeholder="Keterangan GoLive" {{ isset($goLive) && $goLive->exists && $goLive->isNeed == false ? 'disabled' : '' }} {{ empty($connectivity) ? 'disabled' : '' }} {{ isset($goLive) && isset($goLive->evidence_golive) ? 'disabled' : '' }}></textarea>
                                                                 </td>
                                                             </tr>
                                                     </tbody>
