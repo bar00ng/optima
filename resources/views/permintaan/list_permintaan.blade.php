@@ -9,8 +9,14 @@
                             <button class="btn btn-primary btn-sm ms-auto">Buat Permintaan</button>
                         </a>
                         @if(Auth::user()->hasRole('optima'))
-                            <a href="{{ route('permintaan.create.report') }}">
-                                <button class="btn btn-secondary btn-sm ms-auto">Download Report</button>
+                            <a href="{{ route('permintaan.create.report') }}" style="margin-left: 5px">
+                                <button type="submit"
+                                    class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                    title="Download PDF" data-container="body"
+                                    data-animation="true">
+                                        <i class="fa fa-download" style="font-size:12px;color:red"></i>
+                                </button>
                             </a>
                         @endif
                     </div>
