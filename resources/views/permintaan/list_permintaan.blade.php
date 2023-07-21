@@ -60,7 +60,7 @@
                                             </td>
                                             <td class="align-middle text-left">
                                                 @if (!empty($item->no_nota_dinas) || !empty($item->refferal_permintaan))
-                                                    <a href="{{ asset('storage/uploads/refferal_permintaan/' . $item->refferal_permintaan) }}" class="icon-link icon-link-hover text-xs font-weight-bold">
+                                                    <a href="{{ Storage::url('uploads/refferal_permintaan/' . $item->refferal_permintaan) }}" class="icon-link icon-link-hover text-xs font-weight-bold">
                                                         {{$item->no_nota_dinas}}
                                                     </a>
                                                 @else
