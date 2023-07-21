@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+
 use Illuminate\Http\Request;
 use App\Models\ListPermintaan;
 use App\Models\Lop;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 
 class PermintaanController extends Controller
@@ -71,5 +74,30 @@ class PermintaanController extends Controller
 
     public function delete($id)
     {
+    }
+
+    public function createReport()
+    {
+        $reports = ListPermintaan::all();
+
+        $LOPCount = [];
+
+        foreach($reports as $p) {
+            $LOPCount[$p->id] = Lop::where('permintaan_id', $p->id)->count();
+        }
+
+        $data = [
+            'reports' => $reports,
+            'lop_count' => $LOPCount
+        ];
+
+        $pdf = PDF::loadView('pdf.report', $data);
+
+        // Set the PDF orientation to landscape
+        $pdf->setPaper('A4', 'landscape');
+
+        $filename = 'report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        return $pdf->download($filename);
     }
 }

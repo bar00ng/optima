@@ -21,43 +21,52 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sdi as $item)
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2">
-                                                <div> &nbsp;</div>
-                                                <div class="my-auto">
-                                                    <h6 class="mb-0 text-sm">{{ ($item->last_name) ?  $item->first_name.' '.$item->last_name : $item->first_name }}</h6>
+                                @if (!$sdi->isEmpty())
+                                    @foreach ($sdi as $item)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2">
+                                                    <div> &nbsp;</div>
+                                                    <div class="my-auto">
+                                                        <h6 class="mb-0 text-sm">{{ ($item->last_name) ?  $item->first_name.' '.$item->last_name : $item->first_name }}</h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <a href="{{ route('sdi.edit', ['id' => $item->id]) }}">
-                                                    <button type="button"
-                                                        class="btn btn-outline-warning btn-sm btn-icon-only btn-tooltip"
-                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                        title="Edit Mitra" data-container="body" data-animation="true"
-                                                        style="margin-right: 5px;">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                </a>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <a href="{{ route('sdi.edit', ['id' => $item->id]) }}">
+                                                        <button type="button"
+                                                            class="btn btn-outline-warning btn-sm btn-icon-only btn-tooltip"
+                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            title="Edit Mitra" data-container="body" data-animation="true"
+                                                            style="margin-right: 5px;">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </a>
 
-                                                <form action="{{ route('sdi.delete', ['id' => $item->id]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
-                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                        title="Hapus Mitra" data-container="body" data-animation="true">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
+                                                    <form action="{{ route('sdi.delete', ['id' => $item->id]) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            title="Hapus Mitra" data-container="body" data-animation="true">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="align-middle text-center" colspan="10">
+                                            <span class="text-secondary text-xs font-weight-bold">List SDI
+                                                Kosong</span>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

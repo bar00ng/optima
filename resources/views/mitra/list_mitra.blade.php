@@ -22,6 +22,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if (!$mitra->isEmpty())
                                 @foreach ($mitra as $item)
                                     <tr>
                                         <td>
@@ -59,6 +60,14 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                            @else
+                                <tr>
+                                    <td class="align-middle text-center" colspan="10">
+                                        <span class="text-secondary text-xs font-weight-bold">List Mitra
+                                            Kosong</span>
+                                    </td>
+                                </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>

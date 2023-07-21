@@ -83,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (!empty($lop))
+                                @if (!$lop->isEmpty())
                                     @foreach ($lop as $item)
                                         <tr>
                                             <td>
@@ -348,7 +348,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td class="align-middle text-center" colspan="4">
+                                        <td class="align-middle text-center" colspan="10">
                                             <span class="text-secondary text-xs font-weight-bold">List LOP Kosong</span>
                                         </td>
                                     </tr>

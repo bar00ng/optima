@@ -8,6 +8,11 @@
                         <a href="{{ route('permintaan.formAdd') }}">
                             <button class="btn btn-primary btn-sm ms-auto">Buat Permintaan</button>
                         </a>
+                        @if(Auth::user()->hasRole('optima'))
+                            <a href="{{ route('permintaan.create.report') }}">
+                                <button class="btn btn-secondary btn-sm ms-auto">Download Report</button>
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
@@ -28,7 +33,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (!empty($permintaan))
+                                @if (!$permintaan->isEmpty())
                                     @foreach ($permintaan as $item)
                                         @php
                                             $count = isset($LOPCount[$item->id]) ? $LOPCount[$item->id] : 0;
@@ -72,7 +77,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td class="align-middle text-center" colspan="4">
+                                        <td class="align-middle text-center" colspan="10">
                                             <span class="text-secondary text-xs font-weight-bold">List Permintaan
                                                 Kosong</span>
                                         </td>
