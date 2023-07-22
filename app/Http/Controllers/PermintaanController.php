@@ -16,7 +16,7 @@ class PermintaanController extends Controller
     {
         $pageCategory = 'List Permintaan';
         $pageName = 'List Permintaan';
-        $permintaan = ListPermintaan::all();
+        $permintaan = ListPermintaan::paginate(15);
 
         $LOPCount = [];
 

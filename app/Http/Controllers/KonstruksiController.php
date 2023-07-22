@@ -211,11 +211,6 @@ class KonstruksiController extends Controller
             $persiapan->data = $data_after;
             $persiapan->save();
 
-            // update status lop
-            $lop = $persiapan->lop;
-            $lop->status = "Persiapan";
-            $lop->save();
-
             $message = "Evidence persiapan di Approve";
         }
 
@@ -261,11 +256,6 @@ class KonstruksiController extends Controller
             // update new data
             $instalasi->data = $data_after;
             $instalasi->save();
-
-            // update status lop
-            $lop = $instalasi->lop;
-            $lop->status = "Instalasi";
-            $lop->save();
 
             $message = "Evidence persiapan di Approve";
         }
@@ -313,14 +303,63 @@ class KonstruksiController extends Controller
             $selesaiFisik->data = $data_after;
             $selesaiFisik->save();
 
-            // update status lop
-            $lop = $selesaiFisik->lop;
-            $lop->status = "Selesai Fisik";
-            $lop->save();
-
             $message = "Evidence persiapan di Approve";
         }
 
         return back()->with('Sukses', $message);
+    }
+
+    public function markPersiapanAsDone(Request $request, $isApproved, $persiapan_id)
+    {
+        // Find the persiapan by ID
+        $persiapan = Persiapan::findOrFail($persiapan_id);
+
+        // Update the isApproved field based on the value from the URL
+        $persiapan->isApproved = filter_var($isApproved, FILTER_VALIDATE_BOOLEAN);
+        $persiapan->save();
+
+        // update status lop
+        $lop = $persiapan->lop;
+        $lop->status = "Persiapan";
+        $lop->save();
+
+        // Return a response if needed (e.g., JSON response)
+        return response()->json(['message' => 'Persiapan updated successfully']);
+    }
+
+    public function markInstalasiAsDone(Request $request, $isApproved, $instalasi_id)
+    {
+        // Find the persiapan by ID
+        $instalasi = Instalasi::findOrFail($instalasi_id);
+
+        // Update the isApproved field based on the value from the URL
+        $instalasi->isApproved = filter_var($isApproved, FILTER_VALIDATE_BOOLEAN);
+        $instalasi->save();
+
+        // update status lop
+        $lop = $instalasi->lop;
+        $lop->status = "Instalasi";
+        $lop->save();
+
+        // Return a response if needed (e.g., JSON response)
+        return response()->json(['message' => 'Instalasi updated successfully']);
+    }
+
+    public function markSelesaiAsDone(Request $request, $isApproved, $selesai_fisik_id)
+    {
+        // Find the persiapan by ID
+        $selesaiFisik = SelesaiFisik::findOrFail($selesai_fisik_id);
+
+        // Update the isApproved field based on the value from the URL
+        $selesaiFisik->isApproved = filter_var($isApproved, FILTER_VALIDATE_BOOLEAN);
+        $selesaiFisik->save();
+
+        // update status lop
+        $lop = $selesaiFisik->lop;
+        $lop->status = "Selesai Fisik";
+        $lop->save();
+
+        // Return a response if needed (e.g., JSON response)
+        return response()->json(['message' => 'Selsai Fisik updated successfully']);
     }
 }

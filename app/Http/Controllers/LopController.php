@@ -16,7 +16,9 @@ class LopController extends Controller
         $pageName = 'List of Project';
         $pageCategory = 'Project';
 
-        $lop = ($id_permintaan !== null) ? Lop::where('permintaan_id', $id_permintaan)->get() : Lop::get();
+        $lop = ($id_permintaan !== null)
+            ? Lop::where('permintaan_id', $id_permintaan)->paginate(15)
+            : Lop::paginate(15);
 
         return view('lop.list_lop', compact('pageName', 'pageCategory', 'lop'));
     }

@@ -68,9 +68,9 @@ Route::group(['middleware' => ['auth', 'role:optima']], function() {
 
     Route::get('/permintaan/report', [PermintaanController::class, 'createReport'])->name('permintaan.create.report');
 
-    Route::get('/konstruksi/persiapan/{done}/{persiapan_id}', [KonstruksiController::class, 'markPersiapanAsDone'])->name('lop.konstruksi.done.persiapan');
-    Route::get('/konstruksi/instalasi/{done}/{instalasi_id}', [KonstruksiController::class, 'markInstalasiAsDone'])->name('lop.konstruksi.done.instalasi');
-    Route::get('/konstruksi/selesaiFisik/{done}/{selesai_fisik_id}', [KonstruksiController::class, 'markSelesaiAsDone'])->name('lop.konstruksi.done.selesaiFisik');
+    Route::patch('/konstruksi/persiapan/{isApproved}/{persiapan_id}', [KonstruksiController::class, 'markPersiapanAsDone'])->name('lop.konstruksi.done.persiapan');
+    Route::patch('/konstruksi/instalasi/{isApproved}/{instalasi_id}', [KonstruksiController::class, 'markInstalasiAsDone'])->name('lop.konstruksi.done.instalasi');
+    Route::patch('/konstruksi/selesaiFisik/{isApproved}/{selesai_fisik_id}', [KonstruksiController::class, 'markSelesaiAsDone'])->name('lop.konstruksi.done.selesaiFisik');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|optima']], function() {
