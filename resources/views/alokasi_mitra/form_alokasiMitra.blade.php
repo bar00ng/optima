@@ -85,14 +85,14 @@
                                 <div class="col-md-12">
                                     <div class="form-group has-validation">
                                         <label for="">Alokasi Mitra</label>
-                                        <select name="mitra_id" class="form-control {{ $errors->has('alokasi_mitra') ? 'is-invalid' : '' }}">
+                                        <select name="mitra_id" class="form-control {{ $errors->has('mitra_id') ? 'is-invalid' : '' }}" autofocus>
                                             <option value="">--- Pilih Mitra ---</option>
                                             @foreach($mitra as $m)
-                                            <option value="{{ $m->id }}">{{$m->username}}</option>
+                                                <option value="{{ $m->id }}" {{ old('mitra_id') == $m->id ? 'selected' : '' }}>{{$m->username}}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('alokasi_mitra') }}
+                                            {{ $errors->first('mitra_id') }}
                                         </div>
                                     </div>
                                 </div>

@@ -16,11 +16,7 @@ class LopController extends Controller
         $pageName = 'List of Project';
         $pageCategory = 'Project';
 
-        if ($id_permintaan !== null) {
-            $lop = Lop::where('permintaan_id', $id_permintaan)->get();
-        } else {
-            $lop = Lop::get();
-        }
+        $lop = ($id_permintaan !== null) ? Lop::where('permintaan_id', $id_permintaan)->get() : Lop::get();
 
         return view('lop.list_lop', compact('pageName', 'pageCategory', 'lop'));
     }
@@ -38,8 +34,22 @@ class LopController extends Controller
 
     public function storeLop(Request $r, $toAlokasiMitra = false)
     {
+        $validation_messages = [
+            'tanggal_permintaan.required' => 'Kolom tanggal permintaan harus diisi.',
+            'tanggal_permintaan.date' => 'Kolom tanggal permintaan harus berupa tanggal yang valid.',
+            'permintaan_id.required' => 'Kolom permintaan ID harus diisi.',
+            'nama_lop.required' => 'Kolom nama LOP harus diisi.',
+            'tematik_lop.required' => 'Kolom tematik LOP harus diisi.',
+            'sto.required' => 'Kolom STO harus diisi.',
+            'longitude.required' => 'Kolom longitude harus diisi.',
+            'latitude.required' => 'Kolom latitude harus diisi.',
+            'lokasi_lop.required' => 'Kolom lokasi LOP harus diisi.',
+            'keterangan_lop.required' => 'Kolom keterangan LOP harus diisi.',
+            'estimasi_rab.required_if' => 'Kolom estimasi RAB harus diisi jika tematik LOP bernilai PT 2.',
+        ];
+
         $validated = $r->validate([
-            'tanggal_permintaan' => 'required',
+            'tanggal_permintaan' => 'required|date',
             'permintaan_id' => 'required',
             'nama_lop' => 'required',
             'tematik_lop' => 'required',
@@ -48,32 +58,20 @@ class LopController extends Controller
             'latitude' => 'required',
             'lokasi_lop' => 'required',
             'keterangan_lop' => 'required',
-        ]);
+            'estimasi_rab' => 'required_if:tematik_lop,PT 2'
+        ], $validation_messages);
 
         $lop = new Lop();
-        $lop->tanggal_permintaan = $validated['tanggal_permintaan'];
-        $lop->permintaan_id = $validated['permintaan_id'];
-        $lop->nama_lop = $validated['nama_lop'];
-        $lop->tematik_lop = $validated['tematik_lop'];
-        $lop->sto = $validated['sto'];
-        $lop->longitude = $validated['longitude'];
-        $lop->latitude = $validated['latitude'];
-        $lop->lokasi_lop = $validated['lokasi_lop'];
-        $lop->keterangan_lop = $validated['keterangan_lop'];
-
-        if($r->filled('estimasi_rab')){
-            $lop->estimasi_rab = $r->estimasi_rab;
-        }
+        $lop->fill($validated);
         $lop->status = 'Alokasi Mitra';
 
         $lop->save();
-
         $lop_id = $lop->id;
 
-        if ($toAlokasiMitra == false) {
+        if ($toAlokasiMitra === false) {
             return redirect('/lop')->with('Sukses', 'Berhasil menambahkan LOP!');
         } else {
-            return redirect('/alokasiMitra/' . $lop_id)->with('Sukses', 'Berhasil menabahkan LOP!');
+            return redirect('/alokasiMitra/' . $lop_id)->with('Sukses', 'Berhasil menambahkan LOP!');
         }
     }
 
@@ -89,10 +87,16 @@ class LopController extends Controller
 
     public function storeSurveyRabForm(Request $r)
     {
+        $validation_messages = [
+            'rab_ondesk.required' => 'Kolom RAB ondesk harus diisi.',
+            'rab_ondesk.integer' => 'Kolom RAB ondesk harus berupa angka bulat.',
+            'keterangan_rab.required' => 'Kolom keterangan RAB harus diisi.',
+        ];
+
         $validated = $r->validate([
-            'rab_ondesk' => 'required',
+            'rab_ondesk' => 'required|integer',
             'keterangan_rab' => 'required',
-        ]);
+        ], $validation_messages);
 
         Lop::where('id', $r->lop_id)->update($validated);
         RabApproval::create([
@@ -100,7 +104,7 @@ class LopController extends Controller
             'isApproved' => false
         ]);
 
-        return redirect('/lop')->with('Sukses', 'Berhasil mengisi Survey! tunggu Approval dari OPTIMA!');
+        return redirect('/lop')->with('Sukses', 'Berhasil mengisi Survey! Tunggu Approval dari OPTIMA!');
     }
 
     public function alokasiMitraForm($lop_id)
@@ -117,25 +121,29 @@ class LopController extends Controller
                 $query->where('status', '<>', 'Selesai');
             }
         ])->get();
-        
 
         return view('alokasi_mitra.form_alokasiMitra', compact('pageCategory', 'pageName', 'lop', 'mitra'));
     }
 
     public function storeAlokasiMitraForm(Request $r)
     {
+        $validation_messages = [
+            'mitra_id.required' => 'Kolom mitra harus diisi.',
+        ];
+
         $validated = $r->validate([
             'mitra_id' => 'required',
-        ]);
-        $validated['status'] = 'Survey + RAB';
+        ], $validation_messages);
 
+        $validated['status'] = 'Survey + RAB';
         Lop::where('id', $r->lop_id)->update($validated);
 
         return redirect('/lop')->with('Sukses', 'Berhasil Mengalokasi Mitra!');
     }
 
-    public function aprroveRab($approved, $lop_id) {
-        if ($approved == "false") {
+    public function aprroveRab($approved, $lop_id)
+    {
+        if ($approved === "false") {
             RabApproval::where('lop_id', $lop_id)->update([
                 'isApproved' => false
             ]);
@@ -144,7 +152,7 @@ class LopController extends Controller
             ]);
 
             return redirect('/lop')->with('Sukses', 'Survey RAB ditolak!');
-        } elseif ($approved == "true") {
+        } elseif ($approved === "true") {
             RabApproval::where('lop_id', $lop_id)->update([
                 'isApproved' => true
             ]);
@@ -154,13 +162,5 @@ class LopController extends Controller
 
             return redirect('/lop')->with('Sukses', 'Survey RAB disetujui!');
         }
-    }
-
-    public function edit($id, Request $r)
-    {
-    }
-
-    public function delete($id)
-    {
     }
 }

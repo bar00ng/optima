@@ -41,6 +41,10 @@
             width: 100%;
             height: 500px;
         }
+
+        .disable-row > td > input {
+            pointer-events:none
+        }
     </style>
 </head>
 

@@ -71,62 +71,63 @@
                             <div class="invalid-feedback">
                                 {{ $errors->first('estimasi_rab') }}
                             </div>
+                        </div>
 
-                            <!-- Alokasi Mitra Modal Box -->
-                            <div class="modal fade" id="modalAlokasiMitra" tabindex="-1" role="dialog"
-                                aria-labelledby="modalAlokasiMitra" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card card-plain">
-                                                <div class="card-header pb-0 text-left">
-                                                    <h3 class="mb-0">Konfirmasi Alokasi Mitra</h3>
-                                                </div>
-                                                <div class="card-body">
-                                                    <table>
-                                                        <tr>
-                                                            <td>
-                                                                <b>Nama Permintaan</b>
-                                                            </td>
-                                                            <td>
-                                                                <b>:</b>
-                                                            </td>
-                                                            <td>
-                                                                <span id="namaPermintaan-modalAlokasiMitra"
-                                                                    style="padding-left: 10px;"></span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <b>Nama LOP</b>
-                                                            </td>
-                                                            <td>
-                                                                <b>:</b>
-                                                            </td>
-                                                            <td>
-                                                                <span id="namaLop-modalAlokasiMitra"
-                                                                    style="padding-left: 10px;"></span>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    <span class="mt-5">
-                                                        Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah
-                                                                Anda akan langsung
-                                                                Alokasi Mitra untuk LOP ini?
-                                                    </span>
-                                                </div>
-                                                <div class="card-footer pt-0 px-lg-2 px-1">
-                                                    <button type="submit" name="submitAction"
-                                                        class="btn btn-primary btn-sm" value="toAlokasiMitra">Ya</button>
-                                                        <button type="button" id="close-modalAlokasiMitra"
-                                                            class="btn btn-danger btn-sm">Tidak</button>
-                                                </div>
+                        <!-- Alokasi Mitra Modal Box -->
+                        <div class="modal fade" id="modalAlokasiMitra" tabindex="-1" role="dialog"
+                            aria-labelledby="modalAlokasiMitra" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body p-0">
+                                        <div class="card card-plain">
+                                            <div class="card-header pb-0 text-left">
+                                                <h3 class="mb-0">Konfirmasi Alokasi Mitra</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Nama Permintaan</b>
+                                                        </td>
+                                                        <td>
+                                                            <b>:</b>
+                                                        </td>
+                                                        <td>
+                                                            <span id="namaPermintaan-modalAlokasiMitra"
+                                                                style="padding-left: 10px;"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Nama LOP</b>
+                                                        </td>
+                                                        <td>
+                                                            <b>:</b>
+                                                        </td>
+                                                        <td>
+                                                            <span id="namaLop-modalAlokasiMitra"
+                                                                style="padding-left: 10px;"></span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <span class="mt-5">
+                                                    Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah
+                                                            Anda akan langsung
+                                                            Alokasi Mitra untuk LOP ini?
+                                                </span>
+                                            </div>
+                                            <div class="card-footer pt-0 px-lg-2 px-1">
+                                                <button type="submit" name="submitAction" class="btn btn-primary btn-sm"
+                                                    value="toAlokasiMitra">Ya</button>
+                                                <button type="button" id="close-modalAlokasiMitra"
+                                                    class="btn btn-danger btn-sm">Tidak</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group has-validation">
                             <label for="">STO</label>
                             <select class="form-control {{ $errors->has('sto') ? 'is-invalid' : '' }}" name="sto"
@@ -181,7 +182,6 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group has-validation">
-
                                         <input type="text" placeholder="Longitude" id="longitude"
                                             class="form-control {{ $errors->has('longitude') ? 'is-invalid' : '' }}"
                                             name="longitude" value="{{ old('longitude') }}">
@@ -219,7 +219,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" name="submitAction" class="btn btn-primary btn-sm" value="toSurveyRab">Submit</button>
+                            <button type="submit" name="submitAction" class="btn btn-primary btn-sm"
+                                value="toSurveyRab">Submit</button>
                             <a href="{{ route('lop.list') }}">
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             </a>

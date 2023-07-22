@@ -72,21 +72,19 @@
                                                             <div class="d-flex flex-column">
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
-                                                                    @if(Auth::user()->hasRole('optima'))
-                                                                        <input type="number" name="persiapan_progress" value="{{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;" {{ empty($persiapan) ? 'disabled' : '' }}>
-                                                                    @else
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">{{ !empty($persiapan) ? $persiapan->persiapan_progress.'%' : '0%' }}</span>
-                                                                    @endif
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar" aria-valuenow="{{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: {{ !empty($persiapan) ? $persiapan->persiapan_progress : 0 }}%;">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                        title="Selesai Persiapan"
+                                                                        data-container="body" data-animation="true"
+                                                                        id="approve-persiapan" data-id="{{ $persiapan !== null ? $persiapan->id : 0 }}">&#10003;</button>
+
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                        title="Batal Persiapan"
+                                                                        data-container="body" data-animation="true"
+                                                                        id="reject-persiapan" data-id="{{ $persiapan !== null ? $persiapan->id : 0 }}">&#10007;</button>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -104,20 +102,25 @@
                                                                                         class="me-2 text-xs font-weight-bold text-truncate">{{ $dps['filename'] }}</span>
                                                                                 </a>
                                                                                 @if ($dps['isApproved'] === true)
-                                                                                    <span class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
+                                                                                    <span
+                                                                                        class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
                                                                                 @elseif ($dps['isApproved'] === false)
-                                                                                    <span class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
+                                                                                    <span
+                                                                                        class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
                                                                                 @elseif ($dps['isApproved'] === null)
-                                                                                    @if(Auth::user()->hasRole('optima'))
-                                                                                        <div class="d-flex align-items-center">
-                                                                                            <form action="#" method="post"
+                                                                                    @if (Auth::user()->hasRole('optima'))
+                                                                                        <div
+                                                                                            class="d-flex align-items-center">
+                                                                                            <form action="#"
+                                                                                                method="post"
                                                                                                 style="margin-right: 5px; display:hidden;"
                                                                                                 id="form-approve-persiapan">
                                                                                             </form>
 
                                                                                             <form
-                                                                                                action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'true', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id'] ]) }}"
-                                                                                                method="post" style="margin-right: 5px"
+                                                                                                action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'true', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id']]) }}"
+                                                                                                method="post"
+                                                                                                style="margin-right: 5px"
                                                                                                 id="form-approve-persiapan">
                                                                                                 @method('PATCH')
                                                                                                 @csrf
@@ -132,8 +135,9 @@
                                                                                             </form>
 
                                                                                             <form
-                                                                                                action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'false', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id'] ]) }}"
-                                                                                                method="post" style="margin-right: 5px"
+                                                                                                action="{{ route('lop.konstruksi.approve.persiapan', ['approved' => 'false', 'persiapan_id' => $persiapan->id, 'evidence_id' => $dps['id']]) }}"
+                                                                                                method="post"
+                                                                                                style="margin-right: 5px"
                                                                                                 id="form-reject-persiapan">
                                                                                                 @method('PATCH')
                                                                                                 @csrf
@@ -148,7 +152,9 @@
                                                                                             </form>
                                                                                         </div>
                                                                                     @else
-                                                                                        <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
+                                                                                        <span
+                                                                                            class="me-2 text-xs fst-italic">(Menunggu
+                                                                                            Persetujuan)</span>
                                                                                     @endif
                                                                                 @endif
                                                                             </li>
@@ -167,7 +173,8 @@
                                                                 placeholder="Keterangan Persiapan (Opsional)">{{ empty($persiapan) ? '' : $persiapan->keterangan_persiapan }}</textarea>
                                                         </td>
                                                     </tr>
-                                                    <tr>
+
+                                                    <tr style="display: {{ $persiapan === null ? 'none' : '' }}">
                                                         <td>
                                                             <div class="d-flex px-2">
                                                                 <div class="my-auto">
@@ -179,21 +186,19 @@
                                                             <div class="d-flex align-items-center justify-content-center">
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
-                                                                    @if(Auth::user()->hasRole('optima'))
-                                                                        <input type="number" name="instalasi_progress" value="{{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;" {{ empty($instalasi) ? 'disabled' : '' }}>
-                                                                    @else
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">{{ !empty($instalasi) ? $instalasi->instalasi_progress.'%' : '0%' }}</span>
-                                                                    @endif
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar" aria-valuenow="{{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: {{ !empty($instalasi) ? $instalasi->instalasi_progress : 0 }}%;">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                        title="Selesai Instalasi"
+                                                                        data-container="body" data-animation="true"
+                                                                        id="approve-instalasi" data-id="{{ $instalasi !== null ? $instalasi->id : 0 }}">&#10003;</button>
+
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                        title="Batal Instalasi"
+                                                                        data-container="body" data-animation="true"
+                                                                        id="reject-instalasi" data-id="{{ $instalasi !== null ? $instalasi->id : 0 }}">&#10007;</button>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -211,20 +216,25 @@
                                                                                         class="me-2 text-xs font-weight-bold text-truncate">{{ $dis['filename'] }}</span>
                                                                                 </a>
                                                                                 @if ($dis['isApproved'] === true)
-                                                                                    <span class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
+                                                                                    <span
+                                                                                        class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
                                                                                 @elseif ($dis['isApproved'] === false)
-                                                                                    <span class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
+                                                                                    <span
+                                                                                        class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
                                                                                 @elseif ($dis['isApproved'] === null)
-                                                                                    @if(Auth::user()->hasRole('optima'))
-                                                                                        <div class="d-flex align-items-center">
-                                                                                            <form action="#" method="post"
+                                                                                    @if (Auth::user()->hasRole('optima'))
+                                                                                        <div
+                                                                                            class="d-flex align-items-center">
+                                                                                            <form action="#"
+                                                                                                method="post"
                                                                                                 style="margin-right: 5px; display:hidden;"
                                                                                                 id="form-approve-persiapan">
                                                                                             </form>
 
                                                                                             <form
-                                                                                                action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'true', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                                method="post" style="margin-right: 5px"
+                                                                                                action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'true', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id']]) }}"
+                                                                                                method="post"
+                                                                                                style="margin-right: 5px"
                                                                                                 id="form-approve-persiapan">
                                                                                                 @method('PATCH')
                                                                                                 @csrf
@@ -239,8 +249,9 @@
                                                                                             </form>
 
                                                                                             <form
-                                                                                                action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'false', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                                method="post" style="margin-right: 5px"
+                                                                                                action="{{ route('lop.konstruksi.approve.instalasi', ['approved' => 'false', 'instalasi_id' => $instalasi->id, 'evidence_id' => $dis['id']]) }}"
+                                                                                                method="post"
+                                                                                                style="margin-right: 5px"
                                                                                                 id="form-reject-persiapan">
                                                                                                 @method('PATCH')
                                                                                                 @csrf
@@ -255,7 +266,9 @@
                                                                                             </form>
                                                                                         </div>
                                                                                     @else
-                                                                                        <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
+                                                                                        <span
+                                                                                            class="me-2 text-xs fst-italic">(Menunggu
+                                                                                            Persetujuan)</span>
                                                                                     @endif
                                                                                 @endif
                                                                             </li>
@@ -274,7 +287,8 @@
                                                                 placeholder="Keterangan Instalasi (Opsional)">{{ empty($instalasi) ? '' : $instalasi->keterangan_instalasi }}</textarea>
                                                         </td>
                                                     </tr>
-                                                    <tr>
+
+                                                    <tr style="display: {{ $instalasi === null ? 'none' : '' }}">
                                                         <td>
                                                             <div class="d-flex px-2">
                                                                 <div class="my-auto">
@@ -286,21 +300,19 @@
                                                             <div class="d-flex align-items-center justify-content-center">
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-center">
-                                                                    @if (Auth::user()->hasRole('optima'))
-                                                                        <input type="number" name="selesai_fisik_progress" value="{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}" class="form-control form-control-sm" style="width: 60px; margin-right: 10px;" {{ empty($selesaiFisik) ? 'disabled' : '' }}>
-                                                                    @else
-                                                                        <span
-                                                                            class="me-2 text-xs font-weight-bold">{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress.'%' : '0%' }}</span>
-                                                                    @endif
-                                                                    <div>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-gradient-info"
-                                                                                role="progressbar" aria-valuenow="{{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}"
-                                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                                style="width: {{ !empty($selesaiFisik) ? $selesaiFisik->selesai_fisik_progress : 0 }}%;">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                        title="Selesai Selesai Fisik"
+                                                                        data-container="body" data-animation="true"
+                                                                        id="approve-selesai" data-id="{{ $selesaiFisik !== null ? $selesaiFisik->id : 0 }}">&#10003;</button>
+
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                        title="Batal Selesai Fisik"
+                                                                        data-container="body" data-animation="true"
+                                                                        id="reject-selesai" data-id="{{ $selesaiFisik !== null ? $selesaiFisik->id : 0 }}">&#10007;</button>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -318,20 +330,25 @@
                                                                                         class="me-2 text-xs font-weight-bold text-truncate">{{ $dis['filename'] }}</span>
                                                                                 </a>
                                                                                 @if ($dis['isApproved'] === true)
-                                                                                    <span class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
+                                                                                    <span
+                                                                                        class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
                                                                                 @elseif ($dis['isApproved'] === false)
-                                                                                    <span class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
+                                                                                    <span
+                                                                                        class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
                                                                                 @elseif ($dis['isApproved'] === null)
-                                                                                    @if(Auth::user()->hasRole('optima'))
-                                                                                        <div class="d-flex align-items-center">
-                                                                                            <form action="#" method="post"
+                                                                                    @if (Auth::user()->hasRole('optima'))
+                                                                                        <div
+                                                                                            class="d-flex align-items-center">
+                                                                                            <form action="#"
+                                                                                                method="post"
                                                                                                 style="margin-right: 5px; display:hidden;"
                                                                                                 id="form-approve-persiapan">
                                                                                             </form>
 
                                                                                             <form
-                                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'true', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                                method="post" style="margin-right: 5px"
+                                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'true', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id']]) }}"
+                                                                                                method="post"
+                                                                                                style="margin-right: 5px"
                                                                                                 id="form-approve-persiapan">
                                                                                                 @method('PATCH')
                                                                                                 @csrf
@@ -346,8 +363,9 @@
                                                                                             </form>
 
                                                                                             <form
-                                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'false', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id'] ]) }}"
-                                                                                                method="post" style="margin-right: 5px"
+                                                                                                action="{{ route('lop.konstruksi.approve.selesaiFisik', ['approved' => 'false', 'selesai_fisik_id' => $selesaiFisik->id, 'evidence_id' => $dis['id']]) }}"
+                                                                                                method="post"
+                                                                                                style="margin-right: 5px"
                                                                                                 id="form-reject-persiapan">
                                                                                                 @method('PATCH')
                                                                                                 @csrf
@@ -362,7 +380,9 @@
                                                                                             </form>
                                                                                         </div>
                                                                                     @else
-                                                                                        <span class="me-2 text-xs fst-italic">(Menunggu Persetujuan)</span>
+                                                                                        <span
+                                                                                            class="me-2 text-xs fst-italic">(Menunggu
+                                                                                            Persetujuan)</span>
                                                                                     @endif
                                                                                 @endif
                                                                             </li>
@@ -431,6 +451,11 @@
 
             $('#submit-reject-selesaiFisik').click(function() {
                 $('#form-reject-selesaiFisik').submit();
+            });
+
+            $('#approve-persiapan').click(function() {
+                var persiapan_id = $(this).data('id');
+                var done = "true";
             });
         });
     </script>

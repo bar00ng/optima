@@ -66,7 +66,11 @@ Route::group(['middleware' => ['auth', 'role:optima']], function() {
     Route::patch('/sdi/edit/{id}', [SdiController::class, 'patchSdi'])->name('sdi.patch');
     Route::delete('/sdi/delete/{id}', [SdiController::class, 'delete'])->name('sdi.delete');
 
-    Route::get('/permintaa/report', [PermintaanController::class, 'createReport'])->name('permintaan.create.report');
+    Route::get('/permintaan/report', [PermintaanController::class, 'createReport'])->name('permintaan.create.report');
+
+    Route::get('/konstruksi/persiapan/{done}/{persiapan_id}', [KonstruksiController::class, 'markPersiapanAsDone'])->name('lop.konstruksi.done.persiapan');
+    Route::get('/konstruksi/instalasi/{done}/{instalasi_id}', [KonstruksiController::class, 'markInstalasiAsDone'])->name('lop.konstruksi.done.instalasi');
+    Route::get('/konstruksi/selesaiFisik/{done}/{selesai_fisik_id}', [KonstruksiController::class, 'markSelesaiAsDone'])->name('lop.konstruksi.done.selesaiFisik');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|optima']], function() {

@@ -59,28 +59,20 @@
                             <label for="">Lokasi LOP</label>
                             <textarea class="form-control" name="lokasi_lop" id="lokasiLop" rows="3" readonly>{{ $lop['lokasi_lop'] }}</textarea>
                         </div>
-                        <div class="form-group has-validation">
+                        <div class="form-group">
                             <label for="">RAB OnDesk</label>
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 has-validation">
                                 <span class="input-group-text">Rp</span>
-                                @if ($errors->has('rab_ondesk'))
-                                    <input type="text" class="form-control is-invalid" name="rab_ondesk"
-                                        value="{{ old('rab_ondesk') }}" autofocus>
-                                @else
-                                    <input type="text" class="form-control" name="rab_ondesk" autofocus>
-                                @endif
-                            </div>
-                            <div class="invalid-feedback">
-                                {{ $errors->first('rab_ondesk') }}
+                                <input type="text" class="form-control {{ $errors->has('rab_ondesk') ? 'is-invalid' : '' }}" name="rab_ondesk"
+                                    value="{{ old('rab_ondesk') }}">
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('rab_ondesk') }}
+                                </div>
                             </div>
                         </div>
                         <div class="form-group has-validation">
                             <label for="">Keterangan</label>
-                            @if ($errors->has('keterangan_rab'))
-                                <textarea class="form-control is-invalid" id="keterangan" name="keterangan_rab" rows="3">{{ old('keterangan') }}</textarea>
-                            @else
-                                <textarea class="form-control" id="keterangan" name="keterangan_rab" rows="3"></textarea>
-                            @endif
+                            <textarea class="form-control {{ $errors->has('keterangan_rab') ? 'is-invalid' : ''}}" id="keterangan" name="keterangan_rab" rows="3">{{ old('keterangan') }}</textarea>
                             <div class="invalid-feedback">
                                 {{ $errors->first('keterangan_rab') }}
                             </div>

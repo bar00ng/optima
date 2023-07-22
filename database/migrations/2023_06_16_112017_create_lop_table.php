@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('tanggal_permintaan')->default(now());
             $table->string('nama_lop')->default('');
             $table->string('tematik_lop')->default('');
-            $table->string('estimasi_rab')->default('');
+            $table->string('estimasi_rab')->nullable()->default(null);
             $table->string('sto')->default('');
             $table->string('longitude')->default('');
             $table->string('latitude')->default('');

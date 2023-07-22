@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('tanggal_permintaan');
             $table->string('tematik_permintaan');
-            $table->string('no_nota_dinas')->nullable();
-            $table->string('refferal_permintaan')->nullable();
+            $table->string('no_nota_dinas')->nullable()->default(null);
+            $table->string('refferal_permintaan')->nullable()->default(null);
             $table->string('nama_permintaan');
             $table->string('pic_permintaan');
             $table->text('keterangan');

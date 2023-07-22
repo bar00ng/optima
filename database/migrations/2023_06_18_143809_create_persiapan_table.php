@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
             $table->text('keterangan_persiapan')->nullable();
-            $table->integer('persiapan_progress')->default(0);
+            $table->boolean('isApproved')->nullable();
             $table->json('data');
             $table->timestamps();
         });

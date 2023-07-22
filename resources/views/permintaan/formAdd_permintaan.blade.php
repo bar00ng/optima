@@ -35,21 +35,30 @@
                             </div>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" id="toggle_reffPermintaan" class="form-check-input">
+                            <input type="checkbox" id="toggle_reffPermintaan" class="form-check-input" name="_notaDinas">
                             <label class="custom-control-label">Apakah ada nota dinas?</label>
                         </div>
                         <div class="form-group" id="reffPermintaan" style="display: none;">
                             <label for="">Reff Permintaan</label>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                    <input type="text" name="no_nota_dinas" class="form-control" placeholder="No. Nota Dinas">
+                                    <div class="form-group has-validation">
+                                        <input type="text" name="no_nota_dinas"
+                                            class="form-control {{ $errors->has('no_nota_dinas') ? 'is-invalid' : '' }}"
+                                            placeholder="No. Nota Dinas" value="{{ old('no_nota_dinas') }}">
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('no_nota_dinas') }}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                    <input type="file" class="form-control" name="reff_permintaan"
-                                value="{{ old('reff_permintaan') }}">
+                                    <div class="form-group has-validation">
+                                        <input type="file"
+                                            class="form-control form-control {{ $errors->has('reff_permintaan') ? 'is-invalid' : '' }}"
+                                            name="reff_permintaan" value="{{ old('reff_permintaan') }}">
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('reff_permintaan') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +83,7 @@
                         </div>
                         <div class="form-group has-validation">
                             <label for="">Keterangan</label>
-                            <textarea class="form-control {{ $errors->has('keterangan') ? 'is-invalid' : ''}}" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
+                            <textarea class="form-control {{ $errors->has('keterangan') ? 'is-invalid' : '' }}" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
                             <div class="invalid-feedback">
                                 {{ $errors->first('keterangan') }}
                             </div>
