@@ -257,7 +257,7 @@
                                                                         <ul class="list-unstyled">
                                                                             @foreach ($data_instalasi_array as $dis)
                                                                                 <li class="d-flex flex-row align-items-center">
-                                                                                    <a href="{{ 'uploads/evidence_instalasi/' . $dis['filename'] }}"
+                                                                                    <a href="{{ Storage::url('uploads/evidence_instalasi/' . $dis['filename']) }}"
                                                                                         target="_blank">
                                                                                         <span
                                                                                             class="me-2 text-xs font-weight-bold text-truncate">{{ $dis['filename'] }}</span>
@@ -396,7 +396,7 @@
                                                                     <ul class="list-unstyled">
                                                                         @foreach ($data_selesaiFisik_array as $dis)
                                                                             <li class="d-flex flex-row align-items-center">
-                                                                                <a href="{{ 'uploads/evidence_selesai/' . $dis['filename'] }}"
+                                                                                <a href="{{ Storage::url('uploads/evidence_selesai/' . $dis['filename']) }}"
                                                                                     target="_blank">
                                                                                     <span
                                                                                         class="me-2 text-xs font-weight-bold text-truncate">{{ $dis['filename'] }}</span>

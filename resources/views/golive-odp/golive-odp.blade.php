@@ -237,7 +237,7 @@
                                                                     @if (!empty($goLive))
                                                                         @if ($goLive->exists && $goLive->evidence_golive !== null)
                                                                             <div class="d-flex flex-row align-items-center">
-                                                                                <a href="{{ 'uploads/evidence_golive/' . $goLive['evidence_golive'] }}"
+                                                                                <a href="{{ Storage::url('uploads/evidence_golive/' . $goLive['evidence_golive']) }}"
                                                                                     target="_blank">
                                                                                     <span
                                                                                         class="me-2 text-xs font-weight-bold">{{ $goLive->evidence_golive }}</span>

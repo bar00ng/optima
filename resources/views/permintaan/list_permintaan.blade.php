@@ -12,11 +12,11 @@
                             @if (!$permintaan->isEmpty())
                                 <a href="{{ route('permintaan.create.report') }}" style="margin-left: 5px">
                                     <button type="submit"
-                                        class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                        class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
                                         data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        title="Download PDF" data-container="body"
+                                        title="Download CSV" data-container="body"
                                         data-animation="true">
-                                            <i class="fa fa-download" style="font-size:12px;color:red"></i>
+                                            <i class="fa fa-download" style="font-size:12px;color:green"></i>
                                     </button>
                                 </a>
                             @endif

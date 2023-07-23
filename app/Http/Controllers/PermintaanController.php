@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Str;
-use PDF;
+use League\Csv\Writer;
+use Illuminate\Support\Facades\Response;
 
 use Illuminate\Http\Request;
 use App\Models\ListPermintaan;
@@ -82,23 +83,54 @@ class PermintaanController extends Controller
         $reports = ListPermintaan::all();
 
         $LOPCount = [];
-
+    
         foreach ($reports as $p) {
             $LOPCount[$p->id] = Lop::where('permintaan_id', $p->id)->count();
         }
-
+    
         $data = [
             'reports' => $reports,
             'lop_count' => $LOPCount
         ];
-
-        $pdf = PDF::loadView('pdf.report', $data);
-
-        // Set the PDF orientation to landscape
-        $pdf->setPaper('A4', 'landscape');
-
-        $filename = 'report_' . Carbon::now()->format('Ymd_His') . '.pdf';
-
-        return $pdf->download($filename);
+    
+        // Create a CSV writer
+        $csv = Writer::createFromString('');
+    
+        // Add headers to the CSV file
+        $csv->insertOne([
+            'No',
+            'Tgl. Permintaan',
+            'Tematik Permintaan',
+            'LOP',
+            'No. Nota Dinas',
+            'Nama Permintaan',
+            'PIC Permintaan',
+            'Keterangan',
+        ]);
+    
+        // Add data rows to the CSV file
+        foreach ($reports as $report) {
+            $count = isset($LOPCount[$report->id]) ? $LOPCount[$report->id] : 0;
+    
+            $csv->insertOne([
+                $report->id,
+                \Carbon\Carbon::parse($report->tanggal_permintaan)->format('j F Y'),
+                $report->tematik_permintaan,
+                $count,
+                !empty($report->no_nota_dinas) ? $report->no_nota_dinas : '-',
+                $report->nama_permintaan,
+                $report->pic_permintaan,
+                $report->keterangan,
+            ]);
+        }
+    
+        // Set the appropriate headers for CSV download
+        $headers = array(
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="report_' . Carbon::now()->format('Ymd_His') . '.csv"',
+        );
+    
+        // Generate the CSV response and return it
+        return Response::make($csv->__toString(), 200, $headers);
     }
 }
