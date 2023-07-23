@@ -43,9 +43,6 @@ Route::group(['middleware' => ['auth', 'role:optima|mitra|sdi']], function() {
 });
 
 Route::group(['middleware' => ['auth', 'role:optima']], function() {
-    Route::get('/alokasiMitra/{lop_id}', [LopController::class, 'alokasiMitraForm'])->name('lop.formAlokasiMitra');
-    Route::post('/alokasiMitra/store', [LopController::class, 'storeAlokasiMitraForm'])->name('lop.storeAlokasiMitra');
-
     Route::patch('/surveyRab/{approved}/{lop_id}', [LopController::class, 'aprroveRab'])->name('lop.approveRab');
 
     Route::patch('/konstruksi/persiapan/{approved}/{persiapan_id}/{evidence_id}', [KonstruksiController::class, 'approvePersiapan'])->name('lop.konstruksi.approve.persiapan');
@@ -84,6 +81,9 @@ Route::group(['middleware' => ['auth', 'role:admin|optima']], function() {
     Route::get('/lop/add/{permintaan_id}', [LopController::class, 'formAddLop'])->name('lop.formAdd');
     Route::post('/lop/add/{toAlokasiMitra?}', [LopController::class, 'storeLop'])->name('lop.store');
     Route::patch('/lop/edit/{id}', [LopController::class, 'patch'])->name('lop.patch');
+
+    Route::get('/alokasiMitra/{lop_id}', [LopController::class, 'alokasiMitraForm'])->name('lop.formAlokasiMitra');
+    Route::post('/alokasiMitra/store', [LopController::class, 'storeAlokasiMitraForm'])->name('lop.storeAlokasiMitra');
 });
 
 Route::middleware('redirectIfAuthenticated')->group(function (){
