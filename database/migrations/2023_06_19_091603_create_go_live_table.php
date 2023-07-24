@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('evidence_golive')->nullable()->default(null);
             $table->text('keterangan_withGolive')->nullable()->default(null);
             $table->text('keterangan_withoutGolive')->nullable()->default(null);
-            $table->integer('golive_progress')->default(0);
+            $table->boolean('isApproved')->nullable();
             $table->timestamps();
         });
     }

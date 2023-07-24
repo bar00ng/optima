@@ -14,7 +14,7 @@ class SelesaiFisik extends Model
     protected $fillable = [
         'lop_id',
         'keterangan_selesai',
-        'selesai_fisik_progress',
+        'isApproved',
         'data'
     ];
 

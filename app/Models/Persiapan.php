@@ -14,7 +14,7 @@ class Persiapan extends Model
     protected $fillable = [
         'lop_id',
         'keterangan_persiapan',
-        'persiapan_progress',
+        'isApproved',
         'data'
     ];
 

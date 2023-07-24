@@ -14,7 +14,7 @@ class Instalasi extends Model
     protected $fillable = [
         'lop_id',
         'keterangan_instalasi',
-        'instalasi_progress',
+        'isApproved',
         'data',
     ];
 
