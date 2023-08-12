@@ -121,7 +121,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @elseif ($item->status == 'Instalasi')
+                                                @elseif (in_array($item->status, ['Instalasi', 'Konfirmasi Mitra', 'Connectivity', 'Validasi']))
                                                     <div class="d-flex align-items-center justify-content-center"> <span
                                                             class="me-2 text-xs font-weight-bold">50%</span>
                                                         <div>
@@ -186,33 +186,20 @@
                                                         @endif
                                                     @endif
 
-                                                    @if (Auth::user()->hasRole(['optima', 'mitra']))
-                                                        @if (
-                                                            $item->status == 'Persiapan' ||
-                                                                $item->status == 'Instalasi' ||
-                                                                $item->status == 'Selesai Fisik' ||
-                                                                $item->status == 'GoLive')
-                                                            <a
-                                                                href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
-                                                                <button type="button"
-                                                                    class="btn btn-outline-primary btn-sm"
-                                                                    style="margin-right: 5px">Konstruksi</button>
-                                                            </a>
-                                                        @endif
+                                                    @if (Auth::user()->hasRole(['optima', 'mitra']) && in_array($item->status, ['Persiapan', 'Instalasi', 'Selesai Fisik']))
+                                                        <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
+                                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                style="margin-right: 5px">Konstruksi</button>
+                                                        </a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasRole(['optima', 'sdi']))
-                                                        @if (
-                                                            $item->status == 'Persiapan' ||
-                                                                $item->status == 'Instalasi' ||
-                                                                $item->status == 'Selesai Fisik' ||
-                                                                $item->status == 'GoLive')
-                                                            <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
-                                                                <button type="button"
-                                                                    class="btn btn-outline-secondary btn-sm"
-                                                                    style="margin-right: 5px">GoLive</button>
-                                                            </a>
-                                                        @endif
+                                                    @if (Auth::user()->hasRole(['optima', 'sdi']) &&
+                                                            in_array($item->status, ['Selesai Fisik', 'GoLive', 'Validasi', 'Konfirmasi Mitra', 'Connectivity']))
+                                                        <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
+                                                            <button type="button"
+                                                                class="btn btn-outline-secondary btn-sm"
+                                                                style="margin-right: 5px">GoLive</button>
+                                                        </a>
                                                     @endif
 
 

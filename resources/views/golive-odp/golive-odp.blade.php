@@ -68,7 +68,7 @@
                                                                     <div class="form-check mb-3">
                                                                         <input class="form-check-input" type="radio"
                                                                             name="isNeed" value="true"
-                                                                            {{ ($goLive && $goLive->exists && $goLive->isNeed == true) ? 'checked' : '' }}>
+                                                                            {{ $goLive && $goLive->exists && $goLive->isNeed == true ? 'checked' : '' }}>
                                                                         <label class="custom-control-label"
                                                                             for="customRadio1">GoLive ODP</label>
                                                                     </div>
@@ -77,15 +77,16 @@
                                                                     <div class="form-check mb-3">
                                                                         <input class="form-check-input" type="radio"
                                                                             name="isNeed" value="false"
-                                                                            {{ ($goLive && $goLive->exists && $goLive->isNeed == false) ? 'checked' : '' }}>
+                                                                            {{ $goLive && $goLive->exists && $goLive->isNeed == false ? 'checked' : '' }}>
                                                                         <label class="custom-control-label"
                                                                             for="customRadio1">Tanpa GoLive ODP</label>
                                                                     </div>
                                                                 </td>
                                                                 <td colspan="2">
                                                                     <div class="form-group has-validation">
-                                                                        <textarea name="keterangan_withoutGoLive" class="form-control {{ $errors->has('keterangan_withoutGoLive') ? 'is-invalid' : '' }}" cols="30" rows="2"
-                                                                            placeholder="Keterangan Tanpa GoLive">{{ !empty($goLive) ? $goLive->keterangan_withoutGolive : '' }}</textarea>
+                                                                        <textarea name="keterangan_withoutGoLive"
+                                                                            class="form-control {{ $errors->has('keterangan_withoutGoLive') ? 'is-invalid' : '' }}" cols="30"
+                                                                            rows="2" placeholder="Keterangan Tanpa GoLive">{{ !empty($goLive) ? $goLive->keterangan_withoutGolive : '' }}</textarea>
                                                                         <div class="invalid-feedback">
                                                                             {{ $errors->first('keterangan_withoutGoLive') }}
                                                                         </div>
@@ -105,18 +106,22 @@
                                                             </td>
                                                             @if (Auth::user()->hasRole('optima'))
                                                                 <td class="align-middle text-center">
-                                                                    @if($validasi === null)
+                                                                    @if ($validasi === null)
                                                                         &nbsp;
                                                                     @elseif($validasi !== null && $validasi->isApproved !== 1)
-                                                                        <div class="d-flex align-items-center justify-content-center">
+                                                                        <div
+                                                                            class="d-flex align-items-center justify-content-center">
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-center">
                                                                                 <button type="button"
                                                                                     class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
-                                                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-placement="bottom"
                                                                                     title="Mark As Done"
-                                                                                    data-container="body" data-animation="true"
-                                                                                    id="approve-validasi" data-id="{{ $validasi !== null ? $validasi->lop->id : 0 }}">&#10003;</button>
+                                                                                    data-container="body"
+                                                                                    data-animation="true"
+                                                                                    id="approve-validasi"
+                                                                                    data-id="{{ $validasi !== null ? $validasi->lop->id : 0 }}">&#10003;</button>
                                                                             </div>
                                                                         </div>
                                                                     @else
@@ -130,13 +135,13 @@
                                                                 <td class="align-middle text-center">
                                                                     @if ($validasi === null)
                                                                         <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-secondary">Belum Selesai</span>
+                                                                            <span class="me-2 text-xs text-secondary">Belum
+                                                                                Selesai</span>
                                                                         </div>
                                                                     @elseif($validasi !== null && $validasi->isApproved !== 1)
                                                                         <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-secondary">Belum Selesai</span>
+                                                                            <span class="me-2 text-xs text-secondary">Belum
+                                                                                Selesai</span>
                                                                         </div>
                                                                     @else
                                                                         <div class="d-flex flex-column">
@@ -148,128 +153,150 @@
                                                             @endif
                                                             <td colspan="2">
                                                                 <textarea name="keterangan_validasi" class="form-control" cols="30" rows="2"
-                                                                    placeholder="Keterangan Validasi"  {{ ($validasi !== null && $validasi->isApproved === 1) ?  'disabled' : '' }}>{{ empty($validasi) ? '' : $validasi->keterangan_validasi }}</textarea>
+                                                                    placeholder="Keterangan Validasi" {{ $validasi !== null && $validasi->isApproved === 1 ? 'disabled' : '' }}>{{ empty($validasi) ? '' : $validasi->keterangan_validasi }}</textarea>
                                                             </td>
                                                         </tr>
 
                                                         <!-- Konfirmasi Mitra -->
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex px-2">
-                                                                    <div class="my-auto">
-                                                                        <h6 class="mb-0 text-sm">Konfirmasi Mitra</h6>
+                                                        @if ($validasi !== null && $validasi->isApproved === 1)
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="d-flex px-2">
+                                                                        <div class="my-auto">
+                                                                            <h6 class="mb-0 text-sm">Konfirmasi Mitra</h6>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            @if (Auth::user()->hasRole('optima'))
-                                                                <td class="align-middle text-center">
-                                                                    @if($konfirmasiMitra === null)
-                                                                        &nbsp;
-                                                                    @elseif($konfirmasiMitra !== null && $konfirmasiMitra->isApproved !== 1)
-                                                                        <div class="d-flex align-items-center justify-content-center">
+                                                                </td>
+                                                                @if (Auth::user()->hasRole('optima'))
+                                                                    <td class="align-middle text-center">
+                                                                        @if ($konfirmasiMitra === null)
+                                                                            &nbsp;
+                                                                        @elseif($konfirmasiMitra !== null && $konfirmasiMitra->isApproved !== 1)
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-center">
-                                                                                <button type="button"
-                                                                                    class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
-                                                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                                                    title="Mark As Done"
-                                                                                    data-container="body" data-animation="true"
-                                                                                    id="approve-konfirmasiMitra" data-id="{{ $konfirmasiMitra !== null ? $konfirmasiMitra->lop->id : 0 }}">&#10003;</button>
+                                                                                <div
+                                                                                    class="d-flex align-items-center justify-content-center">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-placement="bottom"
+                                                                                        title="Mark As Done"
+                                                                                        data-container="body"
+                                                                                        data-animation="true"
+                                                                                        id="approve-konfirmasiMitra"
+                                                                                        data-id="{{ $konfirmasiMitra !== null ? $konfirmasiMitra->lop->id : 0 }}">&#10003;</button>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    @else
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-success">Selesai</span>
-                                                                        </div>
-                                                                    @endif
+                                                                        @else
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-success">Selesai</span>
+                                                                            </div>
+                                                                        @endif
+                                                                    </td>
+                                                                @else
+                                                                    <td class="align-middle text-center">
+                                                                        @if ($konfirmasiMitra === null)
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-secondary">Belum
+                                                                                    Selesai</span>
+                                                                            </div>
+                                                                        @elseif($konfirmasiMitra !== null && $konfirmasiMitra->isApproved !== 1)
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-secondary">Belum
+                                                                                    Selesai</span>
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-success">Selesai</span>
+                                                                            </div>
+                                                                        @endif
+                                                                    </td>
+                                                                @endif
+                                                                <td colspan="2">
+                                                                    <textarea name="keterangan_konfirmasi_mitra" class="form-control" cols="30" rows="2"
+                                                                        placeholder="Keterangan Konfirmasi Mitra"
+                                                                        {{ $konfirmasiMitra !== null && $konfirmasiMitra->isApproved === 1 ? 'disabled' : '' }}>{{ empty($konfirmasiMitra) ? '' : $konfirmasiMitra->keterangan_konfirmasi_mitra }}</textarea>
                                                                 </td>
-                                                            @else
-                                                                <td class="align-middle text-center">
-                                                                    @if ($konfirmasiMitra === null)
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-secondary">Belum Selesai</span>
-                                                                        </div>
-                                                                    @elseif($konfirmasiMitra !== null && $konfirmasiMitra->isApproved !== 1)
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-secondary">Belum Selesai</span>
-                                                                        </div>
-                                                                    @else
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-success">Selesai</span>
-                                                                        </div>
-                                                                    @endif
-                                                                </td>
-                                                            @endif
-                                                            <td colspan="2">
-                                                                <textarea name="keterangan_konfirmasi_mitra" class="form-control" cols="30" rows="2"
-                                                                    placeholder="Keterangan Konfirmasi Mitra"  {{ ($konfirmasiMitra !== null && $konfirmasiMitra->isApproved === 1) ?  'disabled' : '' }}>{{ empty($konfirmasiMitra) ? '' : $konfirmasiMitra->keterangan_konfirmasi_mitra }}</textarea>
-                                                            </td>
-                                                        </tr>
+                                                            </tr>
+                                                        @endif
+
 
                                                         <!-- Connectivity -->
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex px-2">
-                                                                    <div class="my-auto">
-                                                                        <h6 class="mb-0 text-sm">OGP Connectivity</h6>
+                                                        @if ($konfirmasiMitra !== null && $konfirmasiMitra->isApproved === 1)
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="d-flex px-2">
+                                                                        <div class="my-auto">
+                                                                            <h6 class="mb-0 text-sm">OGP Connectivity</h6>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            @if (Auth::user()->hasRole('optima'))
-                                                                <td class="align-middle text-center">
-                                                                    @if($connectivity === null)
-                                                                        &nbsp;
-                                                                    @elseif($connectivity !== null && $connectivity->isApproved !== 1)
-                                                                        <div class="d-flex align-items-center justify-content-center">
+                                                                </td>
+                                                                @if (Auth::user()->hasRole('optima'))
+                                                                    <td class="align-middle text-center">
+                                                                        @if ($connectivity === null)
+                                                                            &nbsp;
+                                                                        @elseif($connectivity !== null && $connectivity->isApproved !== 1)
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-center">
-                                                                                <button type="button"
-                                                                                    class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
-                                                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                                                    title="Mark As Done"
-                                                                                    data-container="body" data-animation="true"
-                                                                                    id="approve-connectivity" data-id="{{ $connectivity !== null ? $connectivity->lop->id : 0 }}">&#10003;</button>
+                                                                                <div
+                                                                                    class="d-flex align-items-center justify-content-center">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-placement="bottom"
+                                                                                        title="Mark As Done"
+                                                                                        data-container="body"
+                                                                                        data-animation="true"
+                                                                                        id="approve-connectivity"
+                                                                                        data-id="{{ $connectivity !== null ? $connectivity->lop->id : 0 }}">&#10003;</button>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    @else
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-success">Selesai</span>
-                                                                        </div>
-                                                                    @endif
+                                                                        @else
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-success">Selesai</span>
+                                                                            </div>
+                                                                        @endif
+                                                                    </td>
+                                                                @else
+                                                                    <td class="align-middle text-center">
+                                                                        @if ($connectivity === null)
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-secondary">Belum
+                                                                                    Selesai</span>
+                                                                            </div>
+                                                                        @elseif($connectivity !== null && $connectivity->isApproved !== 1)
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-secondary">Belum
+                                                                                    Selesai</span>
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="d-flex flex-column">
+                                                                                <span
+                                                                                    class="me-2 text-xs text-success">Selesai</span>
+                                                                            </div>
+                                                                        @endif
+                                                                    </td>
+                                                                @endif
+                                                                <td colspan="2">
+                                                                    <textarea name="keterangan_connectivity" class="form-control" cols="30" rows="2"
+                                                                        placeholder="Keterangan Connectivity"
+                                                                        {{ $connectivity !== null && $connectivity->isApproved === 1 ? 'disabled' : '' }}>{{ empty($connectivity) ? '' : $connectivity->keterangan_connectivity }}</textarea>
                                                                 </td>
-                                                            @else
-                                                                <td class="align-middle text-center">
-                                                                    @if ($connectivity === null)
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-secondary">Belum Selesai</span>
-                                                                        </div>
-                                                                    @elseif($connectivity !== null && $connectivity->isApproved !== 1)
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-secondary">Belum Selesai</span>
-                                                                        </div>
-                                                                    @else
-                                                                        <div class="d-flex flex-column">
-                                                                            <span
-                                                                                class="me-2 text-xs text-success">Selesai</span>
-                                                                        </div>
-                                                                    @endif
-                                                                </td>
-                                                            @endif
-                                                            <td colspan="2">
-                                                                <textarea name="keterangan_connectivity" class="form-control" cols="30" rows="2"
-                                                                    placeholder="Keterangan Connectivity"  {{ ($connectivity !== null && $connectivity->isApproved === 1) ?  'disabled' : '' }}>{{ empty($connectivity) ? '' : $connectivity->keterangan_connectivity }}</textarea>
-                                                            </td>
-                                                        </tr>
+                                                            </tr>
+                                                        @endif
+
 
                                                         <!-- Go Live ODP -->
-                                                            <tr style="display: {{ ($goLive && $goLive->exists && $goLive->isNeed == true) ? '' : 'none' }};">
+                                                        @if ($connectivity !== null && $connectivity->isApproved === 1)
+                                                            <tr
+                                                                style="display: {{ $goLive && $goLive->exists && $goLive->isNeed == true ? '' : 'none' }};">
                                                                 <td>
                                                                     <div class="d-flex px-2">
                                                                         <div class="my-auto">
@@ -279,18 +306,22 @@
                                                                 </td>
                                                                 @if (Auth::user()->hasRole('optima'))
                                                                     <td class="align-middle text-center">
-                                                                        @if($goLive === null)
+                                                                        @if ($goLive === null)
                                                                             &nbsp;
                                                                         @elseif($goLive !== null && $goLive->isApproved !== 1)
-                                                                            <div class="d-flex align-items-center justify-content-center">
+                                                                            <div
+                                                                                class="d-flex align-items-center justify-content-center">
                                                                                 <div
                                                                                     class="d-flex align-items-center justify-content-center">
                                                                                     <button type="button"
                                                                                         class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
-                                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-placement="bottom"
                                                                                         title="Mark As Done"
-                                                                                        data-container="body" data-animation="true"
-                                                                                        id="approve-odp" data-id="{{ $goLive !== null ? $goLive->lop->id : 0 }}">&#10003;</button>
+                                                                                        data-container="body"
+                                                                                        data-animation="true"
+                                                                                        id="approve-odp"
+                                                                                        data-id="{{ $goLive !== null ? $goLive->lop->id : 0 }}">&#10003;</button>
                                                                                 </div>
                                                                             </div>
                                                                         @else
@@ -305,12 +336,14 @@
                                                                         @if ($goLive === null)
                                                                             <div class="d-flex flex-column">
                                                                                 <span
-                                                                                    class="me-2 text-xs text-secondary">Belum Selesai</span>
+                                                                                    class="me-2 text-xs text-secondary">Belum
+                                                                                    Selesai</span>
                                                                             </div>
                                                                         @elseif($goLive !== null && $goLive->isApproved !== 1)
                                                                             <div class="d-flex flex-column">
                                                                                 <span
-                                                                                    class="me-2 text-xs text-secondary">Belum Selesai</span>
+                                                                                    class="me-2 text-xs text-secondary">Belum
+                                                                                    Selesai</span>
                                                                             </div>
                                                                         @else
                                                                             <div class="d-flex flex-column">
@@ -323,7 +356,8 @@
                                                                 <td>
                                                                     @if (!empty($goLive))
                                                                         @if ($goLive->exists && $goLive->evidence_golive !== null)
-                                                                            <div class="d-flex flex-row align-items-center">
+                                                                            <div
+                                                                                class="d-flex flex-row align-items-center">
                                                                                 <a href="{{ Storage::url('uploads/evidence_golive/' . $goLive['evidence_golive']) }}"
                                                                                     target="_blank">
                                                                                     <span
@@ -333,23 +367,28 @@
                                                                         @else
                                                                             <div
                                                                                 class="d-flex flex-row align-items-center px-2">
-                                                                                <input type="file" name="evidence_golive"
-                                                                                    class="form-control form-control-sm"  {{ ($goLive !== null && $goLive->isApproved === 1) ?  'disabled' : '' }}>
+                                                                                <input type="file"
+                                                                                    name="evidence_golive"
+                                                                                    class="form-control form-control-sm"
+                                                                                    {{ $goLive !== null && $goLive->isApproved === 1 ? 'disabled' : '' }}>
                                                                             </div>
                                                                         @endif
                                                                     @else
                                                                         <div
                                                                             class="d-flex flex-row align-items-center px-2">
                                                                             <input type="file" name="evidence_golive"
-                                                                                class="form-control form-control-sm"  {{ ($goLive !== null && $goLive->isApproved === 1) ?  'disabled' : '' }}>
+                                                                                class="form-control form-control-sm"
+                                                                                {{ $goLive !== null && $goLive->isApproved === 1 ? 'disabled' : '' }}>
                                                                         </div>
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     <textarea name="keterangan_withGoLive" class="form-control" cols="30" rows="2"
-                                                                        placeholder="Keterangan GoLive"  {{ ($goLive !== null && $goLive->isApproved === 1) ?  'disabled' : '' }} {{ isset($goLive) && $goLive->exists && $goLive->isNeed == false ? 'disabled' : '' }}>{{ isset($goLive) && $goLive->exists && isset($goLive->keterangan_withGolive) ? $goLive->keterangan_withGolive : '' }}</textarea>
+                                                                        placeholder="Keterangan GoLive" {{ $goLive !== null && $goLive->isApproved === 1 ? 'disabled' : '' }}
+                                                                        {{ isset($goLive) && $goLive->exists && $goLive->isNeed == false ? 'disabled' : '' }}>{{ isset($goLive) && $goLive->exists && isset($goLive->keterangan_withGolive) ? $goLive->keterangan_withGolive : '' }}</textarea>
                                                                 </td>
                                                             </tr>
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -389,11 +428,11 @@
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function (response) {
+                    success: function(response) {
                         alert("Validasi DOC marked as Done");
                         window.location.reload();
                     },
-                    error: function (xhr, textStatus, error) {
+                    error: function(xhr, textStatus, error) {
                         // Handle errors if needed
                         console.error(error);
                     }
@@ -412,11 +451,11 @@
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function (response) {
+                    success: function(response) {
                         alert("Konfirmasi Mitra marked as Done");
                         window.location.reload();
                     },
-                    error: function (xhr, textStatus, error) {
+                    error: function(xhr, textStatus, error) {
                         // Handle errors if needed
                         console.error(error);
                     }
@@ -435,11 +474,11 @@
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function (response) {
+                    success: function(response) {
                         alert("OGP Connectivity marked as Done");
                         window.location.reload();
                     },
-                    error: function (xhr, textStatus, error) {
+                    error: function(xhr, textStatus, error) {
                         // Handle errors if needed
                         console.error(error);
                     }
@@ -458,11 +497,11 @@
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function (response) {
+                    success: function(response) {
                         alert("GoLive ODP marked as Done");
                         window.location.reload();
                     },
-                    error: function (xhr, textStatus, error) {
+                    error: function(xhr, textStatus, error) {
                         // Handle errors if needed
                         console.error(error);
                     }
