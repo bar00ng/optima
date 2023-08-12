@@ -34,6 +34,18 @@
                                 value="{{ $lop['tematik_lop'] }}" readonly>
                         </div>
                         <div class="form-group">
+                            <label for="">Tipe Professioning</label>
+                            <select name="tipe_professioning" class="form-control {{ $errors->has('tipe_professioning') ? 'is-invalid' : '' }}" autofocus>
+                                <option value="">-- PILIH TIPE PROFESSIONING --</option>
+                                <option value="PT 1" {{ old('tipe_professioning') == 'PT 1' ? 'selected' : '' }}>PT 1</option>
+                                <option value="PT 2" {{ old('tipe_professioning') == 'PT 2' ? 'selected' : '' }}>PT 2</option>
+                                <option value="PT 3" {{ old('tipe_professioning') == 'PT 3' ? 'selected' : '' }}>PT 3</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('tipe_professioning') }}
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="">STO</label>
                             <input type="text" class="form-control" name="sto" id="sto"
                                 value="{{ $lop['sto'] }}" readonly>

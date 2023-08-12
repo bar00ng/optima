@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('rab_ondesk')->default('');
             $table->string('keterangan_rab')->default('');
             $table->foreignId('mitra_id')->nullable()->constrained('user')->onDelete('cascade');
+            $table->string('tipe_professioning')->nullable()->default(null);
             $table->string('status')->default('');
             $table->timestamps();
         });

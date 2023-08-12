@@ -34,7 +34,8 @@ class Lop extends Model
         'rab_ondesk',
         'keterangan_rab',
         'mitra_id',
-        'status'
+        'status',
+        'tipe_professioning'
     ];
 
     use HasFactory;
