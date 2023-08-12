@@ -7,7 +7,9 @@ use App\Models\ListPermintaan;
 use App\Models\Lop;
 use App\Models\User;
 use App\Models\RabApproval;
+use League\Csv\Writer;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Response;
 
 class LopController extends Controller
 {
@@ -93,11 +95,13 @@ class LopController extends Controller
             'rab_ondesk.required' => 'Kolom RAB ondesk harus diisi.',
             'rab_ondesk.integer' => 'Kolom RAB ondesk harus berupa angka bulat.',
             'keterangan_rab.required' => 'Kolom keterangan RAB harus diisi.',
+            'tipe_professioning.required' => 'Kolom Tipe Professioning harus diisi.'
         ];
 
         $validated = $r->validate([
             'rab_ondesk' => 'required|integer',
             'keterangan_rab' => 'required',
+            'tipe_professioning' => 'required'
         ], $validation_messages);
 
         Lop::where('id', $r->lop_id)->update($validated);
@@ -164,5 +168,62 @@ class LopController extends Controller
 
             return redirect('/lop')->with('Sukses', 'Survey RAB disetujui!');
         }
+    }
+
+    public function createReport() {
+        $reports = Lop::all();
+        $no = 1;
+
+        // Create a CSV writer
+        $csv = Writer::createFromString('');
+
+        $csv->insertOne([
+            'No',
+            'Nama Permintaan',
+            'Tanggal Permintaan',
+            'Nama LOP',
+            'Tematik LOP',
+            'Tipe Professioning',
+            'Estimasi RAB',
+            'STO',
+            'Longitude',
+            'Latitude',
+            'Lokasi LOP',
+            'Keterangan LOP',
+            'RAB On Desk',
+            'Keterangan RAB',
+            'Nama Mitra',
+            'Status'
+        ]);
+
+        foreach ($reports as $item) {
+            $csv->insertOne([
+                $no++,
+                $item->listPermintaan->nama_permintaan,
+                \Carbon\Carbon::parse($item->tanggal_permintaan)->format('j F Y'),
+                !empty($item->nama_lop) ? $item->nama_lop : '-',
+                !empty($item->tematik_lop) ? $item->tematik_lop : '-',
+                !empty($item->tipe_professioning) ? $item->tipe_professioning : '-',
+                !empty($item->estimasi_rab) ? $item->estimasi_rab : '-',
+                !empty($item->sto) ? $item->sto : '-',
+                !empty($item->longitude) ? $item->longitude : '-',
+                !empty($item->latitude) ? $item->latitude : '-',
+                !empty($item->lokasi_lop) ? $item->lokasi_lop : '-',
+                !empty($item->keterangan_lop) ? $item->keterangan_lop : '-',
+                !empty($item->rab_ondesk) ? $item->rab_ondesk : '-',
+                !empty($item->keterangan_rab) ? $item->keterangan_rab : '-',
+                !empty($item->user->first_name) ? $item->user->first_name : '-',
+                !empty($item->status) ? $item->status : '-',
+            ]);
+        }
+
+        // Set the appropriate headers for CSV download
+        $headers = array(
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="report_lop_' . Carbon::now()->format('Ymd_His') . '.csv"',
+        );
+
+        // Generate the CSV response and return it
+        return Response::make($csv->__toString(), 200, $headers);
     }
 }

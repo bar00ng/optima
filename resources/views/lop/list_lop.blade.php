@@ -3,6 +3,21 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="d-flex align-items-center">
+                        @if (Auth::user()->hasRole('optima'))
+                            @if (!$lop->isEmpty())
+                                <a href="{{ route('lop.create.report') }}" style="margin-left: 5px">
+                                    <button type="submit" class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download CSV"
+                                        data-container="body" data-animation="true">
+                                        <i class="fa fa-download" style="font-size:12px;color:green"></i>
+                                    </button>
+                                </a>
+                            @endif
+                        @endif
+                    </div>
+                </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
                         <table class="table align-items-center justify-content-center mb-0">
@@ -48,7 +63,7 @@
                                             <td>
                                                 @if ($item->status == 'Alokasi Mitra')
                                                     @if (empty($item->mitra_id))
-                                                        @if (Auth::user()->hasRole(['admin', 'optima']))
+                                                        @if (Auth::user()->hasRole(['optima']))
                                                             <a
                                                                 href="{{ route('lop.formAlokasiMitra', ['lop_id' => $item->id]) }}">
                                                                 <span class="badge badge-pill bg-gradient-danger">Belum
@@ -66,7 +81,8 @@
                                                 @elseif ($item->status == 'Survey + RAB')
                                                     @if (empty($item->rabApproval))
                                                         @if (Auth::user()->hasRole(['optima', 'mitra', 'sdi']))
-                                                            <a href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
+                                                            <a
+                                                                href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
                                                                 <span class="badge badge-pill bg-gradient-danger">Belum
                                                                     Survey</span>
                                                             </a>
@@ -89,7 +105,8 @@
                                                 @elseif ($item->status == 'Persiapan')
                                                     <span class="badge badge-pill bg-gradient-primary">Persiapan</span>
                                                 @else
-                                                    <span class="badge badge-pill bg-gradient-secondary">{{$item->status}}</span>
+                                                    <span
+                                                        class="badge badge-pill bg-gradient-secondary">{{ $item->status }}</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
@@ -170,16 +187,26 @@
                                                     @endif
 
                                                     @if (Auth::user()->hasRole(['optima', 'mitra']))
-                                                        @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
-                                                            <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
-                                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        @if (
+                                                            $item->status == 'Persiapan' ||
+                                                                $item->status == 'Instalasi' ||
+                                                                $item->status == 'Selesai Fisik' ||
+                                                                $item->status == 'GoLive')
+                                                            <a
+                                                                href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
+                                                                <button type="button"
+                                                                    class="btn btn-outline-primary btn-sm"
                                                                     style="margin-right: 5px">Konstruksi</button>
                                                             </a>
                                                         @endif
                                                     @endif
 
                                                     @if (Auth::user()->hasRole(['optima', 'sdi']))
-                                                        @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
+                                                        @if (
+                                                            $item->status == 'Persiapan' ||
+                                                                $item->status == 'Instalasi' ||
+                                                                $item->status == 'Selesai Fisik' ||
+                                                                $item->status == 'GoLive')
                                                             <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
                                                                 <button type="button"
                                                                     class="btn btn-outline-secondary btn-sm"
@@ -191,7 +218,8 @@
 
                                                     <!-- view info LOP -->
                                                     <!-- Toggle Modal -->
-                                                    <button type="button" class="btn btn-outline-info btn-sm btn-icon-only"
+                                                    <button type="button"
+                                                        class="btn btn-outline-info btn-sm btn-icon-only"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#exampleModal-{{ $item->id }}">&#128065;</button>
                                                     <!-- Modal box -->
@@ -223,6 +251,11 @@
                                                                         <dt class="col-sm-4">Estimasi RAB</dt>
                                                                         <dd class="col-sm-8">
                                                                             {{ !empty($item->estimasi_rab) ? $item->estimasi_rab : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4">Tipe Professioning</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->tipe_professioning) ? $item->tipe_professioning : '-' }}
                                                                         </dd>
 
                                                                         <dt class="col-sm-4 text-truncate">STO</dt>

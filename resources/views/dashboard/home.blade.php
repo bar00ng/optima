@@ -127,7 +127,8 @@
                                                 @elseif ($item->status == 'Survey + RAB')
                                                     @if (empty($item->rabApproval))
                                                         @if (Auth::user()->hasRole(['optima', 'mitra', 'sdi']))
-                                                            <a href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
+                                                            <a
+                                                                href="{{ route('lop.formSurvey', ['lop_id' => $item->id]) }}">
                                                                 <span class="badge badge-pill bg-gradient-danger">Belum
                                                                     Survey</span>
                                                             </a>
@@ -150,7 +151,8 @@
                                                 @elseif ($item->status == 'Persiapan')
                                                     <span class="badge badge-pill bg-gradient-primary">Persiapan</span>
                                                 @else
-                                                    <span class="badge badge-pill bg-gradient-secondary">{{$item->status}}</span>
+                                                    <span
+                                                        class="badge badge-pill bg-gradient-secondary">{{ $item->status }}</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
@@ -222,7 +224,7 @@
                                                                 @method('PATCH')
                                                                 @csrf
                                                                 <button type="submit"
-                                                                class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                    class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
                                                                     data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                                     title="Reject RAB" data-container="body"
                                                                     data-animation="true">&#10007;</button>
@@ -231,16 +233,26 @@
                                                     @endif
 
                                                     @if (Auth::user()->hasRole(['optima', 'mitra']))
-                                                        @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
-                                                            <a href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
-                                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        @if (
+                                                            $item->status == 'Persiapan' ||
+                                                                $item->status == 'Instalasi' ||
+                                                                $item->status == 'Selesai Fisik' ||
+                                                                $item->status == 'GoLive')
+                                                            <a
+                                                                href="{{ route('lop.konstruksi', ['lop_id' => $item->id]) }}">
+                                                                <button type="button"
+                                                                    class="btn btn-outline-primary btn-sm"
                                                                     style="margin-right: 5px">Konstruksi</button>
                                                             </a>
                                                         @endif
                                                     @endif
 
                                                     @if (Auth::user()->hasRole(['optima', 'sdi']))
-                                                        @if ($item->status == 'Persiapan' || $item->status == 'Instalasi' || $item->status == 'Selesai Fisik' ||  $item->status == 'GoLive')
+                                                        @if (
+                                                            $item->status == 'Persiapan' ||
+                                                                $item->status == 'Instalasi' ||
+                                                                $item->status == 'Selesai Fisik' ||
+                                                                $item->status == 'GoLive')
                                                             <a href="{{ route('lop.go-live', ['lop_id' => $item->id]) }}">
                                                                 <button type="button"
                                                                     class="btn btn-outline-secondary btn-sm"
@@ -284,6 +296,11 @@
                                                                         <dt class="col-sm-4">Estimasi RAB</dt>
                                                                         <dd class="col-sm-8">
                                                                             {{ !empty($item->estimasi_rab) ? $item->estimasi_rab : '-' }}
+                                                                        </dd>
+
+                                                                        <dt class="col-sm-4">Tipe Professioning</dt>
+                                                                        <dd class="col-sm-8">
+                                                                            {{ !empty($item->tipe_professioning) ? $item->tipe_professioning : '-' }}
                                                                         </dd>
 
                                                                         <dt class="col-sm-4 text-truncate">STO</dt>

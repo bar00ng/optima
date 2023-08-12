@@ -15,19 +15,19 @@ return new class extends Migration
             $table->id();
             $table->foreignId('permintaan_id')->constrained('list_permintaan')->onDelete('cascade');
             $table->date('tanggal_permintaan')->default(now());
-            $table->string('nama_lop')->default('');
-            $table->string('tematik_lop')->default('');
+            $table->string('nama_lop')->nullable()->default(null);
+            $table->string('tematik_lop')->nullable()->default(null);
             $table->string('estimasi_rab')->nullable()->default(null);
-            $table->string('sto')->default('');
-            $table->string('longitude')->default('');
-            $table->string('latitude')->default('');
-            $table->string('lokasi_lop')->default('');
+            $table->string('sto')->nullable()->default(null);
+            $table->string('longitude')->nullable()->default(null);
+            $table->string('latitude')->nullable()->default(null);
+            $table->string('lokasi_lop')->nullable()->default(null);
             $table->text('keterangan_lop');
-            $table->string('rab_ondesk')->default('');
-            $table->string('keterangan_rab')->default('');
+            $table->string('rab_ondesk')->nullable()->default(null);
+            $table->string('keterangan_rab')->nullable()->default(null);
             $table->foreignId('mitra_id')->nullable()->constrained('user')->onDelete('cascade');
             $table->string('tipe_professioning')->nullable()->default(null);
-            $table->string('status')->default('');
+            $table->string('status')->nullable()->default(null);
             $table->timestamps();
         });
     }

@@ -83,19 +83,19 @@ class PermintaanController extends Controller
         $reports = ListPermintaan::all();
 
         $LOPCount = [];
-    
+
         foreach ($reports as $p) {
             $LOPCount[$p->id] = Lop::where('permintaan_id', $p->id)->count();
         }
-    
+
         $data = [
             'reports' => $reports,
             'lop_count' => $LOPCount
         ];
-    
+
         // Create a CSV writer
         $csv = Writer::createFromString('');
-    
+
         // Add headers to the CSV file
         $csv->insertOne([
             'No',
@@ -107,11 +107,11 @@ class PermintaanController extends Controller
             'PIC Permintaan',
             'Keterangan',
         ]);
-    
+
         // Add data rows to the CSV file
         foreach ($reports as $report) {
             $count = isset($LOPCount[$report->id]) ? $LOPCount[$report->id] : 0;
-    
+
             $csv->insertOne([
                 $report->id,
                 \Carbon\Carbon::parse($report->tanggal_permintaan)->format('j F Y'),
@@ -123,13 +123,13 @@ class PermintaanController extends Controller
                 $report->keterangan,
             ]);
         }
-    
+
         // Set the appropriate headers for CSV download
         $headers = array(
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="report_' . Carbon::now()->format('Ymd_His') . '.csv"',
+            'Content-Disposition' => 'attachment; filename="report_permintaan_' . Carbon::now()->format('Ymd_His') . '.csv"',
         );
-    
+
         // Generate the CSV response and return it
         return Response::make($csv->__toString(), 200, $headers);
     }
