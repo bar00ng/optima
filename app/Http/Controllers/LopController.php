@@ -67,7 +67,7 @@ class LopController extends Controller
 
         $lop = new Lop();
         $lop->fill($validated);
-        $lop->status = 'Alokasi Mitra';
+        $lop->status = 'Survey + RAB';
 
         $lop->save();
         $lop_id = $lop->id;
@@ -82,7 +82,7 @@ class LopController extends Controller
     public function surveyRabForm($lop_id)
     {
         $pageCategory = 'Project';
-        $pageName = 'Alokasi Mitra';
+        $pageName = 'Survey RAB';
 
         $lop = Lop::where('id', $lop_id)->first();
 
@@ -105,6 +105,7 @@ class LopController extends Controller
         ], $validation_messages);
 
         Lop::where('id', $r->lop_id)->update($validated);
+
         RabApproval::create([
             'lop_id' => $r->lop_id,
             'isApproved' => false
@@ -141,7 +142,7 @@ class LopController extends Controller
             'mitra_id' => 'required',
         ], $validation_messages);
 
-        $validated['status'] = 'Survey + RAB';
+        $validated['status'] = 'Persiapan';
         Lop::where('id', $r->lop_id)->update($validated);
 
         return redirect('/lop')->with('Sukses', 'Berhasil Mengalokasi Mitra!');
@@ -163,7 +164,7 @@ class LopController extends Controller
                 'isApproved' => true
             ]);
             Lop::where('id', $lop_id)->update([
-                'status' => 'Persiapan'
+                'status' => 'Alokasi Mitra'
             ]);
 
             return redirect('/lop')->with('Sukses', 'Survey RAB disetujui!');

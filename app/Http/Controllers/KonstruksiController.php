@@ -7,6 +7,7 @@ use App\Models\Lop;
 use App\Models\Persiapan;
 use App\Models\Instalasi;
 use App\Models\SelesaiFisik;
+use App\Models\SelesaiFisikDetail;
 
 class KonstruksiController extends Controller
 {
@@ -17,251 +18,249 @@ class KonstruksiController extends Controller
 
         $lop = Lop::where('id', $lop_id)->first();
 
-        $persiapan = Persiapan::where('lop_id', $lop_id)->first();
-        $data_persiapan_array = [];
-        if ($persiapan) {
-            $data_persiapan_array = json_decode($persiapan->data, true)['data_array'];
-        }
+        $persiapan = $lop->persiapan;
+       
+        $instalasi = $lop->instalasi;
+        
+        $selesaiFisik = $lop->selesaiFisik;
 
-        $instalasi = Instalasi::where('lop_id', $lop_id)->first();
-        $data_instalasi_array = [];
-        if ($instalasi) {
-            $data_instalasi_array = json_decode($instalasi->data, true)['data_array'];
-        }
-
-        $selesaiFisik = SelesaiFisik::where('lop_id', $lop_id)->first();
-        $data_selesaiFisik_array = [];
-        if ($selesaiFisik) {
-            $data_selesaiFisik_array = json_decode($selesaiFisik->data, true)['data_array'];
-        }
-
-        return view('konstruksi.konstruksi', compact('pageName', 'pageCategory', 'lop', 'persiapan', 'data_persiapan_array', 'instalasi', 'data_instalasi_array', 'selesaiFisik', 'data_selesaiFisik_array'));
+        return view('konstruksi.konstruksi', compact('pageName', 'pageCategory', 'lop', 'persiapan', 'instalasi', 'selesaiFisik'));
     }
 
     public function store($lop_id, Request $r)
     {
-        $persiapan = new Persiapan();
-        $instalasi = new Instalasi();
-        $selesai = new SelesaiFisik();
-
-        if ($r->hasFile('evidence_persiapan') && $r->file('evidence_persiapan')->isValid()) {
-            $file = $r->file('evidence_persiapan');
-            $fileName = $file->getClientOriginalName();
-
-            $file->storeAs('public/uploads/evidence_persiapan', $fileName);
-
-            $evidence_persiapan = [
-                'id' => rand(10,100), // Add 'id' key with the value of $persiapan->id
-                'filename' => $fileName, // Add 'filename' key with the value of $fileName
-                'isApproved' => null, // Add 'isApproved' key with the initial value of null
-            ];
-
-            $data = Persiapan::where('lop_id', $lop_id)->first();
-            if ($data) {
-                // Kalau data sudah ada. maka append
-                $data_before = json_decode($data->data, true);
-
-                $data_before['data_array'][] = $evidence_persiapan;
-
-                $data_after = json_encode($data_before);
-
-                $data->update([
-                    'data' => $data_after,
-                ]);
-            } else {
-                $data_new = [
-                    'data_array' => [$evidence_persiapan]
-                ];
-                $persiapan->lop_id = $lop_id;
-                $persiapan->data = json_encode($data_new);
-
-                if ($r->keterangan_persiapan !== '') {
-                    $persiapan->keterangan_persiapan = $r->keterangan_persiapan;
-                }
-
-                $persiapan->save();
-            }
-        }
-        Persiapan::where('lop_id', $lop_id)->update([
-            'keterangan_persiapan' => $r->keterangan_persiapan,
+        // dd($r);
+        $validated = $r->validate([
+            'keterangan_persiapan' => 'sometimes|required|max:255',
+            'keterangan_instalasi' => 'sometimes|required|max:255',
+            'keterangan_selesai' => 'sometimes|required|max:255',
+            'evidence_selesai' => 'required|file'
         ]);
 
-        if ($r->hasFile('evidence_instalasi') && $r->file('evidence_instalasi')->isValid()) {
-            $file = $r->file('evidence_instalasi');
-            $fileName = $file->getClientOriginalName();
-
-            $file->storeAs('public/uploads/evidence_instalasi', $fileName);
-            $evidence_instalasi = [
-                'id' => rand(10,100), // Add 'id' key with the value of $persiapan->id
-                'filename' => $fileName, // Add 'filename' key with the value of $fileName
-                'isApproved' => null, // Add 'isApproved' key with the initial value of null
-            ];
-
-            $data = Instalasi::where('lop_id', $lop_id)->first();
-            if ($data) {
-                // Kalau data sudah ada. maka append
-                $data_before = json_decode($data->data, true);
-
-                $data_before['data_array'][] = $evidence_instalasi;
-
-                $data_after = json_encode($data_before);
-
-                $data->update([
-                    'data' => $data_after,
-                ]);
-            } else {
-                $data_new = [
-                    'data_array' => [$evidence_instalasi]
-                ];
-                $instalasi->lop_id = $lop_id;
-                $instalasi->data = json_encode($data_new);
-
-                if ($r->keterangan_instalasi !== '') {
-                    $instalasi->keterangan_instalasi = $r->keterangan_instalasi;
-                }
-
-                $instalasi->save();
+        if ($r->filled('keterangan_persiapan')) {
+            $queryPersiapan = Persiapan::updateOrCreate(
+                ['lop_id' => $lop_id],
+                [
+                    'keterangan_persiapan' => $validated['keterangan_persiapan']
+                ]
+            );
+            if ($queryPersiapan) {
+                $message = "Berhasil upload keterangan Persiapan";
             }
         }
-        Instalasi::where('lop_id', $lop_id)->update([
-            'keterangan_instalasi' => $r->keterangan_instalasi,
-        ]);
+
+        if ($r->filled('keterangan_instalasi')) {
+            $queryInstalasi = Instalasi::updateOrCreate(
+                ['lop_id' => $lop_id],
+                [
+                    'keterangan_instalasi' => $validated['keterangan_instalasi']
+                ]
+            );
+            if ($queryInstalasi) {
+                $message = "Berhasil upload keterangan Instalasi";
+            }
+        }
+
+        if ($r->filled('keterangan_selesai')) {
+            $querySelesaiFisik = SelesaiFisik::updateOrCreate(
+                ['lop_id' => $lop_id],
+                [
+                    'keterangan_selesai' => $validated['keterangan_selesai']
+                ]
+            );
+        }
 
         if ($r->hasFile('evidence_selesai') && $r->file('evidence_selesai')->isValid()) {
             $file = $r->file('evidence_selesai');
             $fileName = $file->getClientOriginalName();
 
             $file->storeAs('public/uploads/evidence_selesai', $fileName);
-            $evidence_selesai_fisik = [
-                'id' => rand(10,100), // Add 'id' key with the value of $persiapan->id
-                'filename' => $fileName, // Add 'filename' key with the value of $fileName
-                'isApproved' => null, // Add 'isApproved' key with the initial value of null
-            ];
 
-            $data = SelesaiFisik::where('lop_id',$lop_id)->first();
-            if ($data) {
-                // Kalau data sudah ada. maka append
-                $data_before = json_decode($data->data, true);
-
-                $data_before['data_array'][] = $evidence_selesai_fisik;
-
-                $data_after = json_encode($data_before);
-
-                $data->update([
-                    'data' => $data_after,
-                ]);
-            } else {
-                $data_new = [
-                    'data_array' => [$evidence_selesai_fisik]
-                ];
-                $selesai->lop_id = $lop_id;
-                $selesai->data = json_encode($data_new);
-
-                if ($r->keterangan_selesai !== '') {
-                    $selesai->keterangan_selesai = $r->keterangan_selesai;
-                }
-
-                $selesai->save();
-            }
+            $querySelesaiFisikDetail = SelesaiFisikDetail::create([
+                'selesai_fisik_id' => $querySelesaiFisik->id,
+                'evidence_name' => $fileName,
+                'isApproved' => null
+            ]);
         }
-        SelesaiFisik::where('lop_id', $lop_id)->update([
-            'keterangan_selesai' => $r->keterangan_selesai,
-        ]);
 
-        return redirect('/konstruksi/' . $lop_id)->with('Sukses', 'Proses upload evidence berhasil');
-    }
-
-    public function approvePersiapan($approved, $persiapan_id, $evidence_id)
-    {
-        $persiapan = Persiapan::where('id', $persiapan_id)->first();
-
-        // Get before data
-        $data_before = $persiapan->data;
-
-        // Convert json to asosiative array
-        $dataArray = json_decode($data_before, true);
-
-        if ($approved == 'false') {
-            foreach ($dataArray['data_array'] as &$item) {
-                $id = $item['id'];
-
-                if ($id == $evidence_id) {
-                    $item['isApproved'] = false;
-                }
-            }
-
-            $data_after = json_encode($dataArray);
-
-            $persiapan->data = $data_after;
-            $persiapan->save();
-
-            $message = "Evidence persiapan di Reject";
-        } elseif ($approved == 'true') {
-            foreach ($dataArray['data_array'] as &$item) {
-                $id = $item['id'];
-
-                if ($id == $evidence_id) {
-                    $item['isApproved'] = true;
-                }
-            }
-
-            $data_after = json_encode($dataArray);
-
-            // update new data
-            $persiapan->data = $data_after;
-            $persiapan->save();
-
-            $message = "Evidence persiapan di Approve";
+        if ($querySelesaiFisik && $querySelesaiFisikDetail) {
+            $message = "Berhasil upload evidence dan keterangan selesai fisik";
         }
+
+        // if ($r->hasFile('evidence_persiapan') && $r->file('evidence_persiapan')->isValid()) {
+        //     $file = $r->file('evidence_persiapan');
+        //     $fileName = $file->getClientOriginalName();
+
+        //     $file->storeAs('public/uploads/evidence_persiapan', $fileName);
+
+        //     $evidence_persiapan = [
+        //         'id' => rand(10,100), // Add 'id' key with the value of $persiapan->id
+        //         'filename' => $fileName, // Add 'filename' key with the value of $fileName
+        //         'isApproved' => null, // Add 'isApproved' key with the initial value of null
+        //     ];
+
+        //     $data = Persiapan::where('lop_id', $lop_id)->first();
+        //     if ($data) {
+        //         // Kalau data sudah ada. maka append
+        //         $data_before = json_decode($data->data, true);
+
+        //         $data_before['data_array'][] = $evidence_persiapan;
+
+        //         $data_after = json_encode($data_before);
+
+        //         $data->update([
+        //             'data' => $data_after,
+        //         ]);
+        //     } else {
+        //         $data_new = [
+        //             'data_array' => [$evidence_persiapan]
+        //         ];
+        //         $persiapan->lop_id = $lop_id;
+        //         $persiapan->data = json_encode($data_new);
+
+        //         if ($r->keterangan_persiapan !== '') {
+        //             $persiapan->keterangan_persiapan = $r->keterangan_persiapan;
+        //         }
+
+        //         $persiapan->save();
+        //     }
+        // }
+        // Persiapan::where('lop_id', $lop_id)->update([
+        //     'keterangan_persiapan' => $r->keterangan_persiapan,
+        // ]);
+
+        // if ($r->hasFile('evidence_instalasi') && $r->file('evidence_instalasi')->isValid()) {
+        //     $file = $r->file('evidence_instalasi');
+        //     $fileName = $file->getClientOriginalName();
+
+        //     $file->storeAs('public/uploads/evidence_instalasi', $fileName);
+        //     $evidence_instalasi = [
+        //         'id' => rand(10,100), // Add 'id' key with the value of $persiapan->id
+        //         'filename' => $fileName, // Add 'filename' key with the value of $fileName
+        //         'isApproved' => null, // Add 'isApproved' key with the initial value of null
+        //     ];
+
+        //     $data = Instalasi::where('lop_id', $lop_id)->first();
+        //     if ($data) {
+        //         // Kalau data sudah ada. maka append
+        //         $data_before = json_decode($data->data, true);
+
+        //         $data_before['data_array'][] = $evidence_instalasi;
+
+        //         $data_after = json_encode($data_before);
+
+        //         $data->update([
+        //             'data' => $data_after,
+        //         ]);
+        //     } else {
+        //         $data_new = [
+        //             'data_array' => [$evidence_instalasi]
+        //         ];
+        //         $instalasi->lop_id = $lop_id;
+        //         $instalasi->data = json_encode($data_new);
+
+        //         if ($r->keterangan_instalasi !== '') {
+        //             $instalasi->keterangan_instalasi = $r->keterangan_instalasi;
+        //         }
+
+        //         $instalasi->save();
+        //     }
+        // }
+        // Instalasi::where('lop_id', $lop_id)->update([
+        //     'keterangan_instalasi' => $r->keterangan_instalasi,
+        // ]);
+
+        // if ($r->hasFile('evidence_selesai') && $r->file('evidence_selesai')->isValid()) {
+        //     $file = $r->file('evidence_selesai');
+        //     $fileName = $file->getClientOriginalName();
+
+        //     $file->storeAs('public/uploads/evidence_selesai', $fileName);
+        //     $evidence_selesai_fisik = [
+        //         'id' => rand(10,100), // Add 'id' key with the value of $persiapan->id
+        //         'filename' => $fileName, // Add 'filename' key with the value of $fileName
+        //         'isApproved' => null, // Add 'isApproved' key with the initial value of null
+        //     ];
+
+        //     $data = SelesaiFisik::where('lop_id',$lop_id)->first();
+        //     if ($data) {
+        //         // Kalau data sudah ada. maka append
+        //         $data_before = json_decode($data->data, true);
+
+        //         $data_before['data_array'][] = $evidence_selesai_fisik;
+
+        //         $data_after = json_encode($data_before);
+
+        //         $data->update([
+        //             'data' => $data_after,
+        //         ]);
+        //     } else {
+        //         $data_new = [
+        //             'data_array' => [$evidence_selesai_fisik]
+        //         ];
+        //         $selesai->lop_id = $lop_id;
+        //         $selesai->data = json_encode($data_new);
+
+        //         if ($r->keterangan_selesai !== '') {
+        //             $selesai->keterangan_selesai = $r->keterangan_selesai;
+        //         }
+
+        //         $selesai->save();
+        //     }
+        // }
+        // SelesaiFisik::where('lop_id', $lop_id)->update([
+        //     'keterangan_selesai' => $r->keterangan_selesai,
+        // ]);
 
         return back()->with('Sukses', $message);
     }
 
-    public function approveInstalasi($approved, $instalasi_id, $evidence_id)
-    {
-        $instalasi = Instalasi::where('id', $instalasi_id)->first();
 
-        // Get before data
-        $data_before = $instalasi->data;
 
-        // Convert json to asosiative array
-        $dataArray = json_decode($data_before, true);
+    // public function approveInstalasi($approved, $instalasi_id, $evidence_id)
+    // {
+    //     $instalasi = Instalasi::where('id', $instalasi_id)->first();
 
-        if ($approved == 'false') {
-            foreach ($dataArray['data_array'] as &$item) {
-                $id = $item['id'];
+    //     // Get before data
+    //     $data_before = $instalasi->data;
 
-                if ($id == $evidence_id) {
-                    $item['isApproved'] = false;
-                }
-            }
+    //     // Convert json to asosiative array
+    //     $dataArray = json_decode($data_before, true);
 
-            $data_after = json_encode($dataArray);
+    //     if ($approved == 'false') {
+    //         foreach ($dataArray['data_array'] as &$item) {
+    //             $id = $item['id'];
 
-            $instalasi->data = $data_after;
-            $instalasi->save();
+    //             if ($id == $evidence_id) {
+    //                 $item['isApproved'] = false;
+    //             }
+    //         }
 
-            $message = "Evidence persiapan di Reject";
-        } elseif ($approved == 'true') {
-            foreach ($dataArray['data_array'] as &$item) {
-                $id = $item['id'];
+    //         $data_after = json_encode($dataArray);
 
-                if ($id == $evidence_id) {
-                    $item['isApproved'] = true;
-                }
-            }
+    //         $instalasi->data = $data_after;
+    //         $instalasi->save();
 
-            $data_after = json_encode($dataArray);
+    //         $message = "Evidence persiapan di Reject";
+    //     } elseif ($approved == 'true') {
+    //         foreach ($dataArray['data_array'] as &$item) {
+    //             $id = $item['id'];
 
-            // update new data
-            $instalasi->data = $data_after;
-            $instalasi->save();
+    //             if ($id == $evidence_id) {
+    //                 $item['isApproved'] = true;
+    //             }
+    //         }
 
-            $message = "Evidence persiapan di Approve";
-        }
+    //         $data_after = json_encode($dataArray);
 
-        return back()->with('Sukses', $message);
-    }
+    //         // update new data
+    //         $instalasi->data = $data_after;
+    //         $instalasi->save();
+
+    //         $message = "Evidence persiapan di Approve";
+    //     }
+
+    //     return back()->with('Sukses', $message);
+    // }
 
     public function approveSelesaiFisik($approved, $selesai_fisik_id, $evidence_id)
     {

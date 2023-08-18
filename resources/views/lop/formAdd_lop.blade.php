@@ -14,25 +14,16 @@
                         <input type="hidden" name="permintaan_id" value="{{ $permintaan['id'] }}">
                         <div class="form-group">
                             <label for="">Tanggal Permintaan (m-d-Y)</label>
-                            @if ($errors->has('tanggal_permintaan'))
-                                <input type="date" name="tanggal_permintaan" class="form-control is-invalid"
-                                    id="tanggalPermintaan" value="{{ old('tanggal_permintaan') }}" readonly>
-                            @else
-                                <input type="date" name="tanggal_permintaan" class="form-control" id="tanggalPermintaan"
-                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" readonly>
-                            @endif
-
+                                <input type="date" name="tanggal_permintaan" class="form-control @error('tanggal_permintaan') is-invalid @enderror"
+                                    id="tanggalPermintaan" value="{{ $errors->has('tanggal_permintaan') ? old('tanggal_permintaan') : \Carbon\Carbon::now()->format('Y-m-d') }}" readonly>
+                                <div class="invalid-feeedback">
+                                    {{ $errors->first('tanggal_permintaan') }}
+                                </div>
                         </div>
                         <div class="form-group">
                             <label for="">Nama Permintaan</label>
-                            @if ($errors->has('nama_permintaan'))
                                 <input type="text" name="nama_permintaan" id="namaPermintaan"
-                                    class="form-control is-invalid" value="{{ old('nama_permintaan') }}" readonly>
-                            @else
-                                <input type="text" class="form-control" name="nama_permintaan" id="namaPermintaan"
-                                    value="{{ '[' . $permintaan['tematik_permintaan'] . '] ' . $permintaan['nama_permintaan'] }}"
-                                    readonly>
-                            @endif
+                                    class="form-control @error('nama_permintaan') is-invalid @enderror" value="{{ $errors->has('nama_permintaan') ? old('nama_permintaan') : '[' . $permintaan['tematik_permintaan'] . '] ' . $permintaan['nama_permintaan'] }}" readonly>
                         </div>
                         <div class="form-group has-validation">
                             <label for="">Nama LOP</label>
@@ -70,61 +61,6 @@
                             </select>
                             <div class="invalid-feedback">
                                 {{ $errors->first('estimasi_rab') }}
-                            </div>
-                        </div>
-
-                        <!-- Alokasi Mitra Modal Box -->
-                        <div class="modal fade" id="modalAlokasiMitra" tabindex="-1" role="dialog"
-                            aria-labelledby="modalAlokasiMitra" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-body p-0">
-                                        <div class="card card-plain">
-                                            <div class="card-header pb-0 text-left">
-                                                <h3 class="mb-0">Konfirmasi Alokasi Mitra</h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <table>
-                                                    <tr>
-                                                        <td>
-                                                            <b>Nama Permintaan</b>
-                                                        </td>
-                                                        <td>
-                                                            <b>:</b>
-                                                        </td>
-                                                        <td>
-                                                            <span id="namaPermintaan-modalAlokasiMitra"
-                                                                style="padding-left: 10px;"></span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <b>Nama LOP</b>
-                                                        </td>
-                                                        <td>
-                                                            <b>:</b>
-                                                        </td>
-                                                        <td>
-                                                            <span id="namaLop-modalAlokasiMitra"
-                                                                style="padding-left: 10px;"></span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <span class="mt-5">
-                                                    Anda memilih <b>Tematik LOP = PT 2</b> dan <b>RAB < 20 jt</b> Apakah
-                                                            Anda akan langsung
-                                                            Alokasi Mitra untuk LOP ini?
-                                                </span>
-                                            </div>
-                                            <div class="card-footer pt-0 px-lg-2 px-1">
-                                                <button type="submit" name="submitAction" class="btn btn-primary btn-sm"
-                                                    value="toAlokasiMitra">Ya</button>
-                                                <button type="button" id="close-modalAlokasiMitra"
-                                                    class="btn btn-danger btn-sm">Tidak</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -345,42 +281,6 @@
                     $("#estimasi_rab").show();
                 } else {
                     $("#estimasi_rab").hide();
-                }
-            });
-
-            // Toggle Modal Alokasi Mitra
-            $('#select_estimasi_rab').on('change', function() {
-                var selectedRAB = $(this).val();
-                var namaPermintaan = $("#namaPermintaan").val();
-                var namaLop = $("#namaLop").val();
-
-                if (namaLop === '') {
-                    $('#namaLop').addClass('is-invalid');
-                    alert('Isi Nama LOP terlebih dahulu!');
-                } else if (selectedRAB === '<20' && namaLop !== '') {
-                    $("#modalAlokasiMitra").modal('show');
-                    $("#namaPermintaan-modalAlokasiMitra").text(namaPermintaan);
-                    $("#namaLop-modalAlokasiMitra").text(namaLop);
-                }
-            });
-
-            $("#close-modalAlokasiMitra").on('click', function() {
-                $("#modalAlokasiMitra").modal('hide');
-            });
-
-            // Add event listener to the form submit event
-            document.getElementById('lopForm').addEventListener('submit', function(event) {
-                // Get the clicked submit button
-                var clickedButton = document.activeElement;
-
-                // Check the value of the clicked button
-                if (clickedButton && clickedButton.name === 'submitAction') {
-                    var actionValue = clickedButton.value;
-
-                    // Modify the form's action URL based on the clicked button value
-                    if (actionValue === 'toAlokasiMitra') {
-                        this.action = "{{ route('lop.store', ['toAlokasiMitra' => true]) }}";
-                    }
                 }
             });
         });

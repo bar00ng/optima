@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
             $table->text('keterangan_selesai')->nullable();
             $table->boolean('isApproved')->nullable();
-            $table->json('data');
             $table->timestamps();
         });
     }

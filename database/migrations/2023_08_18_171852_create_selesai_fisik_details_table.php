@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('instalasi', function (Blueprint $table) {
+        Schema::create('selesai_fisik_detail', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
-            $table->text('keterangan_instalasi')->nullable();
-            $table->boolean('isApproved')->nullable();
+            $table->foreignId('selesai_fisik_id')->constrained('selesai_fisik')->onDelete('cascade');
+            $table->string('evidence_name');
+            $table->boolean('isApproved')->nullable()->default(null);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('instalasi');
+        Schema::dropIfExists('selesai_fisik_detail');
     }
 };
