@@ -45,9 +45,8 @@ Route::group(['middleware' => ['auth', 'role:optima|mitra|sdi']], function() {
 Route::group(['middleware' => ['auth', 'role:optima']], function() {
     Route::patch('/surveyRab/{approved}/{lop_id}', [LopController::class, 'aprroveRab'])->name('lop.approveRab');
 
-    Route::patch('/konstruksi/persiapan/{approved}/{persiapan_id}/{evidence_id}', [KonstruksiController::class, 'approvePersiapan'])->name('lop.konstruksi.approve.persiapan');
-    Route::patch('/konstruksi/instalasi/{approved}/{instalasi_id}/{evidence_id}', [KonstruksiController::class, 'approveInstalasi'])->name('lop.konstruksi.approve.instalasi');
-    Route::patch('/konstruksi/selesaiFisik/{approved}/{selesai_fisik_id}/{evidence_id}', [KonstruksiController::class, 'approveSelesaiFisik'])->name('lop.konstruksi.approve.selesaiFisik');
+    Route::patch('/konstruksi/selesai-fisik/approve-evidence/{detail_id}', [KonstruksiController::class, 'approveEvidence'])->name('lop.konstruksi.approve.evidence');
+    Route::patch('/konstruksi/selesai-fisik/reject-evidence/{detail_id}', [KonstruksiController::class, 'rejectEvidence'])->name('lop.konstruksi.reject.evidence');
 
     Route::get('/mitra', [MitraController::class, 'index'])->name('mitra.list');
     Route::get('/mitra/add', [MitraController::class, 'formAddMitra'])->name('mitra.formAdd');

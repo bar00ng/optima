@@ -113,10 +113,7 @@
                                                         @endif
                                                         <td></td>
                                                         <td>
-                                                            <textarea name="keterangan_persiapan" class="form-control @error('keterangan_persiapan') is-invalid @enderror" cols="30" rows="2"
-                                                                placeholder="Keterangan Persiapan (Opsional)" {{ isset($persiapan) && $persiapan->isApproved == true ? 'disabled' : '' }}>
-                                                                {{ isset($persiapan) ? $persiapan->keterangan_persiapan : old($persiapan->keterangan_persiapan) }}
-                                                            </textarea>
+                                                            <textarea name="keterangan_persiapan" class="form-control @error('keterangan_persiapan') is-invalid @enderror" cols="30" rows="2" placeholder="Keterangan Persiapan Wajib diisi" {{ isset($persiapan) && $persiapan->isApproved == true ? 'disabled' : '' }}>{{ isset($persiapan) ? $persiapan->keterangan_persiapan : old('keterangan_persiapan') }}</textarea>
                                                             <div class="invalid-feedback">
                                                                 {{ $errors->first('keterangan_persiapan') }}
                                                             </div>
@@ -178,9 +175,7 @@
                                                             <td class="px-2"></td>
                                                             <td>
                                                                 <textarea name="keterangan_instalasi" class="form-control @error('keterangan_instalasi') is-invalid @enderror" cols="30" rows="2"
-                                                                    placeholder="Keterangan Instalasi (Opsional)" {{ isset($instalasi) && $instalasi->isApproved == true ? 'disabled' : '' }}>
-                                                                    {{ empty($instalasi) ? '' : $instalasi->keterangan_instalasi }}
-                                                                </textarea>
+                                                                    placeholder="Keterangan instalasi wajib diisi" {{ isset($instalasi) && $instalasi->isApproved == true ? 'disabled' : '' }}>{{ isset($instalasi) ? $instalasi->keterangan_instalasi : old('keterangan_instalasi') }}</textarea>
                                                                 <div class="invalid-feedback">
                                                                     {{ $errors->first('keterangan_instalasi') }}
                                                                 </div>
@@ -256,22 +251,47 @@
                                                                                 <span
                                                                                     class="me-2 text-xs font-weight-bold text-truncate">{{ $dis->evidence_name }}</span>
                                                                             </a>
-                                                                            @if ($dis->isApproved == null)
+                                                                            @if ($dis->isApproved === 0)
+                                                                                <span
+                                                                                    class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
+                                                                            @elseif ($dis->isApproved === 1)
+                                                                                <span
+                                                                                    class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
+                                                                            @elseif (is_null($dis->isApproved))
                                                                                 @if (Auth::user()->hasRole('optima'))
-                                                                                    tes
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-outline-success btn-sm btn-icon-only btn-tooltip"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-placement="bottom"
+                                                                                        title="Approve Evidence Selesai Fisik"
+                                                                                        data-container="body"
+                                                                                        data-animation="true"
+                                                                                        data-id="{{ $dis->id }}"
+                                                                                        data-value="true"
+                                                                                        id="evidence-approve">
+                                                                                        &#10003;
+                                                                                    </button>
+
+                                                                                    <button type="button"
+                                                                                            class="btn btn-outline-danger btn-sm btn-icon-only btn-tooltip"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-placement="bottom"
+                                                                                            title="Reject Evidence Selesai Fisik"
+                                                                                            data-container="body"
+                                                                                            data-animation="true"
+                                                                                            data-id="{{ $dis->id }}"
+                                                                                            data-value="false"
+                                                                                            id="evidence-reject">
+                                                                                            &#10007;
+                                                                                    </button>
+                                                                                </div>
                                                                                 @else
                                                                                     <span
                                                                                         class="me-2 text-xs fst-italic">(Menunggu
                                                                                         Persetujuan)</span>
                                                                                 @endif
-                                                                            @elseif ($dis->isApproved == true)
-                                                                                <span
-                                                                                    class="me-2 text-xs fst-italic text-success">(Disetujui)</span>
-                                                                            @elseif ($dis->isApproved == false)
-                                                                                <span
-                                                                                    class="me-2 text-xs fst-italic text-danger">(Ditolak)</span>
                                                                             @endif
-                                                                            
                                                                         </li>
                                                                     </ul>
                                                                 @endforeach
@@ -279,9 +299,7 @@
                                                         </td>
                                                         <td>
                                                             <textarea name="keterangan_selesai" class="form-control @error('keterangan_selesai') is-invalid @enderror" cols="30" rows="2"
-                                                                placeholder="Keterangan Selesai Fisik (Opsional)" {{ isset($selesaiFisik) && $selesaiFisik->isApproved == true ? 'disabled' : '' }}>
-                                                                {{ isset($selesaiFisik) ? $selesaiFisik->keterangan_selesai : old('keterangan_selesai') }}
-                                                            </textarea>
+                                                                placeholder="Keterangan selesai fisik wajib diisi" {{ isset($selesaiFisik) && $selesaiFisik->isApproved == true ? 'disabled' : '' }}>{{ isset($selesaiFisik) ? $selesaiFisik->keterangan_selesai : old('keterangan_selesai') }}</textarea>
                                                             <div class="invalid-feedback">
                                                                 {{ $errors->first('keterangan_selesai') }}
                                                             </div>
@@ -316,28 +334,54 @@
 @section('jquery_script')
     <script>
         $(document).ready(function() {
-            $('#submit-approve-persiapan').click(function(e) {
-                $('#form-approve-persiapan').submit();
+            $('#evidence-approve').on('click', function(e) {
+                e.preventDefault();
+
+                var ele = $(this);
+
+                var evidenceId = ele.data('id');
+
+                $.ajax({
+                    url: '/konstruksi/selesai-fisik/approve-evidence/' + evidenceId,
+                    method: 'PATCH',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        alert("Evidence disetujui");
+                        console.log(response);
+                        window.location.reload();
+                    },
+                    error: function (xhr, textStatus, error) {
+                        // Handle errors if needed
+                        console.error(error);
+                    }
+                })
             });
 
-            $('#submit-reject-persiapan').click(function() {
-                $('#form-reject-persiapan').submit();
-            });
+            $('#evidence-reject').on('click', function(e) {
+                e.preventDefault();
 
-            $('#submit-approve-instalasi').click(function() {
-                $('#form-approve-instalasi').submit();
-            });
+                var ele = $(this);
 
-            $('#submit-reject-instalasi').click(function() {
-                $('#form-reject-instalasi').submit();
-            });
+                var evidenceId = ele.data('id');
 
-            $('#submit-approve-selesaiFisik').click(function() {
-                $('#form-approve-selesaiFisik').submit();
-            });
-
-            $('#submit-reject-selesaiFisik').click(function() {
-                $('#form-reject-selesaiFisik').submit();
+                $.ajax({
+                    url: '/konstruksi/selesai-fisik/reject-evidence/' + evidenceId,
+                    method: 'PATCH',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        alert("Evidence ditolak");
+                        console.log(response);
+                        window.location.reload();
+                    },
+                    error: function (xhr, textStatus, error) {
+                        // Handle errors if needed
+                        console.error(error);
+                    }
+                })
             });
 
             $('#approve-persiapan').on('click', function(e) {
@@ -402,7 +446,7 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function (response) {
-                        alert("Instalasi marked as Done");
+                        alert("Selesai Fisik marked as Done");
                         window.location.reload();
                     },
                     error: function (xhr, textStatus, error) {

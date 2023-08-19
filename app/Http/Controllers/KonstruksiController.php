@@ -34,7 +34,6 @@ class KonstruksiController extends Controller
             'keterangan_persiapan' => 'sometimes|required|max:255',
             'keterangan_instalasi' => 'sometimes|required|max:255',
             'keterangan_selesai' => 'sometimes|required|max:255',
-            'evidence_selesai' => 'required|file'
         ]);
 
         if ($r->filled('keterangan_persiapan')) {
@@ -68,6 +67,9 @@ class KonstruksiController extends Controller
                     'keterangan_selesai' => $validated['keterangan_selesai']
                 ]
             );
+            if ($querySelesaiFisik) {
+                $message = "Berhasil upload keterangan selesai fisik";
+            }
         }
 
         if ($r->hasFile('evidence_selesai') && $r->file('evidence_selesai')->isValid()) {
@@ -81,59 +83,39 @@ class KonstruksiController extends Controller
                 'evidence_name' => $fileName,
                 'isApproved' => null
             ]);
-        }
 
-        if ($querySelesaiFisik && $querySelesaiFisikDetail) {
-            $message = "Berhasil upload evidence dan keterangan selesai fisik";
+            if ($querySelesaiFisikDetail) {
+                $message = "Berhasil upload evidence selesai fisik";
+            }
         }
 
         return back()->with('Sukses', $message);
     }
 
-    public function approveSelesaiFisik($approved, $selesai_fisik_id, $evidence_id)
+    public function approveEvidence($detail_id)
     {
-        $selesaiFisik = SelesaiFisik::where('id', $selesai_fisik_id)->first();
+        try {
+            $selesaiFisikDetail = SelesaiFisikDetail::where('id', $detail_id)->update([
+                'isApproved' => true
+            ]);
+        
+            return response()->json(['message' => 'Evidence Selesai Fisik di Approve']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
+        }        
+    }
 
-        // Get before data
-        $data_before = $selesaiFisik->data;
-
-        // Convert json to asosiative array
-        $dataArray = json_decode($data_before, true);
-
-        if ($approved == 'false') {
-            foreach ($dataArray['data_array'] as &$item) {
-                $id = $item['id'];
-
-                if ($id == $evidence_id) {
-                    $item['isApproved'] = false;
-                }
-            }
-
-            $data_after = json_encode($dataArray);
-
-            $selesaiFisik->data = $data_after;
-            $selesaiFisik->save();
-
-            $message = "Evidence persiapan di Reject";
-        } elseif ($approved == 'true') {
-            foreach ($dataArray['data_array'] as &$item) {
-                $id = $item['id'];
-
-                if ($id == $evidence_id) {
-                    $item['isApproved'] = true;
-                }
-            }
-
-            $data_after = json_encode($dataArray);
-
-            // update new data
-            $selesaiFisik->data = $data_after;
-            $selesaiFisik->save();
-
-            $message = "Evidence persiapan di Approve";
+    public function rejectEvidence($detail_id)
+    {
+        try {
+            $selesaiFisikDetail = SelesaiFisikDetail::where('id', $detail_id)->update([
+                'isApproved' => false
+            ]);
+    
+            return response()->json(['message' => 'Evidence Selesai Fisik di Reject']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
-
-        return back()->with('Sukses', $message);
     }
 
     public function markPersiapanAsDone(Request $request, $isApproved, $persiapan_id)
