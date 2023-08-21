@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
 use App\Models\Lop;
 use App\Models\Validasi;
 use App\Models\KonfirmasiMitra;
 use App\Models\Connectivity;
 use App\Models\GoLive;
+use App\Models\WithGoLive;
+use App\Models\WithoutGoLive;
+use App\Models\WithGoLiveDetail;
 
 class GoLiveController extends Controller
 {
@@ -19,94 +21,152 @@ class GoLiveController extends Controller
         $pageName = 'Go Live';
         $pageCategory = 'Project';
 
-        $data = [
-            'pageName' => $pageName,
-            'pageCategory' => $pageCategory,
-            'lop' => Lop::find($lop_id),
-            'validasi' => Validasi::where('lop_id', $lop_id)->first(),
-            'konfirmasiMitra' => KonfirmasiMitra::where('lop_id', $lop_id)->first(),
-            'connectivity' => Connectivity::where('lop_id', $lop_id)->first(),
-            'goLive' => GoLive::where('lop_id', $lop_id)->first(),
-        ];
+        $lop = Lop::find($lop_id);
+        $validasiData = $lop->validasi;
+        $konfirmasiMitraData = $lop->konfirmasiMitra;
+        $connectivityData = $lop->connectivity;
+        $goLiveData = $lop->goLive;
 
-        return view('golive-odp.golive-odp', $data);
+        return view('golive-odp.golive-odp', compact('lop', 'validasiData', 'konfirmasiMitraData', 'connectivityData', 'goLiveData', 'pageName', 'pageCategory'));
     }
 
     public function store($lop_id, Request $request)
     {
-        $request->validate([
-            'keterangan_withoutGoLive' => 'required_if:isNeed,false',
-            'evidence_golive' => 'file|max:10240',
-            'validasi_progress' => 'integer|between:0,100',
-            'konfirmasi_mitra_progress' => 'integer|between:0,100',
-            'connectivity_progress' => 'integer|between:0,100',
-            'golive_progress' => 'integer|between:0,100',
+        $validated = $request->validate([
+            'isNeed' => 'required',
+            'keterangan_tanpa_golive' => 'required_if:isNeed,false',
+            'keterangan_validasi' => 'sometimes|required|max:255',
+            'keterangan_konfirmasi_mitra' => 'sometimes|required|max:255',
+            'keterangan_connectivity' => 'sometimes|required|max:255',
+            'keterangan_dengan_golive' => 'sometimes|required_if:isNeed,true|max:255',
         ]);
 
-        $goLiveData = [
-            'isNeed' => $request->filled('isNeed') ? $request->isNeed == "true" : null,
-            'lop_id' => $lop_id,
-        ];
+        if ($request->isNeed == "true") {
+            // Check Terlebih dahulu jika ada data Golive Yang sama dengan value isNeed yang beda
+            $findGoLive = GoLive::where('lop_id', $lop_id)->first();
 
-        // Handle file upload if evidence_golive exists and is valid
+            if(!is_null($findGoLive) && $findGoLive->isNeed == false) {
+                $findGoLive->delete();
+            } 
+            
+            $queryGolive = GoLive::updateOrcreate(
+                ['lop_id' => $lop_id],
+                [
+                    'lop_id' => $lop_id,
+                    'isNeed' => true,
+                    'isApproved' => null,
+                ]); 
+
+            if($queryGolive){
+                WithGoLive::updateOrcreate(
+                    ['go_live_id' => $queryGolive->id],
+                    [
+                        'go_live_id' => $queryGolive->id,
+                        'keterangan_golive' => null
+                    ]);
+
+                $message = "Berhasil update status Go Live ODP";
+            }
+
+        } elseif ($request->isNeed == "false") {
+            $findGoLive = GoLive::where('lop_id', $lop_id)->first();
+
+            if(!is_null($findGoLive) && $findGoLive->isNeed == true) {
+                $findGoLive->delete();
+            } 
+
+            $queryGolive = GoLive::updateOrcreate(
+                ['lop_id' => $lop_id],
+                [
+                    'lop_id' => $lop_id,
+                    'isNeed' => false,
+                    'isApproved' => null,
+                ]); 
+             
+            if ($queryGolive) {
+                WithoutGoLive::updateOrcreate(
+                    ['go_live_id' => $queryGolive->id],
+                    [
+                        'go_live_id' => $queryGolive->id,
+                        'keterangan_golive' => $validated['keterangan_tanpa_golive']
+                    ]);
+
+                $message = "Berhasil update status Go Live ODP";
+            }
+        }
+
+        if ($request->filled('keterangan_validasi')) {
+            $queryValidasi = Validasi::updateOrCreate(
+                ['lop_id' => $lop_id],
+                [
+                    'keterangan_validasi' => $validated['keterangan_validasi']
+                ]
+            );
+            if ($queryValidasi) {
+                $message = 'Berhasil upload keterangan Validasi';
+            }
+        }
+
+        if ($request->filled('keterangan_konfirmasi_mitra')) {
+            $queryKonfirmasiMitra = KonfirmasiMitra::updateOrCreate(
+                ['lop_id' => $lop_id],
+                [
+                    'keterangan_konfirmasi_mitra' => $validated['keterangan_konfirmasi_mitra']
+                ]
+            );
+            if($queryKonfirmasiMitra) {
+                $message = 'Berhasil upload keterangan Konfirmasi Mitra';
+            }
+        }
+
+        if ($request->filled('keterangan_connectivity')) {
+            $queryConnectivity = Connectivity::updateOrCreate(
+                ['lop_id' => $lop_id],
+                [
+                    'keterangan_connectivity' => $validated['keterangan_connectivity']
+                ]
+            );
+            if ($queryConnectivity) {
+                $message = 'Berhasil upload keterangan Connectivity';
+            }
+        }
+
+        if ($request->filled('keterangan_dengan_golive')) {
+            $queryWithGoLive = GoLive::where('lop_id', $lop_id)->first(); // Retrieve the GoLive model instance
+            if ($queryWithGoLive) {
+                $queryWithGoLive->withGoLive->update([
+                    'keterangan_golive' => $validated['keterangan_dengan_golive'],
+                ]);
+
+                // Check if the update was successful
+                if ($queryWithGoLive->withGoLive) {
+                    $message = "Berhasil upload keterangan Go Live ODP";
+                }
+            }
+        }
+
         if ($request->hasFile('evidence_golive') && $request->file('evidence_golive')->isValid()) {
             $file = $request->file('evidence_golive');
             $fileName = Str::random(40) . '.' . $file->getClientOriginalExtension(); // Generate a unique filename
+
             $file->storeAs('public/uploads/evidence_golive', $fileName);
 
-            $goLiveData['evidence_golive'] = $fileName;
+            $queryGoliveDetail = WithGoLiveDetail::create([
+                'with_golive_id' => $queryWithGoLive->id,
+                'evidence_name' => $fileName,
+                'isApproved' => null
+            ]);
+
+            if ($queryGoliveDetail) {
+                $message = "Berhasil upload evidence golive";
+            }
         }
 
-        // Check if keterangan_withGolive is filled
-        if ($request->filled('keterangan_withGoLive')) {
-            $goLiveData['keterangan_withGolive'] = $request->input('keterangan_withGoLive');
-        }
-        $goLiveData['isApproved'] = null;
-
-        // Check if keterangan_withoutGoLive is filled
-        if ($request->filled('keterangan_withoutGoLive')) {
-            $goLiveData['keterangan_withoutGoLive'] = $request->input('keterangan_withoutGoLive');
-        }
-
-        // Check if keterangan_validasi is filled
-        if ($request->filled('keterangan_validasi')) {
-            $validasiData = [
-                'keterangan_validasi' => $request->input('keterangan_validasi'),
-            ];
-        }
-        $validasiData['isApproved'] = null;
-
-        // Check if keterangan_konfirmasi_mitra is filled
-        if ($request->filled('keterangan_konfirmasi_mitra')) {
-            $konfirmasiMitraData = [
-                'keterangan_konfirmasi_mitra' => $request->input('keterangan_konfirmasi_mitra'),
-            ];
-        }
-        $konfirmasiMitraData['isApproved'] = null;
-
-        // Check if keterangan_connectivity is filled
-        if ($request->filled('keterangan_connectivity')) {
-            $connectivityData = [
-                'keterangan_connectivity' => $request->input('keterangan_connectivity'),
-            ];
-        }
-        $connectivityData['isApproved'] = null;
-
-        // dd($request->all(), $goLiveData);
-
-        GoLive::updateOrCreate(['lop_id' => $lop_id], $goLiveData);
-
-        Validasi::updateOrCreate(['lop_id' => $lop_id], $validasiData);
-
-        KonfirmasiMitra::updateOrCreate(['lop_id' => $lop_id], $konfirmasiMitraData);
-
-        Connectivity::updateOrCreate(['lop_id' => $lop_id], $connectivityData);
-
-        return redirect('/goLive/' . $lop_id)->with('Sukses', 'Berhasil diproses!');
+        return back()->with('Sukses', $message);
     }
 
-    public function markValidasiAsDone(Request $request, $lop_id) {
-        $validasi = Validasi::where('lop_id',$lop_id)->firstOrFail();
+    public function markValidasiAsDone(Request $request, $validasi_id) {
+        $validasi = Validasi::findOrFail($validasi_id);
 
         // Update the isApproved field based on the value from the URL
         $validasi->isApproved = true;
@@ -121,8 +181,8 @@ class GoLiveController extends Controller
         return response()->json(['message' => 'GoLiveODP updated successfully']);
     }
 
-    public function markKonfirmasiMitraAsDone(Request $request, $lop_id) {
-        $konfirmasiMitra = KonfirmasiMitra::where('lop_id',$lop_id)->firstOrFail();
+    public function markKonfirmasiMitraAsDone(Request $request, $konfirmasi_mitra_id) {
+        $konfirmasiMitra = KonfirmasiMitra::findOrFail($konfirmasi_mitra_id);
 
         // Update the isApproved field based on the value from the URL
         $konfirmasiMitra->isApproved = true;
@@ -137,8 +197,8 @@ class GoLiveController extends Controller
         return response()->json(['message' => 'GoLiveODP updated successfully']);
     }
 
-    public function markConnectivityAsDone(Request $request, $lop_id) {
-        $connectivity = Connectivity::where('lop_id',$lop_id)->firstOrFail();
+    public function markConnectivityAsDone(Request $request, $connectivity_id) {
+        $connectivity = Connectivity::findOrFail($connectivity_id);
 
         // Update the isApproved field based on the value from the URL
         $connectivity->isApproved = true;
@@ -153,8 +213,8 @@ class GoLiveController extends Controller
         return response()->json(['message' => 'GoLiveODP updated successfully']);
     }
 
-    public function markOdpAsDone(Request $request, $lop_id) {
-        $goLive = GoLive::where('lop_id',$lop_id)->firstOrFail();
+    public function markOdpAsDone(Request $request, $odp_id) {
+        $goLive = GoLive::findOrFail($odp_id);
 
         // Update the isApproved field based on the value from the URL
         $goLive->isApproved = true;

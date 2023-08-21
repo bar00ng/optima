@@ -105,6 +105,15 @@
                                                     <span class="badge badge-pill bg-gradient-success">Selesai</span>
                                                 @elseif ($item->status == 'Persiapan')
                                                     <span class="badge badge-pill bg-gradient-primary">Persiapan</span>
+                                                @elseif ($item->status == 'Validasi')
+                                                    <span
+                                                        class="badge badge-pill bg-gradient-secondary">{{ $item->validasi->keterangan_validasi }}</span>
+                                                @elseif ($item->status == 'Konfirmasi Mitra')
+                                                    <span
+                                                        class="badge badge-pill bg-gradient-secondary">{{ $item->konfirmasiMitra->keterangan_konfirmasi_mitra }}</span>
+                                                @elseif ($item->status == 'Connectivity')
+                                                    <span
+                                                        class="badge badge-pill bg-gradient-secondary">{{ $item->connectivity->keterangan_connectivity }}</span>
                                                 @else
                                                     <span
                                                         class="badge badge-pill bg-gradient-secondary">{{ $item->status }}</span>

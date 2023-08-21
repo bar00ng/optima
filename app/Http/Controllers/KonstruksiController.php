@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Lop;
 use App\Models\Persiapan;
+use Illuminate\Support\Str;
 use App\Models\Instalasi;
 use App\Models\SelesaiFisik;
 use App\Models\SelesaiFisikDetail;
@@ -74,8 +75,8 @@ class KonstruksiController extends Controller
 
         if ($r->hasFile('evidence_selesai') && $r->file('evidence_selesai')->isValid()) {
             $file = $r->file('evidence_selesai');
-            $fileName = $file->getClientOriginalName();
-
+            $fileName = Str::random(40) . '.' . $file->getClientOriginalExtension(); // Generate a unique filename
+            
             $file->storeAs('public/uploads/evidence_selesai', $fileName);
 
             $querySelesaiFisikDetail = SelesaiFisikDetail::create([

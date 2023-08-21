@@ -69,10 +69,10 @@ Route::group(['middleware' => ['auth', 'role:optima']], function() {
     Route::patch('/konstruksi/instalasi/{isApproved}/{instalasi_id}', [KonstruksiController::class, 'markInstalasiAsDone'])->name('lop.konstruksi.done.instalasi');
     Route::patch('/konstruksi/selesaiFisik/{isApproved}/{selesai_fisik_id}', [KonstruksiController::class, 'markSelesaiAsDone'])->name('lop.konstruksi.done.selesaiFisik');
 
-    Route::patch('/goLive/validasi/{lop_id}', [GoLiveController::class, 'markValidasiAsDone'])->name('lop.go-live.validasi.done');
-    Route::patch('/goLive/konfirmasiMitra/{lop_id}', [GoLiveController::class, 'markKonfirmasiMitraAsDone'])->name('lop.go-live.konfirmasiMitra.done');
-    Route::patch('/goLive/connectivity/{lop_id}', [GoLiveController::class, 'markConnectivityAsDone'])->name('lop.go-live.connectivity.done');
-    Route::patch('/goLive/odp/{lop_id}', [GoLiveController::class, 'markOdpAsDone'])->name('lop.go-live.odp.done');
+    Route::patch('/goLive/validasi/{validasi_id}', [GoLiveController::class, 'markValidasiAsDone'])->name('lop.go-live.validasi.done');
+    Route::patch('/goLive/konfirmasiMitra/{konfirmasi_mitra_id}', [GoLiveController::class, 'markKonfirmasiMitraAsDone'])->name('lop.go-live.konfirmasiMitra.done');
+    Route::patch('/goLive/connectivity/{connectivity_id}', [GoLiveController::class, 'markConnectivityAsDone'])->name('lop.go-live.connectivity.done');
+    Route::patch('/goLive/odp/{odp_id}', [GoLiveController::class, 'markOdpAsDone'])->name('lop.go-live.odp.done');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|optima']], function() {

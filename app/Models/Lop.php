@@ -64,7 +64,7 @@ class Lop extends Model
         return $this->hasOne(Validasi::class, 'lop_id', 'id');
     }
 
-    public function konfirmasiMira(): HasOne {
+    public function konfirmasiMitra(): HasOne {
         return $this->hasOne(KonfirmasiMitra::class, 'lop_id', 'id');
     }
 

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('go_live', function (Blueprint $table) {
+        Schema::create('with_golive_detail', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lop_id')->constrained('lop')->onDelete('cascade');
-            $table->boolean('isNeed')->nullable()->default(null);
-            $table->boolean('isApproved')->nullable();
+            $table->foreignId('with_golive_id')->constrained('with_go_live')->onDelete('cascade');
+            $table->string('evidence_name');
+            $table->boolean('isApproved')->nullable()->default(null);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('go_live');
+        Schema::dropIfExists('with_golive_detail');
     }
 };
